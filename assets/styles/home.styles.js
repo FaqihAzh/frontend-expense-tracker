@@ -5,10 +5,12 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.background,
+    height: "100%",
   },
   content: {
     padding: 20,
     paddingBottom: 0,
+    height: "100%",
   },
   header: {
     flexDirection: "row",
@@ -39,6 +41,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     color: COLORS.text,
+    textTransform: "capitalize",
   },
   headerRight: {
     flexDirection: "row",
@@ -52,9 +55,9 @@ export const styles = StyleSheet.create({
   },
   addButton: {
     backgroundColor: COLORS.primary,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderRadius: 24,
+    paddingHorizontal: 14,
+    paddingVertical: 14,
+    borderRadius: 100,
     flexDirection: "row",
     alignItems: "center",
     shadowColor: "#000",
@@ -62,6 +65,9 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
+    position: "absolute",
+    right: 20,
+    bottom: 30,
   },
   addButtonText: {
     color: COLORS.white,
@@ -252,10 +258,6 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 10,
     paddingBottom: 5,
-  },
-  transactionsList: {
-    flex: 1,
-    marginHorizontal: 20,
   },
   transactionsListContent: {
     paddingBottom: 20,
