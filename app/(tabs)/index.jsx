@@ -1,10 +1,9 @@
 import { useUser } from '@clerk/clerk-expo'
-import {FlatList, RefreshControl, Text, TouchableOpacity, View} from 'react-native'
+import {FlatList, RefreshControl, Text, View} from 'react-native'
 import {SignOutButton} from "../../components/SignOutButton";
 import {useTransactions} from "../../hooks/useTransactions";
 import {useEffect, useState} from "react";
 import PageLoader from "../../components/PageLoader";
-import {Ionicons} from "@expo/vector-icons";
 import {styles} from "../../assets/styles/home.styles";
 import {Image} from "expo-image";
 import {BalanceCard} from "../../components/BalanceCard";
@@ -109,10 +108,6 @@ export default function Page() {
           showsVerticalScrollIndicator={false}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         />
-
-        <TouchableOpacity style={styles.addButton} onPress={() => router.push("/create")}>
-          <Ionicons name="add" size={36} color="#FFF" />
-        </TouchableOpacity>
       </View>
 
       <CustomAlert

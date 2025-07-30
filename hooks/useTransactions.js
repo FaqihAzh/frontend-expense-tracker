@@ -9,42 +9,228 @@ export const useTransactions = (userId) => {
     income: 0,
     expense: 0,
   });
+  const [analytics, setAnalytics] = useState(null);
+  const [monthlyReport, setMonthlyReport] = useState([]);
+  const [categoryReport, setCategoryReport] = useState([]);
+  const [topCategories, setTopCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchTransactions = useCallback(async () => {
+  // Existing functions from original hook
+  const fetchTransactions = useCallback(async (filters = {}) => {
     try {
-      const response = await fetch(`${API_URL}/transactions/user/${userId}`);
+      let url = `${API_URL}/transactions/user/${userId}`;
+      const params = new URLSearchParams();
+
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value !== null && value !== undefined && value !== '') {
+          params.append(key, value);
+        }
+      });
+
+      if (params.toString()) {
+        url += `?${params.toString()}`;
+      }
+
+      const response = await fetch(url);
       const data = await response.json();
       setTransactions(data.data);
+      return data.data;
     } catch (error) {
       console.error("Error fetching transactions:", error);
+      throw error;
     }
   }, [userId]);
 
-  const fetchSummary = useCallback(async () => {
+  const fetchSummary = useCallback(async (filters = {}) => {
     try {
-      const response = await fetch(`${API_URL}/transactions/summary/${userId}`);
+      let url = `${API_URL}/transactions/summary/${userId}`;
+      const params = new URLSearchParams();
+
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value !== null && value !== undefined && value !== '') {
+          params.append(key, value);
+        }
+      });
+
+      if (params.toString()) {
+        url += `?${params.toString()}`;
+      }
+
+      const response = await fetch(url);
       const data = await response.json();
       setSummary(data.data);
+      return data.data;
     } catch (error) {
       console.error("Error fetching summary:", error);
+      throw error;
     }
   }, [userId]);
 
-  const loadTransactions = useCallback(async () => {
+  // New analytics functions
+  const fetchAnalytics = useCallback(async (period = 'month', filters = {}) => {
+    try {
+      let url = `${API_URL}/transactions/analytics/${userId}`;
+      const params = new URLSearchParams({ period });
+
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value !== null && value !== undefined && value !== '') {
+          params.append(key, value);
+        }
+      });
+
+      if (params.toString()) {
+        url += `?${params.toString()}`;
+      }
+
+      const response = await fetch(url);
+      const data = await response.json();
+      setAnalytics(data.data);
+      return data.data;
+    } catch (error) {
+      console.error("Error fetching analytics:", error);
+      throw error;
+    }
+  }, [userId]);
+
+  const fetchMonthlyReport = useCallback(async (year) => {
+    try {
+      const response = await fetch(`${API_URL}/transactions/monthly-report/${userId}/${year}`);
+      const data = await response.json();
+      setMonthlyReport(data.data);
+      return data.data;
+    } catch (error) {
+      console.error("Error fetching monthly report:", error);
+      throw error;
+    }
+  }, [userId]);
+
+  const fetchCategoryReport = useCallback(async (filters = {}) => {
+    try {
+      let url = `${API_URL}/transactions/category-summary/${userId}`;
+      const params = new URLSearchParams();
+
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value !== null && value !== undefined && value !== '') {
+          params.append(key, value);
+        }
+      });
+
+      if (params.toString()) {
+        url += `?${params.toString()}`;
+      }
+
+      const response = await fetch(url);
+      const data = await response.json();
+      setCategoryReport(data.data);
+      return data.data;
+    } catch (error) {
+      console.error("Error fetching category report:", error);
+      throw error;
+    }
+  }, [userId]);
+
+  const fetchTopCategories = useCallback(async (limit = 5) => {
+    try {
+      const response = await fetch(`${API_URL}/transactions/top-categories/${userId}?limit=${limit}`);
+      const data = await response.json();
+      setTopCategories(data.data);
+      return data.data;
+    } catch (error) {
+      console.error("Error fetching top categories:", error);
+      throw error;
+    }
+  }, [userId]);
+
+  const fetchRecentTransactions = useCallback(async (limit = 10) => {
+    try {
+      const response = await fetch(`${API_URL}/transactions/recent/${userId}?limit=${limit}`);
+      const data = await response.json();
+      return data.data;
+    } catch (error) {
+      console.error("Error fetching recent transactions:", error);
+      throw error;
+    }
+  }, [userId]);
+
+  const fetchTransactionsByMonth = useCallback(async (year, month) => {
+    try {
+      const response = await fetch(`${API_URL}/transactions/user/${userId}/month/${year}/${month}`);
+      const data = await response.json();
+      return data.data;
+    } catch (error) {
+      console.error("Error fetching transactions by month:", error);
+      throw error;
+    }
+  }, [userId]);
+
+  const fetchTransactionsByCategory = useCallback(async (category) => {
+    try {
+      const response = await fetch(`${API_URL}/transactions/user/${userId}/category/${encodeURIComponent(category)}`);
+      const data = await response.json();
+      return data.data;
+    } catch (error) {
+      console.error("Error fetching transactions by category:", error);
+      throw error;
+    }
+  }, [userId]);
+
+  const fetchTransactionsByDateRange = useCallback(async (startDate, endDate) => {
+    try {
+      const params = new URLSearchParams({
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString()
+      });
+      const response = await fetch(`${API_URL}/transactions/user/${userId}/date-range?${params}`);
+      const data = await response.json();
+      return data.data;
+    } catch (error) {
+      console.error("Error fetching transactions by date range:", error);
+      throw error;
+    }
+  }, [userId]);
+
+  const loadTransactions = useCallback(async (filters = {}) => {
     if (!userId) return;
     setIsLoading(true);
     try {
       await Promise.all([
-        fetchTransactions(),
-        fetchSummary(),
+        fetchTransactions(filters),
+        fetchSummary(filters),
       ]);
-      setIsLoading(false);
     } catch (error) {
       console.error("Error loading transactions:", error);
+    } finally {
       setIsLoading(false);
     }
   }, [fetchTransactions, fetchSummary]);
+
+  const loadAnalytics = useCallback(async (period = 'month', filters = {}) => {
+    if (!userId) return;
+    setIsLoading(true);
+    try {
+      await fetchAnalytics(period, filters);
+    } catch (error) {
+      console.error("Error loading analytics:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [fetchAnalytics]);
+
+  const loadReports = useCallback(async (year, filters = {}) => {
+    if (!userId) return;
+    setIsLoading(true);
+    try {
+      await Promise.all([
+        fetchMonthlyReport(year),
+        fetchCategoryReport(filters),
+        fetchTopCategories(),
+      ]);
+    } catch (error) {
+      console.error("Error loading reports:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [fetchMonthlyReport, fetchCategoryReport, fetchTopCategories]);
 
   const deleteTransaction = async (transactionId, showAlert) => {
     try {
@@ -126,5 +312,34 @@ export const useTransactions = (userId) => {
     return errors;
   };
 
-  return { transactions, summary, isLoading, loadTransactions, deleteTransaction, createTransaction, validateTransactionData };
+  return {
+    // Data
+    transactions,
+    summary,
+    analytics,
+    monthlyReport,
+    categoryReport,
+    topCategories,
+    isLoading,
+
+    // Basic functions
+    loadTransactions,
+    deleteTransaction,
+    createTransaction,
+    validateTransactionData,
+
+    // Analytics functions
+    loadAnalytics,
+    loadReports,
+    fetchAnalytics,
+    fetchRecentTransactions,
+
+    // Specific fetch functions
+    fetchTransactionsByMonth,
+    fetchTransactionsByCategory,
+    fetchTransactionsByDateRange,
+    fetchMonthlyReport,
+    fetchCategoryReport,
+    fetchTopCategories,
+  };
 };
