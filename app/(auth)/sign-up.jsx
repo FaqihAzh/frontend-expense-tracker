@@ -3,10 +3,10 @@ import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useSignUp } from "@clerk/clerk-expo";
 import {Link, useRouter} from "expo-router";
 import { styles } from "../../assets/styles/auth.styles.js";
-import {Colors} from "../../constants/colors";
 import { Image } from "expo-image";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import {Ionicons} from "@expo/vector-icons";
+import {COLORS_MASTER} from "../../constants/colorsMaster";
 
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -79,10 +79,10 @@ export default function SignUpScreen() {
 
         {error ? (
           <View style={styles.errorBox}>
-            <Ionicons name="alert-circle" size={20} color={Colors.expense} />
+            <Ionicons name="alert-circle" size={20} color={COLORS_MASTER.expense} />
             <Text style={styles.errorText}>{error}</Text>
             <TouchableOpacity onPress={() => setError("")}>
-              <Ionicons name="close" size={20} color={Colors.textLight} />
+              <Ionicons name="close" size={20} color={COLORS_MASTER.textLight} />
             </TouchableOpacity>
           </View>
         ) : null}
@@ -115,10 +115,10 @@ export default function SignUpScreen() {
 
         {error ? (
           <View style={styles.errorBox}>
-            <Ionicons name="alert-circle" size={20} color={Colors.expense} />
+            <Ionicons name="alert-circle" size={20} color={COLORS_MASTER.expense} />
             <Text style={styles.errorText}>{error}</Text>
             <TouchableOpacity onPress={() => setError("")}>
-              <Ionicons name="close" size={20} color={Colors.textLight} />
+              <Ionicons name="close" size={20} color={COLORS_MASTER.textLight} />
             </TouchableOpacity>
           </View>
         ) : null}

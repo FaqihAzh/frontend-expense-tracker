@@ -5,7 +5,7 @@ import { useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { styles } from "../../assets/styles/auth.styles";
 import { Ionicons } from "@expo/vector-icons";
-import {Colors} from "../../constants/colors";
+import {COLORS_MASTER} from "../../constants/colorsMaster";
 
 export default function Page() {
   const { signIn, setActive, isLoaded } = useSignIn();
@@ -59,10 +59,10 @@ export default function Page() {
 
         {error ? (
           <View style={styles.errorBox}>
-            <Ionicons name="alert-circle" size={20} color={Colors.expense} />
+            <Ionicons name="alert-circle" size={20} color={COLORS_MASTER.expense} />
             <Text style={styles.errorText}>{error}</Text>
             <TouchableOpacity onPress={() => setError("")}>
-              <Ionicons name="close" size={20} color={Colors.textLight} />
+              <Ionicons name="close" size={20} color={COLORS_MASTER.textLight} />
             </TouchableOpacity>
           </View>
         ) : null}

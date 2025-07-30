@@ -1,4 +1,4 @@
-const modernTheme = {
+const modern = {
   primary: "#6366F1",
   primaryLight: "#818CF8",
   primaryDark: "#4F46E5",
@@ -25,7 +25,7 @@ const modernTheme = {
   info: "#06B6D4",
 };
 
-const darkTheme = {
+const dark = {
   primary: "#818CF8",
   primaryLight: "#A5B4FC",
   primaryDark: "#6366F1",
@@ -61,9 +61,9 @@ const gradients = {
 };
 
 export const THEMES = {
-  modern: modernTheme,
-  dark: darkTheme,
+  modernTheme: modern,
+  darkTheme: dark,
 };
 
-export const GRADIENTS = gradients;
-export const Colors = THEMES.modern;
+export const GRADIENTS_MASTER = gradients;
+export const COLORS_MASTER = THEMES.modernTheme;

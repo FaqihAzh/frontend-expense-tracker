@@ -12,7 +12,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { PieChart } from 'react-native-chart-kit';
 import { styles } from '../../assets/styles/analytics.styles';
 import { CustomAlert } from '../../components/CustomAlert';
-import {Colors} from "../../constants/colors";
+import {COLORS_MASTER} from "../../constants/colorsMaster";
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -83,7 +83,7 @@ const AnalyticsScreen = () => {
         name: item.category,
         population: Math.abs(item.totalAmount),
         color: colors[index % colors.length],
-        legendFontColor: Colors.text,
+        legendFontColor: COLORS_MASTER.text,
         legendFontSize: 12,
       }));
   };
@@ -106,7 +106,7 @@ const AnalyticsScreen = () => {
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color={Colors.primary} />
+        <ActivityIndicator size="large" color={COLORS_MASTER.primary} />
         <Text style={styles.loadingText}>Loading Analytics...</Text>
       </View>
     );
@@ -141,28 +141,28 @@ const AnalyticsScreen = () => {
 
         <View style={styles.summaryContainer}>
           <View style={styles.summaryCard}>
-            <Ionicons name="wallet" size={24} color={Colors.primary} />
+            <Ionicons name="wallet" size={24} color={COLORS_MASTER.primary} />
             <Text style={styles.summaryLabel}>Balance</Text>
             <Text style={[
               styles.summaryValue,
-              { color: parseFloat(analytics?.summary?.balance) >= 0 ? Colors.income : Colors.expense }
+              { color: parseFloat(analytics?.summary?.balance) >= 0 ? COLORS_MASTER.income : COLORS_MASTER.expense }
             ]}>
               ${parseFloat(analytics?.summary?.balance)?.toFixed(2) || '0.00'}
             </Text>
           </View>
 
           <View style={styles.summaryCard}>
-            <Ionicons name="arrow-up-circle" size={24} color={Colors.income} />
+            <Ionicons name="arrow-up-circle" size={24} color={COLORS_MASTER.income} />
             <Text style={styles.summaryLabel}>Income</Text>
-            <Text style={[styles.summaryValue, { color: Colors.income }]}>
+            <Text style={[styles.summaryValue, { color: COLORS_MASTER.income }]}>
               ${parseFloat(analytics?.summary?.income)?.toFixed(2) || '0.00'}
             </Text>
           </View>
 
           <View style={styles.summaryCard}>
-            <Ionicons name="arrow-down-circle" size={24} color={Colors.expense} />
+            <Ionicons name="arrow-down-circle" size={24} color={COLORS_MASTER.expense} />
             <Text style={styles.summaryLabel}>Expenses</Text>
-            <Text style={[styles.summaryValue, { color: Colors.expense }]}>
+            <Text style={[styles.summaryValue, { color: COLORS_MASTER.expense }]}>
               ${Math.abs(parseFloat(analytics?.summary?.expense) || 0).toFixed(2)}
             </Text>
           </View>
@@ -171,7 +171,7 @@ const AnalyticsScreen = () => {
         {preparePieChartData().length > 0 && (
           <View style={styles.chartCard}>
             <View style={styles.chartTitleWrapper}>
-              <Ionicons name="pie-chart" size={20} color={Colors.text} />
+              <Ionicons name="pie-chart" size={20} color={COLORS_MASTER.text} />
               <Text style={styles.chartTitle}>
                 Spending by Category
               </Text>
@@ -182,9 +182,9 @@ const AnalyticsScreen = () => {
                 width={screenWidth - 75}
                 height={200}
                 chartConfig={{
-                  backgroundColor: Colors.card,
-                  backgroundGradientFrom: Colors.card,
-                  backgroundGradientTo: Colors.card,
+                  backgroundColor: COLORS_MASTER.card,
+                  backgroundGradientFrom: COLORS_MASTER.card,
+                  backgroundGradientTo: COLORS_MASTER.card,
                   color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
                 }}
                 accessor="population"
@@ -198,7 +198,7 @@ const AnalyticsScreen = () => {
         {analytics?.insights && analytics.insights.length > 0 && (
           <View style={styles.insightsCard}>
             <View style={styles.chartTitleWrapper}>
-              <Ionicons name="pie-chart" size={20} color={Colors.text} />
+              <Ionicons name="pie-chart" size={20} color={COLORS_MASTER.text} />
               <Text style={styles.chartTitle}>
                 Insights
               </Text>
@@ -209,8 +209,8 @@ const AnalyticsScreen = () => {
                   name={insight.type === 'positive' ? 'checkmark-circle' :
                     insight.type === 'warning' ? 'warning' : 'information-circle'}
                   size={20}
-                  color={insight.type === 'positive' ? Colors.income :
-                    insight.type === 'warning' ? Colors.expense : Colors.primary}
+                  color={insight.type === 'positive' ? COLORS_MASTER.income :
+                    insight.type === 'warning' ? COLORS_MASTER.expense : COLORS_MASTER.primary}
                 />
                 <Text style={styles.insightText}>{insight.message}</Text>
               </View>
@@ -221,7 +221,7 @@ const AnalyticsScreen = () => {
         {analytics?.recentTransactions && analytics.recentTransactions.length > 0 && (
           <View style={styles.recentCard}>
             <View style={styles.chartTitleWrapper}>
-              <Ionicons name="pie-chart" size={20} color={Colors.text} />
+              <Ionicons name="pie-chart" size={20} color={COLORS_MASTER.text} />
               <Text style={styles.chartTitle}>
                 Recent Activity
               </Text>
@@ -250,7 +250,7 @@ const AnalyticsScreen = () => {
                 </View>
                 <Text style={[
                   styles.recentAmount,
-                  { color: parseFloat(transaction.amount) >= 0 ? Colors.income : Colors.expense }
+                  { color: parseFloat(transaction.amount) >= 0 ? COLORS_MASTER.income : COLORS_MASTER.expense }
                 ]}>
                   ${Math.abs(parseFloat(transaction.amount)).toFixed(2)}
                 </Text>

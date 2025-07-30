@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet } from 'react-native';
+import {COLORS_MASTER} from "../constants/colorsMaster";
 
 export const CustomAlert = ({ visible, type, title, message, onConfirm, onCancel, showCancel = false }) => {
   const getIconName = () => {
@@ -22,30 +23,30 @@ export const CustomAlert = ({ visible, type, title, message, onConfirm, onCancel
   const getIconColor = () => {
     switch (type) {
       case 'success':
-        return Colors.success;
+        return COLORS_MASTER.success;
       case 'error':
-        return Colors.error;
+        return COLORS_MASTER.error;
       case 'warning':
-        return Colors.warning;
+        return COLORS_MASTER.warning;
       case 'confirm':
-        return Colors.primary;
+        return COLORS_MASTER.primary;
       default:
-        return Colors.info;
+        return COLORS_MASTER.info;
     }
   };
 
   const getIconBackgroundColor = () => {
     switch (type) {
       case 'success':
-        return Colors.incomeLight;
+        return COLORS_MASTER.incomeLight;
       case 'error':
-        return Colors.expenseLight;
+        return COLORS_MASTER.expenseLight;
       case 'warning':
-        return Colors.accentLight;
+        return COLORS_MASTER.accentLight;
       case 'confirm':
-        return Colors.backgroundSecondary;
+        return COLORS_MASTER.backgroundSecondary;
       default:
-        return Colors.backgroundSecondary;
+        return COLORS_MASTER.backgroundSecondary;
     }
   };
 
@@ -57,7 +58,7 @@ export const CustomAlert = ({ visible, type, title, message, onConfirm, onCancel
       onRequestClose={onCancel || onConfirm}
     >
       <View style={styles.overlay}>
-        <View style={[styles.alertContainer, { backgroundColor: Colors.card }]}>
+        <View style={[styles.alertContainer, { backgroundColor: COLORS_MASTER.card }]}>
           <View style={[styles.iconContainer, { backgroundColor: getIconBackgroundColor() }]}>
             <Ionicons
               name={getIconName()}
@@ -108,19 +109,19 @@ const styles = StyleSheet.create({
     padding: 24,
   },
   alertContainer: {
-    backgroundColor: Colors.card,
+    backgroundColor: COLORS_MASTER.card,
     borderRadius: 24,
     padding: 28,
     alignItems: 'center',
     maxWidth: 340,
     width: '100%',
-    shadowColor: Colors.shadow,
+    shadowColor: COLORS_MASTER.shadow,
     shadowOffset: { width: 0, height: 12 },
     shadowOpacity: 1,
     shadowRadius: 24,
     elevation: 12,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: COLORS_MASTER.borderLight,
   },
   iconContainer: {
     width: 64,
@@ -129,7 +130,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 20,
-    shadowColor: Colors.shadowLight,
+    shadowColor: COLORS_MASTER.shadowLight,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 1,
     shadowRadius: 8,
@@ -138,14 +139,14 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: '800',
-    color: Colors.text,
+    color: COLORS_MASTER.text,
     marginBottom: 12,
     textAlign: 'center',
     letterSpacing: -0.5,
   },
   message: {
     fontSize: 16,
-    color: Colors.textSecondary,
+    color: COLORS_MASTER.textSecondary,
     textAlign: 'center',
     marginBottom: 28,
     lineHeight: 24,
@@ -163,21 +164,21 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     minWidth: 88,
     alignItems: 'center',
-    shadowColor: Colors.shadowLight,
+    shadowColor: COLORS_MASTER.shadowLight,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 1,
     shadowRadius: 8,
     elevation: 3,
   },
   cancelButton: {
-    backgroundColor: Colors.backgroundSecondary,
+    backgroundColor: COLORS_MASTER.backgroundSecondary,
     borderWidth: 2,
-    borderColor: Colors.border,
+    borderColor: COLORS_MASTER.border,
     flex: 1,
     shadowOpacity: 0,
   },
   confirmButton: {
-    backgroundColor: Colors.primary,
+    backgroundColor: COLORS_MASTER.primary,
     flex: 1,
   },
   singleButton: {
@@ -185,12 +186,12 @@ const styles = StyleSheet.create({
     flex: 0,
   },
   cancelButtonText: {
-    color: Colors.textSecondary,
+    color: COLORS_MASTER.textSecondary,
     fontSize: 16,
     fontWeight: '700',
   },
   confirmButtonText: {
-    color: Colors.white,
+    color: COLORS_MASTER.white,
     fontSize: 16,
     fontWeight: '700',
   },

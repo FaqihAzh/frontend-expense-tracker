@@ -1,12 +1,12 @@
 import { StyleSheet, Dimensions } from "react-native";
-import {Colors} from "../../constants/colors";
+import {COLORS_MASTER} from "../../constants/colorsMaster";
 
 const { width } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background,
+    backgroundColor: COLORS_MASTER.background,
   },
   content: {
     padding: 24,
@@ -37,14 +37,14 @@ export const styles = StyleSheet.create({
   },
   welcomeText: {
     fontSize: 15,
-    color: Colors.textLight,
+    color: COLORS_MASTER.textLight,
     marginBottom: 4,
     fontWeight: "500",
   },
   usernameText: {
     fontSize: 20,
     fontWeight: "700",
-    color: Colors.text,
+    color: COLORS_MASTER.text,
     textTransform: "capitalize",
   },
   headerRight: {
@@ -54,28 +54,28 @@ export const styles = StyleSheet.create({
   },
 
   balanceCard: {
-    backgroundColor: Colors.card,
+    backgroundColor: COLORS_MASTER.card,
     borderRadius: 24,
     padding: 28,
     marginBottom: 25,
-    shadowColor: Colors.shadow,
+    shadowColor: COLORS_MASTER.shadow,
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 1,
     shadowRadius: 24,
     elevation: 8,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: COLORS_MASTER.borderLight,
   },
   balanceTitle: {
     fontSize: 16,
-    color: Colors.textSecondary,
+    color: COLORS_MASTER.textSecondary,
     // marginBottom: 8,
     fontWeight: "600",
   },
   balanceAmount: {
     fontSize: 42,
     fontWeight: "800",
-    color: Colors.text,
+    color: COLORS_MASTER.text,
     marginTop: 2,
     marginBottom: 18,
     letterSpacing: -1,
@@ -88,14 +88,14 @@ export const styles = StyleSheet.create({
   balanceStatItem: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: Colors.backgroundSecondary,
+    backgroundColor: COLORS_MASTER.backgroundSecondary,
     borderRadius: 16,
     paddingVertical: 16,
     paddingHorizontal: 12,
   },
   balanceStatLabel: {
     fontSize: 13,
-    color: Colors.textLight,
+    color: COLORS_MASTER.textLight,
     // marginBottom: 6,
     fontWeight: "600",
     textTransform: "uppercase",
@@ -116,23 +116,23 @@ export const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20,
     fontWeight: "700",
-    color: Colors.text,
+    color: COLORS_MASTER.text,
     marginBottom: 0,
   },
 
   transactionCard: {
-    backgroundColor: Colors.card,
+    backgroundColor: COLORS_MASTER.card,
     borderRadius: 20,
     marginBottom: 12,
     flexDirection: "row",
     alignItems: "center",
-    shadowColor: Colors.shadow,
+    shadowColor: COLORS_MASTER.shadow,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 1,
     shadowRadius: 12,
     elevation: 4,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: COLORS_MASTER.borderLight,
     overflow: "hidden",
   },
   transactionContent: {
@@ -145,11 +145,11 @@ export const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 16,
-    backgroundColor: Colors.backgroundSecondary,
+    backgroundColor: COLORS_MASTER.backgroundSecondary,
     justifyContent: "center",
     alignItems: "center",
     marginRight: 16,
-    shadowColor: Colors.shadow,
+    shadowColor: COLORS_MASTER.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 1,
     shadowRadius: 4,
@@ -161,12 +161,12 @@ export const styles = StyleSheet.create({
   transactionTitle: {
     fontSize: 16,
     fontWeight: "600",
-    color: Colors.text,
+    color: COLORS_MASTER.text,
     marginBottom: 4,
   },
   transactionCategory: {
     fontSize: 14,
-    color: Colors.textSecondary,
+    color: COLORS_MASTER.textSecondary,
     fontWeight: "500",
     maxWidth: "75%",
   },
@@ -181,29 +181,29 @@ export const styles = StyleSheet.create({
   },
   transactionDate: {
     fontSize: 12,
-    color: Colors.textLight,
+    color: COLORS_MASTER.textLight,
     fontWeight: "500",
   },
   deleteButton: {
     padding: 20,
     borderLeftWidth: 1,
-    borderLeftColor: Colors.borderLight,
+    borderLeftColor: COLORS_MASTER.borderLight,
   },
 
   emptyState: {
-    backgroundColor: Colors.card,
+    backgroundColor: COLORS_MASTER.card,
     borderRadius: 24,
     padding: 40,
     alignItems: "center",
     justifyContent: "center",
     marginTop: 20,
-    shadowColor: Colors.shadow,
+    shadowColor: COLORS_MASTER.shadow,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 1,
     shadowRadius: 12,
     elevation: 4,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: COLORS_MASTER.borderLight,
   },
   emptyStateIcon: {
     marginBottom: 20,
@@ -211,11 +211,11 @@ export const styles = StyleSheet.create({
   emptyStateTitle: {
     fontSize: 20,
     fontWeight: "700",
-    color: Colors.text,
+    color: COLORS_MASTER.text,
     marginBottom: 8,
   },
   emptyStateText: {
-    color: Colors.textSecondary,
+    color: COLORS_MASTER.textSecondary,
     fontSize: 15,
     textAlign: "center",
     marginBottom: 24,
@@ -223,20 +223,20 @@ export const styles = StyleSheet.create({
     fontWeight: "500",
   },
   emptyStateButton: {
-    backgroundColor: Colors.primary,
+    backgroundColor: COLORS_MASTER.primary,
     flexDirection: "row",
     alignItems: "center",
     paddingVertical: 14,
     paddingHorizontal: 24,
     borderRadius: 16,
-    shadowColor: Colors.primary,
+    shadowColor: COLORS_MASTER.primary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 4,
   },
   emptyStateButtonText: {
-    color: Colors.white,
+    color: COLORS_MASTER.white,
     fontWeight: "600",
     marginLeft: 8,
     fontSize: 15,
@@ -250,6 +250,6 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: Colors.background,
+    backgroundColor: COLORS_MASTER.background,
   },
 });

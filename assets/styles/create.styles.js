@@ -1,10 +1,10 @@
 import { StyleSheet } from "react-native";
-import {Colors} from "../../constants/colors";
+import {COLORS_MASTER} from "../../constants/colorsMaster";
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background,
+    backgroundColor: COLORS_MASTER.background,
   },
   header: {
     flexDirection: "row",
@@ -12,12 +12,12 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
+    borderBottomColor: COLORS_MASTER.border,
   },
   headerTitle: {
     fontSize: 18,
     fontWeight: "600",
-    color: Colors.text,
+    color: COLORS_MASTER.text,
   },
   backButton: {
     padding: 5,
@@ -32,14 +32,14 @@ export const styles = StyleSheet.create({
   },
   saveButton: {
     fontSize: 16,
-    color: Colors.primary,
+    color: COLORS_MASTER.primary,
     fontWeight: "600",
   },
   saveButtonDisabledText: {
-    color: Colors.textLight,
+    color: COLORS_MASTER.textLight,
   },
   card: {
-    backgroundColor: Colors.card,
+    backgroundColor: COLORS_MASTER.card,
     margin: 16,
     borderRadius: 16,
     padding: 16,
@@ -62,52 +62,52 @@ export const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 25,
     borderWidth: 1,
-    borderColor: Colors.border,
+    borderColor: COLORS_MASTER.border,
   },
   typeButtonActive: {
-    backgroundColor: Colors.primary,
-    borderColor: Colors.primary,
+    backgroundColor: COLORS_MASTER.primary,
+    borderColor: COLORS_MASTER.primary,
   },
   typeIcon: {
     marginRight: 8,
   },
   typeButtonText: {
-    color: Colors.text,
+    color: COLORS_MASTER.text,
     fontSize: 16,
     fontWeight: "500",
   },
   typeButtonTextActive: {
-    color: Colors.white,
+    color: COLORS_MASTER.white,
   },
   amountContainer: {
     flexDirection: "row",
     alignItems: "center",
     borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
+    borderBottomColor: COLORS_MASTER.border,
     paddingBottom: 16,
     marginBottom: 20,
   },
   currencySymbol: {
     fontSize: 32,
     fontWeight: "bold",
-    color: Colors.text,
+    color: COLORS_MASTER.text,
     marginRight: 8,
   },
   amountInput: {
     flex: 1,
     fontSize: 36,
     fontWeight: "bold",
-    color: Colors.text,
+    color: COLORS_MASTER.text,
   },
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: Colors.border,
+    borderColor: COLORS_MASTER.border,
     borderRadius: 12,
     padding: 4,
     marginBottom: 20,
-    backgroundColor: Colors.white,
+    backgroundColor: COLORS_MASTER.white,
   },
   inputIcon: {
     marginHorizontal: 12,
@@ -116,11 +116,11 @@ export const styles = StyleSheet.create({
     flex: 1,
     padding: 12,
     fontSize: 16,
-    color: Colors.text,
+    color: COLORS_MASTER.text,
   },
   inputError: {
-    borderColor: Colors.expense,
-    borderBottomColor: Colors.expense,
+    borderColor: COLORS_MASTER.expense,
+    borderBottomColor: COLORS_MASTER.expense,
   },
   errorContainer: {
     flexDirection: "row",
@@ -130,7 +130,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 0,
   },
   errorText: {
-    color: Colors.expense,
+    color: COLORS_MASTER.expense,
     fontSize: 12,
     marginLeft: 5,
     flex: 1,
@@ -138,7 +138,7 @@ export const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: "600",
-    color: Colors.text,
+    color: COLORS_MASTER.text,
     marginBottom: 15,
     marginTop: 10,
     flexDirection: "row",
@@ -156,22 +156,22 @@ export const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: Colors.border,
-    backgroundColor: Colors.white,
+    borderColor: COLORS_MASTER.border,
+    backgroundColor: COLORS_MASTER.white,
   },
   categoryButtonActive: {
-    backgroundColor: Colors.primary,
-    borderColor: Colors.primary,
+    backgroundColor: COLORS_MASTER.primary,
+    borderColor: COLORS_MASTER.primary,
   },
   categoryIcon: {
     marginRight: 6,
   },
   categoryButtonText: {
-    color: Colors.text,
+    color: COLORS_MASTER.text,
     fontSize: 14,
   },
   categoryButtonTextActive: {
-    color: Colors.white,
+    color: COLORS_MASTER.white,
   },
   loadingContainer: {
     padding: 20,

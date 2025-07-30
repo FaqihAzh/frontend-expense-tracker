@@ -13,6 +13,7 @@ import { styles } from "../../assets/styles/create.styles";
 import { Ionicons } from "@expo/vector-icons";
 import { useTransactions } from "../../hooks/useTransactions";
 import { CustomAlert } from "../../components/CustomAlert";
+import {COLORS_MASTER} from "../../constants/colorsMaster";
 
 const CATEGORIES = [
   { id: "food", name: "Food & Drinks", icon: "restaurant", color: "#FF6B6B" },
@@ -182,7 +183,7 @@ const CreateScreen = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-          <Ionicons name="arrow-back" size={24} color={Colors.text} />
+          <Ionicons name="arrow-back" size={24} color={COLORS_MASTER.text} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>New Transaction</Text>
         <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
@@ -195,7 +196,7 @@ const CreateScreen = () => {
             disabled={isLoading || !isFormValid()}
           >
             {isLoading ? (
-              <ActivityIndicator size="small" color={Colors.white} />
+              <ActivityIndicator size="small" color={COLORS_MASTER.white} />
             ) : (
               <>
                 <Text style={[
@@ -204,7 +205,7 @@ const CreateScreen = () => {
                 ]}>
                   Save
                 </Text>
-                {isFormValid() && <Ionicons name="checkmark" size={18} color={Colors.white} />}
+                {isFormValid() && <Ionicons name="checkmark" size={18} color={COLORS_MASTER.white} />}
               </>
             )}
           </TouchableOpacity>
@@ -223,8 +224,8 @@ const CreateScreen = () => {
               height: 32,
               borderRadius: 16,
               backgroundColor: isExpense
-                ? `${Colors.white}20`
-                : `${Colors.expense}15`,
+                ? `${COLORS_MASTER.white}20`
+                : `${COLORS_MASTER.expense}15`,
               justifyContent: 'center',
               alignItems: 'center',
               marginRight: 10,
@@ -232,7 +233,7 @@ const CreateScreen = () => {
               <Ionicons
                 name="arrow-down"
                 size={18}
-                color={isExpense ? Colors.white : Colors.expense}
+                color={isExpense ? COLORS_MASTER.white : COLORS_MASTER.expense}
               />
             </View>
             <Text style={[styles.typeButtonText, isExpense && styles.typeButtonTextActive]}>
@@ -249,8 +250,8 @@ const CreateScreen = () => {
               height: 32,
               borderRadius: 16,
               backgroundColor: !isExpense
-                ? `${Colors.white}20`
-                : `${Colors.income}15`,
+                ? `${COLORS_MASTER.white}20`
+                : `${COLORS_MASTER.income}15`,
               justifyContent: 'center',
               alignItems: 'center',
               marginRight: 10,
@@ -258,7 +259,7 @@ const CreateScreen = () => {
               <Ionicons
                 name="arrow-up"
                 size={18}
-                color={!isExpense ? Colors.white : Colors.income}
+                color={!isExpense ? COLORS_MASTER.white : COLORS_MASTER.income}
               />
             </View>
             <Text style={[styles.typeButtonText, !isExpense && styles.typeButtonTextActive]}>
@@ -276,7 +277,7 @@ const CreateScreen = () => {
               fieldErrors.amount && styles.inputError
             ]}
             placeholder="0.00"
-            placeholderTextColor={Colors.textLight}
+            placeholderTextColor={COLORS_MASTER.textLight}
             value={amount}
             onChangeText={(value) => {
               setAmount(value);
@@ -288,7 +289,7 @@ const CreateScreen = () => {
         </View>
         {fieldErrors.amount ? (
           <View style={styles.errorContainer}>
-            <Ionicons name="alert-circle" size={16} color={Colors.error} />
+            <Ionicons name="alert-circle" size={16} color={COLORS_MASTER.error} />
             <Text style={styles.errorText}>{fieldErrors.amount}</Text>
           </View>
         ) : null}
@@ -298,7 +299,7 @@ const CreateScreen = () => {
           <Ionicons
             name="text"
             size={22}
-            color={Colors.textLight}
+            color={COLORS_MASTER.textLight}
             style={styles.inputIcon}
           />
           <TextInput
@@ -307,7 +308,7 @@ const CreateScreen = () => {
               fieldErrors.title && styles.inputError
             ]}
             placeholder="What's this transaction for?"
-            placeholderTextColor={Colors.textLight}
+            placeholderTextColor={COLORS_MASTER.textLight}
             value={title}
             onChangeText={(value) => {
               setTitle(value);
@@ -319,7 +320,7 @@ const CreateScreen = () => {
         </View>
         {fieldErrors.title ? (
           <View style={styles.errorContainer}>
-            <Ionicons name="alert-circle" size={16} color={Colors.error} />
+            <Ionicons name="alert-circle" size={16} color={COLORS_MASTER.error} />
             <Text style={styles.errorText}>{fieldErrors.title}</Text>
           </View>
         ) : null}
@@ -333,7 +334,7 @@ const CreateScreen = () => {
               borderRadius: 12,
               backgroundColor: selectedCategoryData
                 ? `${selectedCategoryData.color}15`
-                : `${Colors.primary}15`,
+                : `${COLORS_MASTER.primary}15`,
               justifyContent: 'center',
               alignItems: 'center',
               marginRight: 8,
@@ -341,7 +342,7 @@ const CreateScreen = () => {
               <Ionicons
                 name="apps"
                 size={14}
-                color={selectedCategoryData?.color || Colors.primary}
+                color={selectedCategoryData?.color || COLORS_MASTER.primary}
               />
             </View>
             <Text style={styles.sectionTitle}>Choose Category</Text>
@@ -369,7 +370,7 @@ const CreateScreen = () => {
                   height: 24,
                   borderRadius: 12,
                   backgroundColor: selectedCategory === category.name
-                    ? `${Colors.white}20`
+                    ? `${COLORS_MASTER.white}20`
                     : `${category.color}15`,
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -378,7 +379,7 @@ const CreateScreen = () => {
                   <Ionicons
                     name={category.icon}
                     size={14}
-                    color={selectedCategory === category.name ? Colors.white : category.color}
+                    color={selectedCategory === category.name ? COLORS_MASTER.white : category.color}
                   />
                 </View>
                 <Text
@@ -394,7 +395,7 @@ const CreateScreen = () => {
           </View>
           {fieldErrors.category ? (
             <View style={styles.errorContainer}>
-              <Ionicons name="alert-circle" size={16} color={Colors.error} />
+              <Ionicons name="alert-circle" size={16} color={COLORS_MASTER.error} />
               <Text style={styles.errorText}>{fieldErrors.category}</Text>
             </View>
           ) : null}

@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Text, TouchableOpacity, View } from "react-native";
 import { styles } from "../assets/styles/home.styles";
 import { useRouter } from "expo-router";
+import {COLORS_MASTER} from "../constants/colorsMaster";
 
 const NoTransactionsFound = () => {
   const router = useRouter();
@@ -12,7 +13,7 @@ const NoTransactionsFound = () => {
         width: 80,
         height: 80,
         borderRadius: 40,
-        backgroundColor: `${Colors.primary}15`,
+        backgroundColor: `${COLORS_MASTER.primary}15`,
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: 20,
@@ -20,7 +21,7 @@ const NoTransactionsFound = () => {
         <Ionicons
           name="receipt-outline"
           size={40}
-          color={Colors.primary}
+          color={COLORS_MASTER.primary}
         />
       </View>
 
@@ -34,7 +35,7 @@ const NoTransactionsFound = () => {
         style={styles.emptyStateButton}
         onPress={() => router.push("/create")}
       >
-        <Ionicons name="add" size={20} color={Colors.white} />
+        <Ionicons name="add" size={20} color={COLORS_MASTER.white} />
         <Text style={styles.emptyStateButtonText}>Add Transaction</Text>
       </TouchableOpacity>
     </View>

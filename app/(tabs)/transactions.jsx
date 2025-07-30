@@ -16,7 +16,7 @@ import { styles } from '../../assets/styles/transactions.styles';
 import { TransactionItem } from '../../components/TransactionItem';
 import { CustomAlert } from '../../components/CustomAlert';
 import NoTransactionsFound from '../../components/NoTransactionsFound';
-import {Colors} from "../../constants/colors";
+import {COLORS_MASTER} from "../../constants/colorsMaster";
 
 const CATEGORIES = [
   'All Categories',
@@ -233,7 +233,7 @@ const TransactionsScreen = () => {
   if (isLoading && !refreshing) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color={Colors.primary} />
+        <ActivityIndicator size="large" color={COLORS_MASTER.primary} />
         <Text style={styles.loadingText}>Loading Transactions...</Text>
       </View>
     );
@@ -247,7 +247,7 @@ const TransactionsScreen = () => {
           style={styles.filterButton}
           onPress={() => setShowFilters(true)}
         >
-          <Ionicons name="filter" size={20} color={Colors.primary} />
+          <Ionicons name="filter" size={20} color={COLORS_MASTER.primary} />
           {getActiveFiltersCount() > 0 && (
             <View style={styles.filterBadge}>
               <Text style={styles.filterBadgeText}>{getActiveFiltersCount()}</Text>
@@ -257,17 +257,17 @@ const TransactionsScreen = () => {
       </View>
 
       <View style={styles.searchContainer}>
-        <Ionicons name="search" size={20} color={Colors.textLight} style={styles.searchIcon} />
+        <Ionicons name="search" size={20} color={COLORS_MASTER.textLight} style={styles.searchIcon} />
         <TextInput
           style={styles.searchInput}
           placeholder="Search transactions..."
-          placeholderTextColor={Colors.textLight}
+          placeholderTextColor={COLORS_MASTER.textLight}
           value={searchQuery}
           onChangeText={setSearchQuery}
         />
         {searchQuery.length > 0 && (
           <TouchableOpacity onPress={() => setSearchQuery('')}>
-            <Ionicons name="close-circle" size={20} color={Colors.textLight} />
+            <Ionicons name="close-circle" size={20} color={COLORS_MASTER.textLight} />
           </TouchableOpacity>
         )}
       </View>
@@ -322,7 +322,7 @@ const TransactionsScreen = () => {
                   <Text style={styles.monthPickerText}>
                     {selectedMonth || 'All Months'}
                   </Text>
-                  <Ionicons name="chevron-down" size={20} color={Colors.textLight} />
+                  <Ionicons name="chevron-down" size={20} color={COLORS_MASTER.textLight} />
                 </TouchableOpacity>
 
                 <View style={styles.yearSelector}>
@@ -406,7 +406,7 @@ const TransactionsScreen = () => {
                 <TextInput
                   style={styles.amountInput}
                   placeholder="Min amount"
-                  placeholderTextColor={Colors.textLight}
+                  placeholderTextColor={COLORS_MASTER.textLight}
                   value={minAmount}
                   onChangeText={setMinAmount}
                   keyboardType="numeric"
@@ -415,7 +415,7 @@ const TransactionsScreen = () => {
                 <TextInput
                   style={styles.amountInput}
                   placeholder="Max amount"
-                  placeholderTextColor={Colors.textLight}
+                  placeholderTextColor={COLORS_MASTER.textLight}
                   value={maxAmount}
                   onChangeText={setMaxAmount}
                   keyboardType="numeric"
@@ -434,7 +434,7 @@ const TransactionsScreen = () => {
                   <Text style={styles.dateButtonText}>
                     {startDate ? formatDate(startDate) : 'Start Date'}
                   </Text>
-                  <Ionicons name="calendar-outline" size={20} color={Colors.textLight} />
+                  <Ionicons name="calendar-outline" size={20} color={COLORS_MASTER.textLight} />
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -444,7 +444,7 @@ const TransactionsScreen = () => {
                   <Text style={styles.dateButtonText}>
                     {endDate ? formatDate(endDate) : 'End Date'}
                   </Text>
-                  <Ionicons name="calendar-outline" size={20} color={Colors.textLight} />
+                  <Ionicons name="calendar-outline" size={20} color={COLORS_MASTER.textLight} />
                 </TouchableOpacity>
               </View>
             </View>

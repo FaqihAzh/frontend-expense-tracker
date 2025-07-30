@@ -1,8 +1,8 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { styles } from "../assets/styles/home.styles";
-import { Colors } from "../constants/colors";
 import { formatDate } from "../lib/utils";
+import {COLORS_MASTER} from "../constants/colorsMaster";
 
 const CATEGORY_ICONS = {
   "Food & Drinks": "restaurant",
@@ -27,7 +27,7 @@ const CATEGORY_COLORS = {
 export const TransactionItem = ({ item, onDelete }) => {
   const isIncome = parseFloat(item.amount) > 0;
   const iconName = CATEGORY_ICONS[item.category] || "pricetag";
-  const categoryColor = CATEGORY_COLORS[item.category] || Colors.textLight;
+  const categoryColor = CATEGORY_COLORS[item.category] || COLORS_MASTER.textLight;
 
   return (
     <View style={styles.transactionCard} key={item.id}>
@@ -73,7 +73,7 @@ export const TransactionItem = ({ item, onDelete }) => {
           <Text
             style={[
               styles.transactionAmount,
-              { color: isIncome ? Colors.income : Colors.expense }
+              { color: isIncome ? COLORS_MASTER.income : COLORS_MASTER.expense }
             ]}
           >
             {isIncome ? `+` : "-"}${Math.abs(parseFloat(item.amount)).toFixed(2)}
@@ -88,7 +88,7 @@ export const TransactionItem = ({ item, onDelete }) => {
         style={styles.deleteButton}
         onPress={() => onDelete(item.id)}
       >
-        <Ionicons name="trash" size={20} color={Colors.error} />
+        <Ionicons name="trash" size={20} color={COLORS_MASTER.error} />
       </TouchableOpacity>
     </View>
   );
