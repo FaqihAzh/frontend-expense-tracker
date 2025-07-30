@@ -1,10 +1,8 @@
 import {
   View,
   Text,
-  Alert,
   TouchableOpacity,
   TextInput,
-  ActivityIndicatorBase,
   ActivityIndicator,
 } from "react-native";
 import { useRouter } from "expo-router";
@@ -13,7 +11,8 @@ import { useState } from "react";
 import { styles } from "../../assets/styles/create.styles";
 import { COLORS } from "../../constants/colors";
 import { Ionicons } from "@expo/vector-icons";
-import {useTransactions} from "../../hooks/useTransactions";
+import { useTransactions } from "../../hooks/useTransactions";
+import { CustomAlert } from "../../components/CustomAlert";
 
 const CATEGORIES = [
   { id: "food", name: "Food & Drinks", icon: "fast-food" },
@@ -35,11 +34,112 @@ const CreateScreen = () => {
   const [isExpense, setIsExpense] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { createTransaction, summary } = useTransactions(
-    user.id
-  )
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertConfig, setAlertConfig] = useState({
+    type: 'success',
+    title: '',
+    message: '',
+    onConfirm: () => {},
+    onCancel: () => {},
+    showCancel: false,
+  });
+
+  const { createTransaction, validateTransactionData } = useTransactions(user.id);
+
+  const [fieldErrors, setFieldErrors] = useState({
+    title: '',
+    amount: '',
+    category: ''
+  });
+
+  const validateField = (fieldName, value) => {
+    let error = '';
+
+    switch (fieldName) {
+      case 'title':
+        if (!value || !value.trim()) {
+          error = 'Title is required';
+        } else if (value.trim().length > 100) {
+          error = 'Title must not exceed 100 characters';
+        }
+        break;
+
+      case 'amount':
+        if (!value || value.toString().trim() === '') {
+          error = 'Amount is required';
+        } else {
+          const numericAmount = parseFloat(value);
+          if (isNaN(numericAmount)) {
+            error = 'Please enter a valid number';
+          } else if (numericAmount <= 0) {
+            error = 'Amount must be greater than 0';
+          } else if (numericAmount > 999999.99) {
+            error = 'Amount cannot exceed $999,999.99';
+          } else if (!/^\d+(\.\d{1,2})?$/.test(value.toString())) {
+            error = 'Maximum 2 decimal places allowed';
+          }
+        }
+        break;
+
+      case 'category':
+        if (!value || !value.trim()) {
+          error = 'Please select a category';
+        }
+        break;
+    }
+
+    setFieldErrors(prev => ({
+      ...prev,
+      [fieldName]: error
+    }));
+
+    return error === '';
+  };
+
+  const isFormValid = () => {
+    const hasTitle = title && title.trim().length <= 100;
+    const hasValidAmount = amount && !isNaN(parseFloat(amount)) && parseFloat(amount) > 0 && parseFloat(amount) <= 999999.99;
+    const hasCategory = selectedCategory && selectedCategory.trim();
+    const noErrors = !fieldErrors.title && !fieldErrors.amount && !fieldErrors.category;
+
+    return hasTitle && hasValidAmount && hasCategory && noErrors;
+  };
+
+  const showAlert = (type, title, message, onConfirm = () => {}, onCancel = () => {}, showCancel = false) => {
+    setAlertConfig({
+      type,
+      title,
+      message,
+      onConfirm: () => {
+        setAlertVisible(false);
+        onConfirm();
+      },
+      onCancel: () => {
+        setAlertVisible(false);
+        onCancel();
+      },
+      showCancel,
+    });
+    setAlertVisible(true);
+  };
 
   const handleCreate = async () => {
+    const validationErrors = validateTransactionData({
+      title,
+      amount,
+      category: selectedCategory
+    });
+
+    if (validationErrors.length > 0) {
+      showAlert("error", "Validation Error", validationErrors.join('\n'));
+      return;
+    }
+
+    if (!isFormValid()) {
+      showAlert("error", "Invalid Input", "Please fill in all required fields correctly before saving.");
+      return;
+    }
+
     setIsLoading(true);
     try {
       await createTransaction({
@@ -48,12 +148,13 @@ const CreateScreen = () => {
         amount,
         category: selectedCategory,
         isExpense,
-      });
+      }, showAlert);
 
-      Alert.alert("Success", "Transaction created successfully");
-      router.back();
+      showAlert("success", "Success", "Transaction created successfully", () => {
+        router.back();
+      });
     } catch (error) {
-      Alert.alert("Error", error.message || "Failed to create transaction");
+      showAlert("error", "Error", error.message || "Failed to create transaction");
       console.error("Error creating transaction:", error);
     } finally {
       setIsLoading(false);
@@ -68,18 +169,25 @@ const CreateScreen = () => {
         </TouchableOpacity>
         <Text style={styles.headerTitle}>New Transaction</Text>
         <TouchableOpacity
-          style={[styles.saveButtonContainer, isLoading && styles.saveButtonDisabled]}
+          style={[
+            styles.saveButtonContainer,
+            (isLoading || !isFormValid()) && styles.saveButtonDisabled
+          ]}
           onPress={handleCreate}
-          disabled={isLoading}
+          disabled={isLoading || !isFormValid()}
         >
-          <Text style={styles.saveButton}>{isLoading ? "Saving..." : "Save"}</Text>
-          {!isLoading && <Ionicons name="checkmark" size={18} color={COLORS.primary} />}
+          <Text style={[
+            styles.saveButton,
+            !isFormValid() && styles.saveButtonDisabledText
+          ]}>
+            {isLoading ? "Saving..." : "Save"}
+          </Text>
+          {!isLoading && isFormValid() && <Ionicons name="checkmark" size={18} color={COLORS.primary} />}
         </TouchableOpacity>
       </View>
 
       <View style={styles.card}>
         <View style={styles.typeSelector}>
-          {/* EXPENSE SELECTOR */}
           <TouchableOpacity
             style={[styles.typeButton, isExpense && styles.typeButtonActive]}
             onPress={() => setIsExpense(true)}
@@ -110,18 +218,37 @@ const CreateScreen = () => {
             </Text>
           </TouchableOpacity>
         </View>
+        {fieldErrors.category ? (
+          <View style={styles.errorContainer}>
+            <Ionicons name="alert-circle" size={16} color={COLORS.expense} />
+            <Text style={styles.errorText}>{fieldErrors.category}</Text>
+          </View>
+        ) : null}
 
         <View style={styles.amountContainer}>
           <Text style={styles.currencySymbol}>$</Text>
           <TextInput
-            style={styles.amountInput}
+            style={[
+              styles.amountInput,
+              fieldErrors.amount && styles.inputError
+            ]}
             placeholder="0.00"
             placeholderTextColor={COLORS.textLight}
             value={amount}
-            onChangeText={setAmount}
+            onChangeText={(value) => {
+              setAmount(value);
+              validateField('amount', value);
+            }}
+            onBlur={() => validateField('amount', amount)}
             keyboardType="numeric"
           />
         </View>
+        {fieldErrors.amount ? (
+          <View style={styles.errorContainer}>
+            <Ionicons name="alert-circle" size={16} color={COLORS.expense} />
+            <Text style={styles.errorText}>{fieldErrors.amount}</Text>
+          </View>
+        ) : null}
 
         <View style={styles.inputContainer}>
           <Ionicons
@@ -131,13 +258,27 @@ const CreateScreen = () => {
             style={styles.inputIcon}
           />
           <TextInput
-            style={styles.input}
+            style={[
+              styles.input,
+              fieldErrors.title && styles.inputError
+            ]}
             placeholder="Transaction Title"
             placeholderTextColor={COLORS.textLight}
             value={title}
-            onChangeText={setTitle}
+            onChangeText={(value) => {
+              setTitle(value);
+              validateField('title', value);
+            }}
+            onBlur={() => validateField('title', title)}
+            maxLength={100}
           />
         </View>
+        {fieldErrors.title ? (
+          <View style={styles.errorContainer}>
+            <Ionicons name="alert-circle" size={16} color={COLORS.expense} />
+            <Text style={styles.errorText}>{fieldErrors.title}</Text>
+          </View>
+        ) : null}
 
         <Text style={styles.sectionTitle}>
           <Ionicons name="pricetag-outline" size={16} color={COLORS.text} /> Category
@@ -151,7 +292,10 @@ const CreateScreen = () => {
                 styles.categoryButton,
                 selectedCategory === category.name && styles.categoryButtonActive,
               ]}
-              onPress={() => setSelectedCategory(category.name)}
+              onPress={() => {
+                setSelectedCategory(category.name);
+                validateField('category', category.name);
+              }}
             >
               <Ionicons
                 name={category.icon}
@@ -177,7 +321,18 @@ const CreateScreen = () => {
           <ActivityIndicator size="large" color={COLORS.primary} />
         </View>
       )}
+
+      <CustomAlert
+        visible={alertVisible}
+        type={alertConfig.type}
+        title={alertConfig.title}
+        message={alertConfig.message}
+        onConfirm={alertConfig.onConfirm}
+        onCancel={alertConfig.onCancel}
+        showCancel={alertConfig.showCancel}
+      />
     </View>
   );
 };
+
 export default CreateScreen;

@@ -1,7 +1,6 @@
 import { useCallback, useState } from "react";
-import {Alert} from "react-native";
 
-const API_URL = "http://192.168.103.200:5001/api/v1";
+const API_URL = "http://192.168.1.6:5001/api/v1";
 
 export const useTransactions = (userId) => {
   const [transactions, setTransactions] = useState([]);
@@ -14,7 +13,7 @@ export const useTransactions = (userId) => {
 
   const fetchTransactions = useCallback(async () => {
     try {
-      const response = await fetch(`${API_URL}/transactions`);
+      const response = await fetch(`${API_URL}/transactions/user/${userId}`);
       const data = await response.json();
       setTransactions(data.data);
     } catch (error) {
@@ -47,7 +46,7 @@ export const useTransactions = (userId) => {
     }
   }, [fetchTransactions, fetchSummary]);
 
-  const deleteTransaction = async (transactionId) => {
+  const deleteTransaction = async (transactionId, showAlert) => {
     try {
       const response = await fetch(`${API_URL}/transactions/${transactionId}`, {
         method: "DELETE",
@@ -56,25 +55,19 @@ export const useTransactions = (userId) => {
         throw new Error("Failed to delete transaction");
       }
 
-      loadTransactions();
-      Alert.alert("Success", "Transaction deleted successfully");
+      await loadTransactions();
+      showAlert("success", "Success", "Transaction deleted successfully");
     } catch (error) {
       console.error("Error deleting transaction:", error);
-      Alert.alert("Error", error.message);
+      showAlert("error", "Error", error.message);
     }
   };
 
-  const createTransaction = async ({ user_id, title, amount, category, isExpense }) => {
-    if (!title.trim()) {
-      throw new Error("Please enter a transaction title");
-    }
+  const createTransaction = async ({ user_id, title, amount, category, isExpense }, showAlert) => {
+    const validationErrors = validateTransactionData({ title, amount, category });
 
-    if (!amount || isNaN(parseFloat(amount)) || parseFloat(amount) <= 0) {
-      throw new Error("Please enter a valid amount");
-    }
-
-    if (!category) {
-      throw new Error("Please select a category");
+    if (validationErrors.length > 0) {
+      throw new Error(validationErrors[0]);
     }
 
     const formattedAmount = isExpense
@@ -88,9 +81,9 @@ export const useTransactions = (userId) => {
       },
       body: JSON.stringify({
         user_id,
-        title,
+        title: title.trim(),
         amount: formattedAmount,
-        category,
+        category: category.trim(),
       }),
     });
 
@@ -102,6 +95,36 @@ export const useTransactions = (userId) => {
     await loadTransactions();
   };
 
+  const validateTransactionData = ({ title, amount, category }) => {
+    const errors = [];
 
-  return { transactions, summary, isLoading, loadTransactions, deleteTransaction, createTransaction };
-}
+    if (!title || !title.trim()) {
+      errors.push("Transaction title is required");
+    } else if (title.trim().length > 100) {
+      errors.push("Transaction title must not exceed 100 characters");
+    }
+
+    if (!amount || amount.toString().trim() === "") {
+      errors.push("Amount is required");
+    } else {
+      const numericAmount = parseFloat(amount);
+      if (isNaN(numericAmount)) {
+        errors.push("Please enter a valid numeric amount");
+      } else if (numericAmount <= 0) {
+        errors.push("Amount must be greater than 0");
+      } else if (numericAmount > 999999.99) {
+        errors.push("Amount cannot exceed $999,999.99");
+      } else if (!/^\d+(\.\d{1,2})?$/.test(amount.toString())) {
+        errors.push("Amount can only have up to 2 decimal places");
+      }
+    }
+
+    if (!category || !category.trim()) {
+      errors.push("Please select a category");
+    }
+
+    return errors;
+  };
+
+  return { transactions, summary, isLoading, loadTransactions, deleteTransaction, createTransaction, validateTransactionData };
+};

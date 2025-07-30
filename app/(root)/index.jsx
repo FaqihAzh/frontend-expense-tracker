@@ -1,5 +1,5 @@
 import { useUser } from '@clerk/clerk-expo'
-import {Alert, FlatList, RefreshControl, Text, TouchableOpacity, View} from 'react-native'
+import {FlatList, RefreshControl, Text, TouchableOpacity, View} from 'react-native'
 import {SignOutButton} from "../../components/SignOutButton";
 import {useTransactions} from "../../hooks/useTransactions";
 import {useEffect, useState} from "react";
@@ -11,6 +11,7 @@ import {BalanceCard} from "../../components/BalanceCard";
 import NoTransactionsFound from "../../components/NoTransactionsFound";
 import {useRouter} from "expo-router";
 import {TransactionItem} from "../../components/TransactionItem";
+import {CustomAlert} from "../../components/CustomAlert";
 
 export default function Page() {
   const { user } = useUser()
@@ -20,6 +21,34 @@ export default function Page() {
     user.id
   )
   const [refreshing, setRefreshing] = useState(false);
+
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertConfig, setAlertConfig] = useState({
+    type: 'success',
+    title: '',
+    message: '',
+    onConfirm: () => {},
+    onCancel: () => {},
+    showCancel: false,
+  });
+
+  const showAlert = (type, title, message, onConfirm = () => {}, onCancel = () => {}, showCancel = false) => {
+    setAlertConfig({
+      type,
+      title,
+      message,
+      onConfirm: () => {
+        setAlertVisible(false);
+        onConfirm();
+      },
+      onCancel: () => {
+        setAlertVisible(false);
+        onCancel();
+      },
+      showCancel,
+    });
+    setAlertVisible(true);
+  };
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -32,10 +61,14 @@ export default function Page() {
   }, [loadTransactions]);
 
   const handleDelete = (id) => {
-    Alert.alert("Delete Transaction", "Are you sure you want to delete this transaction?", [
-      { text: "Cancel", style: "cancel" },
-      { text: "Delete", style: "destructive", onPress: () => deleteTransaction(id) },
-    ]);
+    showAlert(
+      'confirm',
+      'Delete Transaction',
+      'Are you sure you want to delete this transaction? This action cannot be undone.',
+      () => deleteTransaction(id, showAlert),
+      () => {},
+      true
+    );
   };
 
   if (isLoading && !refreshing) return <PageLoader />;
@@ -58,7 +91,7 @@ export default function Page() {
             </View>
           </View>
           <View style={styles.headerRight}>
-            <SignOutButton />
+            <SignOutButton showAlert={showAlert} />
           </View>
         </View>
 
@@ -79,9 +112,18 @@ export default function Page() {
 
         <TouchableOpacity style={styles.addButton} onPress={() => router.push("/create")}>
           <Ionicons name="add" size={36} color="#FFF" />
-          {/*<Text style={styles.addButtonText}>Add</Text>*/}
         </TouchableOpacity>
       </View>
+
+      <CustomAlert
+        visible={alertVisible}
+        type={alertConfig.type}
+        title={alertConfig.title}
+        message={alertConfig.message}
+        onConfirm={alertConfig.onConfirm}
+        onCancel={alertConfig.onCancel}
+        showCancel={alertConfig.showCancel}
+      />
     </View>
   )
 }

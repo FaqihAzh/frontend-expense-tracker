@@ -35,6 +35,9 @@ export const styles = StyleSheet.create({
     color: COLORS.primary,
     fontWeight: "600",
   },
+  saveButtonDisabledText: {
+    color: COLORS.textLight,
+  },
   card: {
     backgroundColor: COLORS.card,
     margin: 16,
@@ -114,6 +117,23 @@ export const styles = StyleSheet.create({
     padding: 12,
     fontSize: 16,
     color: COLORS.text,
+  },
+  inputError: {
+    borderColor: COLORS.expense,
+    borderBottomColor: COLORS.expense,
+  },
+  errorContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 15,
+    marginTop: -15,
+    paddingHorizontal: 0,
+  },
+  errorText: {
+    color: COLORS.expense,
+    fontSize: 12,
+    marginLeft: 5,
+    flex: 1,
   },
   sectionTitle: {
     fontSize: 18,
