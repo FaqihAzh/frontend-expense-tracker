@@ -97,7 +97,7 @@ export default function Page() {
         <BalanceCard summary={summary} />
 
         <View style={styles.transactionsHeaderContainer}>
-          <Text style={[styles.sectionTitle, { marginBottom: 5}]}>Recent Transactions</Text>
+          <Text style={[styles.sectionTitle]}>Recent Transactions</Text>
         </View>
 
         <FlatList

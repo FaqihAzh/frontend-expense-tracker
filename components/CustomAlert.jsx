@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS } from '../constants/colors';
 import { StyleSheet } from 'react-native';
 
 export const CustomAlert = ({ visible, type, title, message, onConfirm, onCancel, showCancel = false }) => {
@@ -23,15 +22,30 @@ export const CustomAlert = ({ visible, type, title, message, onConfirm, onCancel
   const getIconColor = () => {
     switch (type) {
       case 'success':
-        return COLORS.income;
+        return Colors.success;
       case 'error':
-        return COLORS.expense;
+        return Colors.error;
       case 'warning':
-        return '#FF9800';
+        return Colors.warning;
       case 'confirm':
-        return COLORS.primary;
+        return Colors.primary;
       default:
-        return COLORS.primary;
+        return Colors.info;
+    }
+  };
+
+  const getIconBackgroundColor = () => {
+    switch (type) {
+      case 'success':
+        return Colors.incomeLight;
+      case 'error':
+        return Colors.expenseLight;
+      case 'warning':
+        return Colors.accentLight;
+      case 'confirm':
+        return Colors.backgroundSecondary;
+      default:
+        return Colors.backgroundSecondary;
     }
   };
 
@@ -43,11 +57,11 @@ export const CustomAlert = ({ visible, type, title, message, onConfirm, onCancel
       onRequestClose={onCancel || onConfirm}
     >
       <View style={styles.overlay}>
-        <View style={[styles.alertContainer, { backgroundColor: COLORS.card }]}>
-          <View style={styles.iconContainer}>
+        <View style={[styles.alertContainer, { backgroundColor: Colors.card }]}>
+          <View style={[styles.iconContainer, { backgroundColor: getIconBackgroundColor() }]}>
             <Ionicons
               name={getIconName()}
-              size={60}
+              size={32}
               color={getIconColor()}
             />
           </View>
@@ -66,11 +80,16 @@ export const CustomAlert = ({ visible, type, title, message, onConfirm, onCancel
             )}
 
             <TouchableOpacity
-              style={[styles.button, styles.confirmButton, !showCancel && styles.singleButton]}
+              style={[
+                styles.button,
+                styles.confirmButton,
+                !showCancel && styles.singleButton,
+                { backgroundColor: getIconColor() }
+              ]}
               onPress={onConfirm}
             >
               <Text style={styles.confirmButtonText}>
-                {type === 'confirm' ? 'Delete' : 'OK', type === 'confirm-sign-out' ? 'Sign Out' : 'OK'}
+                {type === 'confirm' ? 'Delete' : type === 'confirm-sign-out' ? 'Sign Out' : 'OK'}
               </Text>
             </TouchableOpacity>
           </View>
@@ -83,43 +102,54 @@ export const CustomAlert = ({ visible, type, title, message, onConfirm, onCancel
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(15, 23, 42, 0.8)',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    padding: 24,
   },
   alertContainer: {
-    backgroundColor: COLORS.card,
-    borderRadius: 20,
-    padding: 25,
+    backgroundColor: Colors.card,
+    borderRadius: 24,
+    padding: 28,
     alignItems: 'center',
-    maxWidth: 320,
+    maxWidth: 340,
     width: '100%',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
-    elevation: 8,
+    shadowColor: Colors.shadow,
+    shadowOffset: { width: 0, height: 12 },
+    shadowOpacity: 1,
+    shadowRadius: 24,
+    elevation: 12,
+    borderWidth: 1,
+    borderColor: Colors.borderLight,
   },
   iconContainer: {
-    marginBottom: 15,
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+    shadowColor: Colors.shadowLight,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 1,
+    shadowRadius: 8,
+    elevation: 4,
   },
   title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: COLORS.text,
-    marginBottom: 10,
+    fontSize: 22,
+    fontWeight: '800',
+    color: Colors.text,
+    marginBottom: 12,
     textAlign: 'center',
+    letterSpacing: -0.5,
   },
   message: {
     fontSize: 16,
-    color: COLORS.textLight,
+    color: Colors.textSecondary,
     textAlign: 'center',
-    marginBottom: 25,
-    lineHeight: 22,
+    marginBottom: 28,
+    lineHeight: 24,
+    fontWeight: '500',
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -128,34 +158,40 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   button: {
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 25,
-    minWidth: 80,
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+    borderRadius: 16,
+    minWidth: 88,
     alignItems: 'center',
+    shadowColor: Colors.shadowLight,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 1,
+    shadowRadius: 8,
+    elevation: 3,
   },
   cancelButton: {
-    backgroundColor: 'transparent',
-    borderWidth: 1,
-    borderColor: COLORS.border,
+    backgroundColor: Colors.backgroundSecondary,
+    borderWidth: 2,
+    borderColor: Colors.border,
     flex: 1,
+    shadowOpacity: 0,
   },
   confirmButton: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: Colors.primary,
     flex: 1,
   },
   singleButton: {
-    minWidth: 120,
+    minWidth: 140,
     flex: 0,
   },
   cancelButtonText: {
-    color: COLORS.textLight,
+    color: Colors.textSecondary,
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '700',
   },
   confirmButtonText: {
-    color: COLORS.white,
+    color: Colors.white,
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '700',
   },
 });

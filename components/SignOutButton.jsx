@@ -1,7 +1,7 @@
 import { useClerk } from '@clerk/clerk-expo';
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS } from '../constants/colors';
+import { Colors } from '../constants/colors';
 
 export const SignOutButton = ({ showAlert }) => {
   const { signOut } = useClerk();
@@ -26,7 +26,7 @@ export const SignOutButton = ({ showAlert }) => {
 
   return (
     <TouchableOpacity style={styles.signOutButton} onPress={handleSignOut}>
-      <Ionicons name="log-out-outline" size={20} color={COLORS.expense} />
+      <Ionicons name="log-out-outline" size={20} color={Colors.error} />
       <Text style={styles.signOutText}>Sign Out</Text>
     </TouchableOpacity>
   );
@@ -36,25 +36,22 @@ const styles = StyleSheet.create({
   signOutButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.white,
+    backgroundColor: Colors.card,
     paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: '#FFCDD2',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 2,
-    gap: 6,
+    paddingVertical: 12,
+    borderRadius: 16,
+    borderWidth: 2,
+    borderColor: Colors.borderLight,
+    shadowColor: Colors.shadowLight,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 1,
+    shadowRadius: 8,
+    elevation: 3,
+    gap: 8,
   },
   signOutText: {
-    color: COLORS.expense,
+    color: Colors.error,
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: '700',
   },
 });

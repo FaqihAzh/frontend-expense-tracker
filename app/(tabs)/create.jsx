@@ -4,29 +4,30 @@ import {
   TouchableOpacity,
   TextInput,
   ActivityIndicator,
+  Animated,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { useUser } from "@clerk/clerk-expo";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { styles } from "../../assets/styles/create.styles";
-import { COLORS } from "../../constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useTransactions } from "../../hooks/useTransactions";
 import { CustomAlert } from "../../components/CustomAlert";
 
 const CATEGORIES = [
-  { id: "food", name: "Food & Drinks", icon: "fast-food" },
-  { id: "shopping", name: "Shopping", icon: "cart" },
-  { id: "transportation", name: "Transportation", icon: "car" },
-  { id: "entertainment", name: "Entertainment", icon: "film" },
-  { id: "bills", name: "Bills", icon: "receipt" },
-  { id: "income", name: "Income", icon: "cash" },
-  { id: "other", name: "Other", icon: "ellipsis-horizontal" },
+  { id: "food", name: "Food & Drinks", icon: "restaurant", color: "#FF6B6B" },
+  { id: "shopping", name: "Shopping", icon: "bag", color: "#4ECDC4" },
+  { id: "transportation", name: "Transportation", icon: "car-sport", color: "#45B7D1" },
+  { id: "bills", name: "Bills", icon: "receipt", color: "#FECA57" },
+  { id: "entertainment", name: "Entertainment", icon: "game-controller", color: "#96CEB4" },
+  { id: "income", name: "Income", icon: "trending-up", color: "#6C5CE7" },
+  { id: "other", name: "Other", icon: "ellipsis-horizontal-circle", color: "#A0A0A0" },
 ];
 
 const CreateScreen = () => {
   const router = useRouter();
   const { user } = useUser();
+  const scaleAnim = useRef(new Animated.Value(1)).current;
 
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
@@ -124,6 +125,20 @@ const CreateScreen = () => {
   };
 
   const handleCreate = async () => {
+    // Button press animation
+    Animated.sequence([
+      Animated.timing(scaleAnim, {
+        toValue: 0.95,
+        duration: 100,
+        useNativeDriver: true,
+      }),
+      Animated.timing(scaleAnim, {
+        toValue: 1,
+        duration: 100,
+        useNativeDriver: true,
+      }),
+    ]).start();
+
     const validationErrors = validateTransactionData({
       title,
       amount,
@@ -161,43 +176,65 @@ const CreateScreen = () => {
     }
   };
 
+  const selectedCategoryData = CATEGORIES.find(cat => cat.name === selectedCategory);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-          <Ionicons name="arrow-back" size={24} color={COLORS.text} />
+          <Ionicons name="arrow-back" size={24} color={Colors.text} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>New Transaction</Text>
-        <TouchableOpacity
-          style={[
-            styles.saveButtonContainer,
-            (isLoading || !isFormValid()) && styles.saveButtonDisabled
-          ]}
-          onPress={handleCreate}
-          disabled={isLoading || !isFormValid()}
-        >
-          <Text style={[
-            styles.saveButton,
-            !isFormValid() && styles.saveButtonDisabledText
-          ]}>
-            {isLoading ? "Saving..." : "Save"}
-          </Text>
-          {!isLoading && isFormValid() && <Ionicons name="checkmark" size={18} color={COLORS.primary} />}
-        </TouchableOpacity>
+        <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+          <TouchableOpacity
+            style={[
+              styles.saveButtonContainer,
+              (isLoading || !isFormValid()) && styles.saveButtonDisabled
+            ]}
+            onPress={handleCreate}
+            disabled={isLoading || !isFormValid()}
+          >
+            {isLoading ? (
+              <ActivityIndicator size="small" color={Colors.white} />
+            ) : (
+              <>
+                <Text style={[
+                  styles.saveButton,
+                  !isFormValid() && styles.saveButtonDisabledText
+                ]}>
+                  Save
+                </Text>
+                {isFormValid() && <Ionicons name="checkmark" size={18} color={Colors.white} />}
+              </>
+            )}
+          </TouchableOpacity>
+        </Animated.View>
       </View>
 
       <View style={styles.card}>
+        {/* Modern Type Selector */}
         <View style={styles.typeSelector}>
           <TouchableOpacity
             style={[styles.typeButton, isExpense && styles.typeButtonActive]}
             onPress={() => setIsExpense(true)}
           >
-            <Ionicons
-              name="arrow-down-circle"
-              size={22}
-              color={isExpense ? COLORS.white : COLORS.expense}
-              style={styles.typeIcon}
-            />
+            <View style={{
+              width: 32,
+              height: 32,
+              borderRadius: 16,
+              backgroundColor: isExpense
+                ? `${Colors.white}20`
+                : `${Colors.expense}15`,
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginRight: 10,
+            }}>
+              <Ionicons
+                name="arrow-down"
+                size={18}
+                color={isExpense ? Colors.white : Colors.expense}
+              />
+            </View>
             <Text style={[styles.typeButtonText, isExpense && styles.typeButtonTextActive]}>
               Expense
             </Text>
@@ -207,24 +244,30 @@ const CreateScreen = () => {
             style={[styles.typeButton, !isExpense && styles.typeButtonActive]}
             onPress={() => setIsExpense(false)}
           >
-            <Ionicons
-              name="arrow-up-circle"
-              size={22}
-              color={!isExpense ? COLORS.white : COLORS.income}
-              style={styles.typeIcon}
-            />
+            <View style={{
+              width: 32,
+              height: 32,
+              borderRadius: 16,
+              backgroundColor: !isExpense
+                ? `${Colors.white}20`
+                : `${Colors.income}15`,
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginRight: 10,
+            }}>
+              <Ionicons
+                name="arrow-up"
+                size={18}
+                color={!isExpense ? Colors.white : Colors.income}
+              />
+            </View>
             <Text style={[styles.typeButtonText, !isExpense && styles.typeButtonTextActive]}>
               Income
             </Text>
           </TouchableOpacity>
         </View>
-        {fieldErrors.category ? (
-          <View style={styles.errorContainer}>
-            <Ionicons name="alert-circle" size={16} color={COLORS.expense} />
-            <Text style={styles.errorText}>{fieldErrors.category}</Text>
-          </View>
-        ) : null}
 
+        {/* Modern Amount Input */}
         <View style={styles.amountContainer}>
           <Text style={styles.currencySymbol}>$</Text>
           <TextInput
@@ -233,7 +276,7 @@ const CreateScreen = () => {
               fieldErrors.amount && styles.inputError
             ]}
             placeholder="0.00"
-            placeholderTextColor={COLORS.textLight}
+            placeholderTextColor={Colors.textLight}
             value={amount}
             onChangeText={(value) => {
               setAmount(value);
@@ -245,16 +288,17 @@ const CreateScreen = () => {
         </View>
         {fieldErrors.amount ? (
           <View style={styles.errorContainer}>
-            <Ionicons name="alert-circle" size={16} color={COLORS.expense} />
+            <Ionicons name="alert-circle" size={16} color={Colors.error} />
             <Text style={styles.errorText}>{fieldErrors.amount}</Text>
           </View>
         ) : null}
 
+        {/* Modern Title Input */}
         <View style={styles.inputContainer}>
           <Ionicons
-            name="create-outline"
+            name="text"
             size={22}
-            color={COLORS.textLight}
+            color={Colors.textLight}
             style={styles.inputIcon}
           />
           <TextInput
@@ -262,8 +306,8 @@ const CreateScreen = () => {
               styles.input,
               fieldErrors.title && styles.inputError
             ]}
-            placeholder="Transaction Title"
-            placeholderTextColor={COLORS.textLight}
+            placeholder="What's this transaction for?"
+            placeholderTextColor={Colors.textLight}
             value={title}
             onChangeText={(value) => {
               setTitle(value);
@@ -275,52 +319,87 @@ const CreateScreen = () => {
         </View>
         {fieldErrors.title ? (
           <View style={styles.errorContainer}>
-            <Ionicons name="alert-circle" size={16} color={COLORS.expense} />
+            <Ionicons name="alert-circle" size={16} color={Colors.error} />
             <Text style={styles.errorText}>{fieldErrors.title}</Text>
           </View>
         ) : null}
 
-        <Text style={styles.sectionTitle}>
-          <Ionicons name="pricetag-outline" size={16} color={COLORS.text} /> Category
-        </Text>
-
-        <View style={styles.categoryGrid}>
-          {CATEGORIES.map((category) => (
-            <TouchableOpacity
-              key={category.id}
-              style={[
-                styles.categoryButton,
-                selectedCategory === category.name && styles.categoryButtonActive,
-              ]}
-              onPress={() => {
-                setSelectedCategory(category.name);
-                validateField('category', category.name);
-              }}
-            >
+        {/* Modern Category Section */}
+        <View style={{ marginTop: 8 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
+            <View style={{
+              width: 24,
+              height: 24,
+              borderRadius: 12,
+              backgroundColor: selectedCategoryData
+                ? `${selectedCategoryData.color}15`
+                : `${Colors.primary}15`,
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginRight: 8,
+            }}>
               <Ionicons
-                name={category.icon}
-                size={20}
-                color={selectedCategory === category.name ? COLORS.white : COLORS.text}
-                style={styles.categoryIcon}
+                name="apps"
+                size={14}
+                color={selectedCategoryData?.color || Colors.primary}
               />
-              <Text
+            </View>
+            <Text style={styles.sectionTitle}>Choose Category</Text>
+          </View>
+
+          <View style={styles.categoryGrid}>
+            {CATEGORIES.map((category) => (
+              <TouchableOpacity
+                key={category.id}
                 style={[
-                  styles.categoryButtonText,
-                  selectedCategory === category.name && styles.categoryButtonTextActive,
+                  styles.categoryButton,
+                  selectedCategory === category.name && styles.categoryButtonActive,
+                  selectedCategory === category.name && {
+                    backgroundColor: category.color,
+                    borderColor: category.color,
+                  }
                 ]}
+                onPress={() => {
+                  setSelectedCategory(category.name);
+                  validateField('category', category.name);
+                }}
               >
-                {category.name}
-              </Text>
-            </TouchableOpacity>
-          ))}
+                <View style={{
+                  width: 24,
+                  height: 24,
+                  borderRadius: 12,
+                  backgroundColor: selectedCategory === category.name
+                    ? `${Colors.white}20`
+                    : `${category.color}15`,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginRight: 8,
+                }}>
+                  <Ionicons
+                    name={category.icon}
+                    size={14}
+                    color={selectedCategory === category.name ? Colors.white : category.color}
+                  />
+                </View>
+                <Text
+                  style={[
+                    styles.categoryButtonText,
+                    selectedCategory === category.name && styles.categoryButtonTextActive,
+                  ]}
+                >
+                  {category.name}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+          {fieldErrors.category ? (
+            <View style={styles.errorContainer}>
+              <Ionicons name="alert-circle" size={16} color={Colors.error} />
+              <Text style={styles.errorText}>{fieldErrors.category}</Text>
+            </View>
+          ) : null}
         </View>
       </View>
-
-      {isLoading && (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={COLORS.primary} />
-        </View>
-      )}
 
       <CustomAlert
         visible={alertVisible}

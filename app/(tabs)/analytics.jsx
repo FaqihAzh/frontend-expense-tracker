@@ -9,10 +9,10 @@ import {
 } from 'react-native';
 import { useUser } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
-import { PieChart, BarChart } from 'react-native-chart-kit';
+import { PieChart } from 'react-native-chart-kit';
 import { styles } from '../../assets/styles/analytics.styles';
-import { COLORS } from '../../constants/colors';
 import { CustomAlert } from '../../components/CustomAlert';
+import {Colors} from "../../constants/colors";
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -30,8 +30,6 @@ const AnalyticsScreen = () => {
     { key: 'quarter', label: 'Quarter' },
     { key: 'year', label: 'Year' },
   ];
-
-  console.log(analytics, 'analytics');
 
   const showAlert = (type, title, message, onConfirm = () => {}) => {
     setAlertConfig({
@@ -85,7 +83,7 @@ const AnalyticsScreen = () => {
         name: item.category,
         population: Math.abs(item.totalAmount),
         color: colors[index % colors.length],
-        legendFontColor: COLORS.text,
+        legendFontColor: Colors.text,
         legendFontSize: 12,
       }));
   };
@@ -108,7 +106,7 @@ const AnalyticsScreen = () => {
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color={COLORS.primary} />
+        <ActivityIndicator size="large" color={Colors.primary} />
         <Text style={styles.loadingText}>Loading Analytics...</Text>
       </View>
     );
@@ -121,7 +119,6 @@ const AnalyticsScreen = () => {
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Period Selector */}
         <View style={styles.periodSelector}>
           {periods.map((period) => (
             <TouchableOpacity
@@ -142,74 +139,78 @@ const AnalyticsScreen = () => {
           ))}
         </View>
 
-        {/* Summary Cards */}
         <View style={styles.summaryContainer}>
           <View style={styles.summaryCard}>
-            <Ionicons name="wallet" size={24} color={COLORS.primary} />
+            <Ionicons name="wallet" size={24} color={Colors.primary} />
             <Text style={styles.summaryLabel}>Balance</Text>
             <Text style={[
               styles.summaryValue,
-              { color: parseFloat(analytics?.summary?.balance) >= 0 ? COLORS.income : COLORS.expense }
+              { color: parseFloat(analytics?.summary?.balance) >= 0 ? Colors.income : Colors.expense }
             ]}>
               ${parseFloat(analytics?.summary?.balance)?.toFixed(2) || '0.00'}
             </Text>
           </View>
 
           <View style={styles.summaryCard}>
-            <Ionicons name="arrow-up-circle" size={24} color={COLORS.income} />
+            <Ionicons name="arrow-up-circle" size={24} color={Colors.income} />
             <Text style={styles.summaryLabel}>Income</Text>
-            <Text style={[styles.summaryValue, { color: COLORS.income }]}>
+            <Text style={[styles.summaryValue, { color: Colors.income }]}>
               ${parseFloat(analytics?.summary?.income)?.toFixed(2) || '0.00'}
             </Text>
           </View>
 
           <View style={styles.summaryCard}>
-            <Ionicons name="arrow-down-circle" size={24} color={COLORS.expense} />
+            <Ionicons name="arrow-down-circle" size={24} color={Colors.expense} />
             <Text style={styles.summaryLabel}>Expenses</Text>
-            <Text style={[styles.summaryValue, { color: COLORS.expense }]}>
+            <Text style={[styles.summaryValue, { color: Colors.expense }]}>
               ${Math.abs(parseFloat(analytics?.summary?.expense) || 0).toFixed(2)}
             </Text>
           </View>
         </View>
 
-        {/* Category Breakdown Chart */}
         {preparePieChartData().length > 0 && (
           <View style={styles.chartCard}>
-            <Text style={styles.chartTitle}>
-              <Ionicons name="pie-chart" size={18} color={COLORS.text} /> Spending by Category
-            </Text>
-            <PieChart
-              data={preparePieChartData()}
-              width={screenWidth - 60}
-              height={220}
-              chartConfig={{
-                backgroundColor: COLORS.card,
-                backgroundGradientFrom: COLORS.card,
-                backgroundGradientTo: COLORS.card,
-                color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-              }}
-              accessor="population"
-              backgroundColor="transparent"
-              paddingLeft="15"
-              absolute
-            />
+            <View style={styles.chartTitleWrapper}>
+              <Ionicons name="pie-chart" size={20} color={Colors.text} />
+              <Text style={styles.chartTitle}>
+                Spending by Category
+              </Text>
+            </View>
+            <ScrollView  horizontal showsHorizontalScrollIndicator={false}>
+              <PieChart
+                data={preparePieChartData()}
+                width={screenWidth - 75}
+                height={200}
+                chartConfig={{
+                  backgroundColor: Colors.card,
+                  backgroundGradientFrom: Colors.card,
+                  backgroundGradientTo: Colors.card,
+                  color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                }}
+                accessor="population"
+                backgroundColor="transparent"
+                absolute
+              />
+            </ScrollView>
           </View>
         )}
 
-        {/* Insights */}
         {analytics?.insights && analytics.insights.length > 0 && (
           <View style={styles.insightsCard}>
-            <Text style={styles.chartTitle}>
-              <Ionicons name="bulb" size={18} color={COLORS.text} /> Insights
-            </Text>
+            <View style={styles.chartTitleWrapper}>
+              <Ionicons name="pie-chart" size={20} color={Colors.text} />
+              <Text style={styles.chartTitle}>
+                Insights
+              </Text>
+            </View>
             {analytics.insights.map((insight, index) => (
               <View key={index} style={styles.insightItem}>
                 <Ionicons
                   name={insight.type === 'positive' ? 'checkmark-circle' :
                     insight.type === 'warning' ? 'warning' : 'information-circle'}
                   size={20}
-                  color={insight.type === 'positive' ? COLORS.income :
-                    insight.type === 'warning' ? COLORS.expense : COLORS.primary}
+                  color={insight.type === 'positive' ? Colors.income :
+                    insight.type === 'warning' ? Colors.expense : Colors.primary}
                 />
                 <Text style={styles.insightText}>{insight.message}</Text>
               </View>
@@ -217,21 +218,39 @@ const AnalyticsScreen = () => {
           </View>
         )}
 
-        {/* Recent Transactions */}
         {analytics?.recentTransactions && analytics.recentTransactions.length > 0 && (
           <View style={styles.recentCard}>
-            <Text style={styles.chartTitle}>
-              <Ionicons name="time" size={18} color={COLORS.text} /> Recent Activity
-            </Text>
+            <View style={styles.chartTitleWrapper}>
+              <Ionicons name="pie-chart" size={20} color={Colors.text} />
+              <Text style={styles.chartTitle}>
+                Recent Activity
+              </Text>
+            </View>
             {analytics.recentTransactions.slice(0, 5).map((transaction) => (
               <View key={transaction.id} style={styles.recentItem}>
-                <View style={styles.recentLeft}>
-                  <Text style={styles.recentTitle}>{transaction.title}</Text>
-                  <Text style={styles.recentCategory}>{transaction.category}</Text>
+                <View
+                  style={styles.recentLeft}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  <Text
+                    style={styles.recentTitle}
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                  >
+                    {transaction.title}
+                  </Text>
+                  <Text
+                    style={styles.recentCategory}
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                  >
+                    {transaction.category}
+                  </Text>
                 </View>
                 <Text style={[
                   styles.recentAmount,
-                  { color: parseFloat(transaction.amount) >= 0 ? COLORS.income : COLORS.expense }
+                  { color: parseFloat(transaction.amount) >= 0 ? Colors.income : Colors.expense }
                 ]}>
                   ${Math.abs(parseFloat(transaction.amount)).toFixed(2)}
                 </Text>

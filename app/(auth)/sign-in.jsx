@@ -5,7 +5,7 @@ import { useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { styles } from "../../assets/styles/auth.styles";
 import { Ionicons } from "@expo/vector-icons";
-import { COLORS } from "../../constants/colors";
+import {Colors} from "../../constants/colors";
 
 export default function Page() {
   const { signIn, setActive, isLoaded } = useSignIn();
@@ -54,15 +54,15 @@ export default function Page() {
       extraScrollHeight={30}
     >
       <View style={styles.container}>
-        <Image source={require("../../assets/images/revenue-i4.png")} style={styles.illustration} />
+        <Image source={require("../../assets/images/sign-in.png")} style={styles.illustration} />
         <Text style={styles.title}>Welcome Back</Text>
 
         {error ? (
           <View style={styles.errorBox}>
-            <Ionicons name="alert-circle" size={20} color={COLORS.expense} />
+            <Ionicons name="alert-circle" size={20} color={Colors.expense} />
             <Text style={styles.errorText}>{error}</Text>
             <TouchableOpacity onPress={() => setError("")}>
-              <Ionicons name="close" size={20} color={COLORS.textLight} />
+              <Ionicons name="close" size={20} color={Colors.textLight} />
             </TouchableOpacity>
           </View>
         ) : null}
@@ -72,7 +72,6 @@ export default function Page() {
           autoCapitalize="none"
           value={emailAddress}
           placeholder="Enter email address"
-          placeholderTextColor="#9A8478"
           onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
         />
 
@@ -80,7 +79,6 @@ export default function Page() {
           style={[styles.input, error && styles.errorInput]}
           value={password}
           placeholder="Enter password"
-          placeholderTextColor="#9A8478"
           secureTextEntry={true}
           onChangeText={(password) => setPassword(password)}
         />

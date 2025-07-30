@@ -13,10 +13,10 @@ import { useUser } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { styles } from '../../assets/styles/transactions.styles';
-import { COLORS } from '../../constants/colors';
 import { TransactionItem } from '../../components/TransactionItem';
 import { CustomAlert } from '../../components/CustomAlert';
 import NoTransactionsFound from '../../components/NoTransactionsFound';
+import {Colors} from "../../constants/colors";
 
 const CATEGORIES = [
   'All Categories',
@@ -233,7 +233,7 @@ const TransactionsScreen = () => {
   if (isLoading && !refreshing) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color={COLORS.primary} />
+        <ActivityIndicator size="large" color={Colors.primary} />
         <Text style={styles.loadingText}>Loading Transactions...</Text>
       </View>
     );
@@ -247,7 +247,7 @@ const TransactionsScreen = () => {
           style={styles.filterButton}
           onPress={() => setShowFilters(true)}
         >
-          <Ionicons name="filter" size={20} color={COLORS.primary} />
+          <Ionicons name="filter" size={20} color={Colors.primary} />
           {getActiveFiltersCount() > 0 && (
             <View style={styles.filterBadge}>
               <Text style={styles.filterBadgeText}>{getActiveFiltersCount()}</Text>
@@ -256,24 +256,22 @@ const TransactionsScreen = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Search Bar */}
       <View style={styles.searchContainer}>
-        <Ionicons name="search" size={20} color={COLORS.textLight} style={styles.searchIcon} />
+        <Ionicons name="search" size={20} color={Colors.textLight} style={styles.searchIcon} />
         <TextInput
           style={styles.searchInput}
           placeholder="Search transactions..."
-          placeholderTextColor={COLORS.textLight}
+          placeholderTextColor={Colors.textLight}
           value={searchQuery}
           onChangeText={setSearchQuery}
         />
         {searchQuery.length > 0 && (
           <TouchableOpacity onPress={() => setSearchQuery('')}>
-            <Ionicons name="close-circle" size={20} color={COLORS.textLight} />
+            <Ionicons name="close-circle" size={20} color={Colors.textLight} />
           </TouchableOpacity>
         )}
       </View>
 
-      {/* Active Filters Display */}
       {getActiveFiltersCount() > 0 && (
         <View style={styles.activeFiltersContainer}>
           <Text style={styles.activeFiltersText}>Active Filters:</Text>
@@ -283,7 +281,6 @@ const TransactionsScreen = () => {
         </View>
       )}
 
-      {/* Transactions List */}
       <FlatList
         data={filteredTransactions}
         renderItem={({ item }) => <TransactionItem item={item} onDelete={handleDelete} />}
@@ -294,7 +291,6 @@ const TransactionsScreen = () => {
         contentContainerStyle={styles.listContent}
       />
 
-      {/* Filter Modal */}
       <Modal
         visible={showFilters}
         animationType="slide"
@@ -326,7 +322,7 @@ const TransactionsScreen = () => {
                   <Text style={styles.monthPickerText}>
                     {selectedMonth || 'All Months'}
                   </Text>
-                  <Ionicons name="chevron-down" size={20} color={COLORS.textLight} />
+                  <Ionicons name="chevron-down" size={20} color={Colors.textLight} />
                 </TouchableOpacity>
 
                 <View style={styles.yearSelector}>
@@ -410,7 +406,7 @@ const TransactionsScreen = () => {
                 <TextInput
                   style={styles.amountInput}
                   placeholder="Min amount"
-                  placeholderTextColor={COLORS.textLight}
+                  placeholderTextColor={Colors.textLight}
                   value={minAmount}
                   onChangeText={setMinAmount}
                   keyboardType="numeric"
@@ -419,7 +415,7 @@ const TransactionsScreen = () => {
                 <TextInput
                   style={styles.amountInput}
                   placeholder="Max amount"
-                  placeholderTextColor={COLORS.textLight}
+                  placeholderTextColor={Colors.textLight}
                   value={maxAmount}
                   onChangeText={setMaxAmount}
                   keyboardType="numeric"
@@ -438,7 +434,7 @@ const TransactionsScreen = () => {
                   <Text style={styles.dateButtonText}>
                     {startDate ? formatDate(startDate) : 'Start Date'}
                   </Text>
-                  <Ionicons name="calendar-outline" size={20} color={COLORS.textLight} />
+                  <Ionicons name="calendar-outline" size={20} color={Colors.textLight} />
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -448,7 +444,7 @@ const TransactionsScreen = () => {
                   <Text style={styles.dateButtonText}>
                     {endDate ? formatDate(endDate) : 'End Date'}
                   </Text>
-                  <Ionicons name="calendar-outline" size={20} color={COLORS.textLight} />
+                  <Ionicons name="calendar-outline" size={20} color={Colors.textLight} />
                 </TouchableOpacity>
               </View>
             </View>

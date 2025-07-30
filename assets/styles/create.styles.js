@@ -1,10 +1,10 @@
 import { StyleSheet } from "react-native";
-import { COLORS } from "../../constants/colors";
+import {Colors} from "../../constants/colors";
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
+    backgroundColor: Colors.background,
   },
   header: {
     flexDirection: "row",
@@ -12,12 +12,12 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.border,
+    borderBottomColor: Colors.border,
   },
   headerTitle: {
     fontSize: 18,
     fontWeight: "600",
-    color: COLORS.text,
+    color: Colors.text,
   },
   backButton: {
     padding: 5,
@@ -32,14 +32,14 @@ export const styles = StyleSheet.create({
   },
   saveButton: {
     fontSize: 16,
-    color: COLORS.primary,
+    color: Colors.primary,
     fontWeight: "600",
   },
   saveButtonDisabledText: {
-    color: COLORS.textLight,
+    color: Colors.textLight,
   },
   card: {
-    backgroundColor: COLORS.card,
+    backgroundColor: Colors.card,
     margin: 16,
     borderRadius: 16,
     padding: 16,
@@ -62,52 +62,52 @@ export const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 25,
     borderWidth: 1,
-    borderColor: COLORS.border,
+    borderColor: Colors.border,
   },
   typeButtonActive: {
-    backgroundColor: COLORS.primary,
-    borderColor: COLORS.primary,
+    backgroundColor: Colors.primary,
+    borderColor: Colors.primary,
   },
   typeIcon: {
     marginRight: 8,
   },
   typeButtonText: {
-    color: COLORS.text,
+    color: Colors.text,
     fontSize: 16,
     fontWeight: "500",
   },
   typeButtonTextActive: {
-    color: COLORS.white,
+    color: Colors.white,
   },
   amountContainer: {
     flexDirection: "row",
     alignItems: "center",
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.border,
+    borderBottomColor: Colors.border,
     paddingBottom: 16,
     marginBottom: 20,
   },
   currencySymbol: {
     fontSize: 32,
     fontWeight: "bold",
-    color: COLORS.text,
+    color: Colors.text,
     marginRight: 8,
   },
   amountInput: {
     flex: 1,
     fontSize: 36,
     fontWeight: "bold",
-    color: COLORS.text,
+    color: Colors.text,
   },
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: COLORS.border,
+    borderColor: Colors.border,
     borderRadius: 12,
     padding: 4,
     marginBottom: 20,
-    backgroundColor: COLORS.white,
+    backgroundColor: Colors.white,
   },
   inputIcon: {
     marginHorizontal: 12,
@@ -116,11 +116,11 @@ export const styles = StyleSheet.create({
     flex: 1,
     padding: 12,
     fontSize: 16,
-    color: COLORS.text,
+    color: Colors.text,
   },
   inputError: {
-    borderColor: COLORS.expense,
-    borderBottomColor: COLORS.expense,
+    borderColor: Colors.expense,
+    borderBottomColor: Colors.expense,
   },
   errorContainer: {
     flexDirection: "row",
@@ -130,7 +130,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 0,
   },
   errorText: {
-    color: COLORS.expense,
+    color: Colors.expense,
     fontSize: 12,
     marginLeft: 5,
     flex: 1,
@@ -138,7 +138,7 @@ export const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: "600",
-    color: COLORS.text,
+    color: Colors.text,
     marginBottom: 15,
     marginTop: 10,
     flexDirection: "row",
@@ -156,22 +156,22 @@ export const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: COLORS.border,
-    backgroundColor: COLORS.white,
+    borderColor: Colors.border,
+    backgroundColor: Colors.white,
   },
   categoryButtonActive: {
-    backgroundColor: COLORS.primary,
-    borderColor: COLORS.primary,
+    backgroundColor: Colors.primary,
+    borderColor: Colors.primary,
   },
   categoryIcon: {
     marginRight: 6,
   },
   categoryButtonText: {
-    color: COLORS.text,
+    color: Colors.text,
     fontSize: 14,
   },
   categoryButtonTextActive: {
-    color: COLORS.white,
+    color: Colors.white,
   },
   loadingContainer: {
     padding: 20,

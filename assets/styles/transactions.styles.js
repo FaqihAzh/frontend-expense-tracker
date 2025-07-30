@@ -1,38 +1,39 @@
 import { StyleSheet } from "react-native";
-import { COLORS } from "../../constants/colors";
+import {Colors} from "../../constants/colors";
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
+    backgroundColor: Colors.background,
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.border,
+    padding: 18,
+    paddingLeft: 22,
+    backgroundColor: Colors.card,
   },
   headerTitle: {
     fontSize: 24,
-    fontWeight: "bold",
-    color: COLORS.text,
+    fontWeight: "800",
+    color: Colors.text,
+    letterSpacing: -0.5,
   },
   filterButton: {
     flexDirection: "row",
     alignItems: "center",
     padding: 8,
     borderRadius: 20,
-    backgroundColor: COLORS.card,
-    shadowColor: COLORS.shadow,
+    backgroundColor: Colors.card,
+    shadowColor: Colors.shadow,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
     elevation: 2,
   },
   filterBadge: {
-    backgroundColor: COLORS.expense,
+    backgroundColor: Colors.expense,
     borderRadius: 10,
     width: 20,
     height: 20,
@@ -41,19 +42,20 @@ export const styles = StyleSheet.create({
     marginLeft: 4,
   },
   filterBadgeText: {
-    color: COLORS.white,
+    color: Colors.white,
     fontSize: 12,
     fontWeight: "bold",
   },
   searchContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: COLORS.card,
+    backgroundColor: Colors.card,
     borderRadius: 12,
     margin: 20,
+    marginHorizontal: 16,
     marginBottom: 10,
     paddingHorizontal: 15,
-    shadowColor: COLORS.shadow,
+    shadowColor: Colors.shadow,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
@@ -66,7 +68,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 12,
     fontSize: 16,
-    color: COLORS.text,
+    color: Colors.text,
   },
   activeFiltersContainer: {
     flexDirection: "row",
@@ -76,40 +78,40 @@ export const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   activeFiltersText: {
-    color: COLORS.textLight,
+    color: Colors.textLight,
     fontSize: 14,
   },
   clearFiltersButton: {
     paddingHorizontal: 12,
     paddingVertical: 4,
     borderRadius: 12,
-    backgroundColor: COLORS.expense,
+    backgroundColor: Colors.expense,
   },
   clearFiltersText: {
-    color: COLORS.white,
+    color: Colors.white,
     fontSize: 12,
     fontWeight: "500",
   },
   listContent: {
-    padding: 20,
+    padding: 16,
     paddingTop: 0,
   },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: COLORS.background,
+    backgroundColor: Colors.background,
   },
   loadingText: {
     marginTop: 10,
-    color: COLORS.textLight,
+    color: Colors.textLight,
     fontSize: 16,
   },
 
   // Modal Styles
   modalContainer: {
     flex: 1,
-    backgroundColor: COLORS.background,
+    backgroundColor: Colors.background,
   },
   modalHeader: {
     flexDirection: "row",
@@ -117,20 +119,20 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.border,
+    borderBottomColor: Colors.border,
   },
   modalTitle: {
     fontSize: 18,
     fontWeight: "600",
-    color: COLORS.text,
+    color: Colors.text,
   },
   modalCancel: {
     fontSize: 16,
-    color: COLORS.textLight,
+    color: Colors.textLight,
   },
   modalDone: {
     fontSize: 16,
-    color: COLORS.primary,
+    color: Colors.primary,
     fontWeight: "600",
   },
   modalContent: {
@@ -145,7 +147,7 @@ export const styles = StyleSheet.create({
   filterLabel: {
     fontSize: 16,
     fontWeight: "600",
-    color: COLORS.text,
+    color: Colors.text,
     marginBottom: 12,
   },
 
@@ -157,15 +159,15 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: COLORS.card,
+    backgroundColor: Colors.card,
     borderRadius: 12,
     padding: 15,
     borderWidth: 1,
-    borderColor: COLORS.border,
+    borderColor: Colors.border,
   },
   monthPickerText: {
     fontSize: 16,
-    color: COLORS.text,
+    color: Colors.text,
   },
   yearSelector: {
     flexDirection: "row",
@@ -177,19 +179,19 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: COLORS.border,
-    backgroundColor: COLORS.card,
+    borderColor: Colors.border,
+    backgroundColor: Colors.card,
   },
   yearButtonActive: {
-    backgroundColor: COLORS.primary,
-    borderColor: COLORS.primary,
+    backgroundColor: Colors.primary,
+    borderColor: Colors.primary,
   },
   yearButtonText: {
-    color: COLORS.text,
+    color: Colors.text,
     fontSize: 14,
   },
   yearButtonTextActive: {
-    color: COLORS.white,
+    color: Colors.white,
   },
 
   // Category Grid
@@ -203,19 +205,19 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: COLORS.border,
-    backgroundColor: COLORS.card,
+    borderColor: Colors.border,
+    backgroundColor: Colors.card,
   },
   categoryFilterButtonActive: {
-    backgroundColor: COLORS.primary,
-    borderColor: COLORS.primary,
+    backgroundColor: Colors.primary,
+    borderColor: Colors.primary,
   },
   categoryFilterButtonText: {
-    color: COLORS.text,
+    color: Colors.text,
     fontSize: 14,
   },
   categoryFilterButtonTextActive: {
-    color: COLORS.white,
+    color: Colors.white,
   },
 
   // Type Buttons
@@ -229,20 +231,20 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: COLORS.border,
-    backgroundColor: COLORS.card,
+    borderColor: Colors.border,
+    backgroundColor: Colors.card,
   },
   typeButtonActive: {
-    backgroundColor: COLORS.primary,
-    borderColor: COLORS.primary,
+    backgroundColor: Colors.primary,
+    borderColor: Colors.primary,
   },
   typeButtonText: {
-    color: COLORS.text,
+    color: Colors.text,
     fontSize: 16,
     fontWeight: "500",
   },
   typeButtonTextActive: {
-    color: COLORS.white,
+    color: Colors.white,
   },
 
   // Amount Inputs
@@ -253,16 +255,16 @@ export const styles = StyleSheet.create({
   },
   amountInput: {
     flex: 1,
-    backgroundColor: COLORS.card,
+    backgroundColor: Colors.card,
     borderRadius: 12,
     padding: 15,
     borderWidth: 1,
-    borderColor: COLORS.border,
+    borderColor: Colors.border,
     fontSize: 16,
-    color: COLORS.text,
+    color: Colors.text,
   },
   amountDivider: {
-    color: COLORS.textLight,
+    color: Colors.textLight,
     fontSize: 16,
   },
 
@@ -274,27 +276,27 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: COLORS.card,
+    backgroundColor: Colors.card,
     borderRadius: 12,
     padding: 15,
     borderWidth: 1,
-    borderColor: COLORS.border,
+    borderColor: Colors.border,
   },
   dateButtonText: {
     fontSize: 16,
-    color: COLORS.text,
+    color: Colors.text,
   },
 
   // Clear All Button
   clearAllButton: {
-    backgroundColor: COLORS.expense,
+    backgroundColor: Colors.expense,
     borderRadius: 12,
     padding: 15,
     alignItems: "center",
     marginTop: 20,
   },
   clearAllButtonText: {
-    color: COLORS.white,
+    color: Colors.white,
     fontSize: 16,
     fontWeight: "600",
   },
@@ -307,11 +309,11 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   pickerContainer: {
-    backgroundColor: COLORS.card,
+    backgroundColor: Colors.card,
     borderRadius: 16,
     width: "80%",
     maxHeight: "60%",
-    shadowColor: COLORS.shadow,
+    shadowColor: Colors.shadow,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
@@ -320,11 +322,11 @@ export const styles = StyleSheet.create({
   pickerTitle: {
     fontSize: 18,
     fontWeight: "600",
-    color: COLORS.text,
+    color: Colors.text,
     textAlign: "center",
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.border,
+    borderBottomColor: Colors.border,
   },
   pickerList: {
     maxHeight: 300,
@@ -332,18 +334,18 @@ export const styles = StyleSheet.create({
   pickerItem: {
     padding: 15,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.border,
+    borderBottomColor: Colors.border,
   },
   pickerItemActive: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: Colors.primary,
   },
   pickerItemText: {
     fontSize: 16,
-    color: COLORS.text,
+    color: Colors.text,
     textAlign: "center",
   },
   pickerItemTextActive: {
-    color: COLORS.white,
+    color: Colors.white,
     fontWeight: "600",
   },
   pickerCloseButton: {
@@ -352,7 +354,7 @@ export const styles = StyleSheet.create({
   },
   pickerCloseText: {
     fontSize: 16,
-    color: COLORS.primary,
+    color: Colors.primary,
     fontWeight: "600",
   },
 });

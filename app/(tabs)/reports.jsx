@@ -11,8 +11,8 @@ import { useUser } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
 import { LineChart } from 'react-native-chart-kit';
 import { styles } from '../../assets/styles/reports.styles';
-import { COLORS } from '../../constants/colors';
 import { CustomAlert } from '../../components/CustomAlert';
+import {Colors} from "../../constants/colors";
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -96,12 +96,12 @@ const ReportsScreen = () => {
       datasets: [
         {
           data: incomeData,
-          color: (opacity = 1) => COLORS.income,
+          color: (opacity = 1) => Colors.income,
           strokeWidth: 3,
         },
         {
           data: expenseData,
-          color: (opacity = 1) => COLORS.expense,
+          color: (opacity = 1) => Colors.expense,
           strokeWidth: 3,
         }
       ],
@@ -146,7 +146,7 @@ const ReportsScreen = () => {
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color={COLORS.primary} />
+        <ActivityIndicator size="large" color={Colors.primary} />
         <Text style={styles.loadingText}>Loading Reports...</Text>
       </View>
     );
@@ -159,11 +159,10 @@ const ReportsScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Financial Reports</Text>
+        <Text style={styles.headerTitle}>Reports</Text>
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Year Selector */}
         <View style={styles.yearSelector}>
           {years.map((year) => (
             <TouchableOpacity
@@ -184,21 +183,25 @@ const ReportsScreen = () => {
           ))}
         </View>
 
-        {/* Year Summary */}
         <View style={styles.summaryCard}>
-          <Text style={styles.cardTitle}>
-            <Ionicons name="calendar" size={18} color={COLORS.text} /> {selectedYear} Summary
-          </Text>
+          <View style={styles.chartTitleWrapper}>
+            <Ionicons name="calendar" size={20} color={Colors.text} />
+            <Text style={styles.cardTitle}>
+              {selectedYear} Summary
+            </Text>
+          </View>
           <View style={styles.summaryGrid}>
             <View style={styles.summaryItem}>
-              <Text style={styles.summaryLabel}>Total Income</Text>
-              <Text style={[styles.summaryValue, { color: COLORS.income }]}>
+              <Text style={styles.summaryLabel}>
+                {`Total\nIncome`}
+              </Text>
+              <Text style={[styles.summaryValue, { color: Colors.income }]}>
                 ${yearSummary.totalIncome.toFixed(2)}
               </Text>
             </View>
             <View style={styles.summaryItem}>
-              <Text style={styles.summaryLabel}>Total Expenses</Text>
-              <Text style={[styles.summaryValue, { color: COLORS.expense }]}>
+              <Text style={styles.summaryLabel}>{`Total\nExpenses`}</Text>
+              <Text style={[styles.summaryValue, { color: Colors.expense }]}>
                 ${yearSummary.totalExpense.toFixed(2)}
               </Text>
             </View>
@@ -206,7 +209,7 @@ const ReportsScreen = () => {
               <Text style={styles.summaryLabel}>Net Income</Text>
               <Text style={[
                 styles.summaryValue,
-                { color: yearSummary.netIncome >= 0 ? COLORS.income : COLORS.expense }
+                { color: yearSummary.netIncome >= 0 ? Colors.income : Colors.expense }
               ]}>
                 ${yearSummary.netIncome.toFixed(2)}
               </Text>
@@ -222,21 +225,24 @@ const ReportsScreen = () => {
 
         {monthlyReport.length > 0 && (
           <View style={styles.chartCard}>
-            <Text style={styles.cardTitle}>
-              <Ionicons name="trending-up" size={18} color={COLORS.text} /> Monthly Trends
-            </Text>
+            <View style={styles.chartTitleWrapper}>
+              <Ionicons name="trending-up" size={20} color={Colors.text} />
+              <Text style={styles.cardTitle}>
+                Monthly Trends
+              </Text>
+            </View>
             <ScrollView  horizontal showsHorizontalScrollIndicator={false}>
               <LineChart
                 data={prepareLineChartData()}
                 width={screenWidth}
                 height={220}
                 chartConfig={{
-                  backgroundColor: COLORS.card,
-                  backgroundGradientFrom: COLORS.card,
-                  backgroundGradientTo: COLORS.card,
+                  backgroundColor: Colors.card,
+                  backgroundGradientFrom: Colors.card,
+                  backgroundGradientTo: Colors.card,
                   decimalPlaces: 0,
-                  color: (opacity = 1) => COLORS.primary,
-                  labelColor: (opacity = 1) => COLORS.text,
+                  color: (opacity = 1) => Colors.primary,
+                  labelColor: (opacity = 1) => Colors.text,
                   style: {
                     borderRadius: 16,
                   },
@@ -253,26 +259,28 @@ const ReportsScreen = () => {
           </View>
         )}
 
-        {/* Monthly Performance */}
         {bestMonth.month && worstMonth.month && (
           <View style={styles.performanceCard}>
-            <Text style={styles.cardTitle}>
-              <Ionicons name="trophy" size={18} color={COLORS.text} /> Monthly Performance
-            </Text>
+            <View style={styles.chartTitleWrapper}>
+              <Ionicons name="trophy" size={20} color={Colors.text} />
+              <Text style={styles.cardTitle}>
+                Monthly Performance
+              </Text>
+            </View>
             <View style={styles.performanceRow}>
               <View style={styles.performanceItem}>
-                <Ionicons name="trending-up" size={24} color={COLORS.income} />
+                <Ionicons name="trending-up" size={24} color={Colors.income} />
                 <Text style={styles.performanceLabel}>Best Month</Text>
                 <Text style={styles.performanceMonth}>{getMonthName(bestMonth.month)}</Text>
-                <Text style={[styles.performanceValue, { color: COLORS.income }]}>
+                <Text style={[styles.performanceValue, { color: Colors.income }]}>
                   ${((bestMonth.income || 0) - Math.abs(bestMonth.expense || 0)).toFixed(2)}
                 </Text>
               </View>
               <View style={styles.performanceItem}>
-                <Ionicons name="trending-down" size={24} color={COLORS.expense} />
+                <Ionicons name="trending-down" size={24} color={Colors.expense} />
                 <Text style={styles.performanceLabel}>Worst Month</Text>
                 <Text style={styles.performanceMonth}>{getMonthName(worstMonth.month)}</Text>
-                <Text style={[styles.performanceValue, { color: COLORS.expense }]}>
+                <Text style={[styles.performanceValue, { color: Colors.expense }]}>
                   ${((worstMonth.income || 0) - Math.abs(worstMonth.expense || 0)).toFixed(2)}
                 </Text>
               </View>
@@ -280,22 +288,34 @@ const ReportsScreen = () => {
           </View>
         )}
 
-        {/* Top Categories */}
         {categoryReport.length > 0 && (
           <View style={styles.categoryCard}>
-            <Text style={styles.cardTitle}>
-              <Ionicons name="list" size={18} color={COLORS.text} /> Top Categories
-            </Text>
+            <View style={styles.chartTitleWrapper}>
+              <Ionicons name="list" size={20} color={Colors.text} />
+              <Text style={styles.cardTitle}>
+                Top Categories
+              </Text>
+            </View>
             {categoryReport.slice(0, 5).map((category, index) => (
               <View key={category.category} style={styles.categoryItem}>
-                <View style={styles.categoryLeft}>
+                <View
+                  style={styles.categoryLeft}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
                   <Text style={styles.categoryRank}>#{index + 1}</Text>
-                  <Text style={styles.categoryName}>{category.category}</Text>
+                  <Text
+                    style={styles.categoryName}
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                  >
+                    {category.category}
+                  </Text>
                 </View>
                 <View style={styles.categoryRight}>
                   <Text style={[
                     styles.categoryAmount,
-                    { color: category.totalAmount >= 0 ? COLORS.income : COLORS.expense }
+                    { color: category.totalAmount >= 0 ? Colors.income : Colors.expense }
                   ]}>
                     ${Math.abs(category.totalAmount).toFixed(2)}
                   </Text>
@@ -311,9 +331,12 @@ const ReportsScreen = () => {
         {/* Monthly Breakdown */}
         {monthlyReport.length > 0 && (
           <View style={styles.monthlyCard}>
-            <Text style={styles.cardTitle}>
-              <Ionicons name="calendar-outline" size={18} color={COLORS.text} /> Monthly Breakdown
-            </Text>
+            <View style={styles.chartTitleWrapper}>
+              <Ionicons name="calendar-outline" size={20} color={Colors.text} />
+              <Text style={styles.cardTitle}>
+                Monthly Breakdown
+              </Text>
+            </View>
             {monthlyReport.map((month) => (
               <View key={month.month} style={styles.monthItem}>
                 <View style={styles.monthLeft}>
@@ -321,15 +344,15 @@ const ReportsScreen = () => {
                   <Text style={styles.monthCount}>{month.count} transactions</Text>
                 </View>
                 <View style={styles.monthRight}>
-                  <Text style={[styles.monthIncome, { color: COLORS.income }]}>
+                  <Text style={[styles.monthIncome, { color: Colors.income }]}>
                     +${(month.income || 0).toFixed(2)}
                   </Text>
-                  <Text style={[styles.monthExpense, { color: COLORS.expense }]}>
+                  <Text style={[styles.monthExpense, { color: Colors.expense }]}>
                     -${Math.abs(month.expense || 0).toFixed(2)}
                   </Text>
                   <Text style={[
                     styles.monthBalance,
-                    { color: month.balance >= 0 ? COLORS.income : COLORS.expense }
+                    { color: month.balance >= 0 ? Colors.income : Colors.expense }
                   ]}>
                     ${month.balance.toFixed(2)}
                   </Text>
