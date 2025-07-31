@@ -17,6 +17,8 @@ import { TransactionItem } from '../../components/TransactionItem';
 import { CustomAlert } from '../../components/CustomAlert';
 import NoTransactionsFound from '../../components/NoTransactionsFound';
 import {COLORS_MASTER} from "../../constants/colorsMaster";
+import {useTransactions} from "../../hooks/useTransactions";
+import {API_BASE_URL} from "../../constants/api";
 
 const CATEGORIES = [
   'All Categories',
@@ -30,13 +32,15 @@ const CATEGORIES = [
 ];
 
 const TransactionsScreen = () => {
+  const API_URL = API_BASE_URL;
+
   const { user } = useUser();
+  const { deleteTransaction } = useTransactions(user.id);
   const [transactions, setTransactions] = useState([]);
   const [filteredTransactions, setFilteredTransactions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
-  // Filter states
   const [showFilters, setShowFilters] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
   const [selectedType, setSelectedType] = useState('all');
@@ -48,7 +52,6 @@ const TransactionsScreen = () => {
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Month/Year filter states
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [showMonthPicker, setShowMonthPicker] = useState(false);
@@ -84,10 +87,9 @@ const TransactionsScreen = () => {
 
   const fetchTransactions = async () => {
     try {
-      let url = `http://192.168.1.6:5001/api/v1/transactions/user/${user.id}`;
+      let url = `${API_URL}/transactions/user/${user.id}`;
       const params = new URLSearchParams();
 
-      // Add filters to API call
       if (selectedCategory !== 'All Categories') {
         params.append('category', selectedCategory);
       }
@@ -144,31 +146,12 @@ const TransactionsScreen = () => {
     setRefreshing(false);
   };
 
-  const deleteTransaction = async (transactionId) => {
-    try {
-      const response = await fetch(
-        `http://192.168.1.6:5001/api/v1/transactions/${transactionId}`,
-        { method: 'DELETE' }
-      );
-
-      if (response.ok) {
-        await loadTransactions();
-        showAlert('success', 'Success', 'Transaction deleted successfully');
-      } else {
-        throw new Error('Failed to delete transaction');
-      }
-    } catch (error) {
-      console.error('Error deleting transaction:', error);
-      showAlert('error', 'Error', error.message);
-    }
-  };
-
   const handleDelete = (id) => {
     showAlert(
       'confirm',
       'Delete Transaction',
       'Are you sure you want to delete this transaction? This action cannot be undone.',
-      () => deleteTransaction(id),
+      () => deleteTransaction(),
       () => {},
       true
     );
@@ -176,8 +159,6 @@ const TransactionsScreen = () => {
 
   const applyFilters = useCallback(() => {
     let filtered = [...transactions];
-
-    // Apply search filter
     if (searchQuery.trim()) {
       filtered = filtered.filter(transaction =>
         transaction.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -256,40 +237,42 @@ const TransactionsScreen = () => {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.searchContainer}>
-        <Ionicons name="search" size={20} color={COLORS_MASTER.textLight} style={styles.searchIcon} />
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search transactions..."
-          placeholderTextColor={COLORS_MASTER.textLight}
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-        />
-        {searchQuery.length > 0 && (
-          <TouchableOpacity onPress={() => setSearchQuery('')}>
-            <Ionicons name="close-circle" size={20} color={COLORS_MASTER.textLight} />
-          </TouchableOpacity>
-        )}
-      </View>
-
-      {getActiveFiltersCount() > 0 && (
-        <View style={styles.activeFiltersContainer}>
-          <Text style={styles.activeFiltersText}>Active Filters:</Text>
-          <TouchableOpacity style={styles.clearFiltersButton} onPress={clearFilters}>
-            <Text style={styles.clearFiltersText}>Clear All</Text>
-          </TouchableOpacity>
+      <View style={styles.content}>
+        <View style={styles.searchContainer}>
+          <Ionicons name="search" size={20} color={COLORS_MASTER.textLight} style={styles.searchIcon} />
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search transactions..."
+            placeholderTextColor={COLORS_MASTER.textLight}
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
+          {searchQuery.length > 0 && (
+            <TouchableOpacity onPress={() => setSearchQuery('')}>
+              <Ionicons name="close-circle" size={20} color={COLORS_MASTER.textLight} />
+            </TouchableOpacity>
+          )}
         </View>
-      )}
 
-      <FlatList
-        data={filteredTransactions}
-        renderItem={({ item }) => <TransactionItem item={item} onDelete={handleDelete} />}
-        keyExtractor={(item) => item.id.toString()}
-        ListEmptyComponent={<NoTransactionsFound />}
-        showsVerticalScrollIndicator={false}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-        contentContainerStyle={styles.listContent}
-      />
+        {getActiveFiltersCount() > 0 && (
+          <View style={styles.activeFiltersContainer}>
+            <Text style={styles.activeFiltersText}>Active Filters:</Text>
+            <TouchableOpacity style={styles.clearFiltersButton} onPress={clearFilters}>
+              <Text style={styles.clearFiltersText}>Clear All</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        <FlatList
+          data={filteredTransactions}
+          renderItem={({ item }) => <TransactionItem item={item} onDelete={handleDelete} />}
+          keyExtractor={(item) => item.id.toString()}
+          ListEmptyComponent={<NoTransactionsFound />}
+          showsVerticalScrollIndicator={false}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+          contentContainerStyle={styles.listContent}
+        />
+      </View>
 
       <Modal
         visible={showFilters}
@@ -311,7 +294,6 @@ const TransactionsScreen = () => {
           </View>
 
           <ScrollView style={styles.modalContent}>
-            {/* Month Filter */}
             <View style={styles.filterSection}>
               <Text style={styles.filterLabel}>Month & Year</Text>
               <View style={styles.monthYearContainer}>
@@ -347,7 +329,6 @@ const TransactionsScreen = () => {
               </View>
             </View>
 
-            {/* Category Filter */}
             <View style={styles.filterSection}>
               <Text style={styles.filterLabel}>Category</Text>
               <View style={styles.categoryGrid}>
@@ -371,7 +352,6 @@ const TransactionsScreen = () => {
               </View>
             </View>
 
-            {/* Type Filter */}
             <View style={styles.filterSection}>
               <Text style={styles.filterLabel}>Transaction Type</Text>
               <View style={styles.typeButtons}>
@@ -399,7 +379,6 @@ const TransactionsScreen = () => {
               </View>
             </View>
 
-            {/* Amount Range Filter */}
             <View style={styles.filterSection}>
               <Text style={styles.filterLabel}>Amount Range</Text>
               <View style={styles.amountInputs}>
@@ -423,7 +402,6 @@ const TransactionsScreen = () => {
               </View>
             </View>
 
-            {/* Date Range Filter */}
             <View style={styles.filterSection}>
               <Text style={styles.filterLabel}>Date Range</Text>
               <View style={styles.dateInputs}>
@@ -449,7 +427,6 @@ const TransactionsScreen = () => {
               </View>
             </View>
 
-            {/* Clear Filters Button */}
             <TouchableOpacity style={styles.clearAllButton} onPress={clearFilters}>
               <Text style={styles.clearAllButtonText}>Clear All Filters</Text>
             </TouchableOpacity>
@@ -457,7 +434,6 @@ const TransactionsScreen = () => {
         </View>
       </Modal>
 
-      {/* Month Picker Modal */}
       <Modal
         visible={showMonthPicker}
         transparent={true}
@@ -498,7 +474,6 @@ const TransactionsScreen = () => {
         </View>
       </Modal>
 
-      {/* Date Pickers */}
       {showStartDatePicker && (
         <DateTimePicker
           value={startDate || new Date()}

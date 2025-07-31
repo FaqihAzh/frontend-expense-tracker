@@ -1,0 +1,1 @@
+export const API_BASE_URL = process.env.BASE_URL || "https://be-expense-tracker-ten.vercel.app/api/v1";

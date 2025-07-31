@@ -13,10 +13,13 @@ import { LineChart } from 'react-native-chart-kit';
 import { styles } from '../../assets/styles/reports.styles';
 import { CustomAlert } from '../../components/CustomAlert';
 import {COLORS_MASTER} from "../../constants/colorsMaster";
+import {API_BASE_URL} from "../../constants/api";
 
 const { width: screenWidth } = Dimensions.get('window');
 
 const ReportsScreen = () => {
+  const API_URL = API_BASE_URL;
+
   const { user } = useUser();
   const [monthlyReport, setMonthlyReport] = useState([]);
   const [categoryReport, setCategoryReport] = useState([]);
@@ -45,15 +48,13 @@ const ReportsScreen = () => {
   const fetchReports = async () => {
     setIsLoading(true);
     try {
-      // Fetch monthly report
       const monthlyResponse = await fetch(
-        `http://192.168.1.6:5001/api/v1/transactions/monthly-report/${user.id}/${selectedYear}`
+        `${API_URL}/transactions/monthly-report/${user.id}/${selectedYear}`
       );
       const monthlyData = await monthlyResponse.json();
 
-      // Fetch category summary
       const categoryResponse = await fetch(
-        `http://192.168.1.6:5001/api/v1/transactions/category-summary/${user.id}?startDate=${selectedYear}-01-01&endDate=${selectedYear}-12-31`
+        `${API_URL}/transactions/category-summary/${user.id}?startDate=${selectedYear}-01-01&endDate=${selectedYear}-12-31`
       );
       const categoryData = await categoryResponse.json();
 
@@ -328,7 +329,6 @@ const ReportsScreen = () => {
           </View>
         )}
 
-        {/* Monthly Breakdown */}
         {monthlyReport.length > 0 && (
           <View style={styles.monthlyCard}>
             <View style={styles.chartTitleWrapper}>

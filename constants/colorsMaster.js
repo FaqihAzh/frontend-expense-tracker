@@ -66,4 +66,4 @@ export const THEMES = {
 };
 
 export const GRADIENTS_MASTER = gradients;
-export const COLORS_MASTER = THEMES.modernTheme;
+export const COLORS_MASTER = THEMES.darkTheme;

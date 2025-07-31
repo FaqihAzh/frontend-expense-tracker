@@ -125,8 +125,19 @@ const CreateScreen = () => {
     setAlertVisible(true);
   };
 
+  const resetForm = () => {
+    setTitle("");
+    setAmount("");
+    setSelectedCategory("");
+    setIsExpense(true);
+    setFieldErrors({
+      title: '',
+      amount: '',
+      category: ''
+    });
+  };
+
   const handleCreate = async () => {
-    // Button press animation
     Animated.sequence([
       Animated.timing(scaleAnim, {
         toValue: 0.95,
@@ -174,6 +185,7 @@ const CreateScreen = () => {
       console.error("Error creating transaction:", error);
     } finally {
       setIsLoading(false);
+      resetForm()
     }
   };
 
@@ -205,7 +217,7 @@ const CreateScreen = () => {
                 ]}>
                   Save
                 </Text>
-                {isFormValid() && <Ionicons name="checkmark" size={18} color={COLORS_MASTER.white} />}
+                {isFormValid() && <Ionicons name="checkmark" size={18} color={COLORS_MASTER.primary} />}
               </>
             )}
           </TouchableOpacity>
@@ -213,7 +225,6 @@ const CreateScreen = () => {
       </View>
 
       <View style={styles.card}>
-        {/* Modern Type Selector */}
         <View style={styles.typeSelector}>
           <TouchableOpacity
             style={[styles.typeButton, isExpense && styles.typeButtonActive]}
@@ -268,7 +279,6 @@ const CreateScreen = () => {
           </TouchableOpacity>
         </View>
 
-        {/* Modern Amount Input */}
         <View style={styles.amountContainer}>
           <Text style={styles.currencySymbol}>$</Text>
           <TextInput
@@ -294,7 +304,6 @@ const CreateScreen = () => {
           </View>
         ) : null}
 
-        {/* Modern Title Input */}
         <View style={styles.inputContainer}>
           <Ionicons
             name="text"
@@ -325,7 +334,6 @@ const CreateScreen = () => {
           </View>
         ) : null}
 
-        {/* Modern Category Section */}
         <View style={{ marginTop: 8 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
             <View style={{

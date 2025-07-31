@@ -20,6 +20,7 @@ export const styles = StyleSheet.create({
   content: {
     flex: 1,
     padding: 16,
+    marginBottom: 100,
   },
   loadingContainer: {
     flex: 1,
@@ -91,7 +92,7 @@ export const styles = StyleSheet.create({
   },
   cardTitle: {
     fontSize: 20,
-    fontWeight: "700",
+    fontWeight: "600",
     color: COLORS_MASTER.text,
     flexDirection: "row",
     alignItems: "center",

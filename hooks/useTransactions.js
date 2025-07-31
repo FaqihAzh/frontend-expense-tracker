@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
+import {API_BASE_URL} from "../constants/api";
 
-const API_URL = "http://192.168.1.6:5001/api/v1";
+const API_URL = API_BASE_URL;
 
 export const useTransactions = (userId) => {
   const [transactions, setTransactions] = useState([]);
@@ -313,7 +314,6 @@ export const useTransactions = (userId) => {
   };
 
   return {
-    // Data
     transactions,
     summary,
     analytics,
@@ -322,19 +322,16 @@ export const useTransactions = (userId) => {
     topCategories,
     isLoading,
 
-    // Basic functions
     loadTransactions,
     deleteTransaction,
     createTransaction,
     validateTransactionData,
 
-    // Analytics functions
     loadAnalytics,
     loadReports,
     fetchAnalytics,
     fetchRecentTransactions,
 
-    // Specific fetch functions
     fetchTransactionsByMonth,
     fetchTransactionsByCategory,
     fetchTransactionsByDateRange,

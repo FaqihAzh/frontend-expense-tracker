@@ -20,6 +20,10 @@ export const styles = StyleSheet.create({
     color:COLORS_MASTER.text,
     letterSpacing: -0.5,
   },
+  content: {
+    flex: 1,
+    marginBottom: 36,
+  },
   filterButton: {
     flexDirection: "row",
     alignItems: "center",
@@ -95,6 +99,7 @@ export const styles = StyleSheet.create({
   listContent: {
     padding: 16,
     paddingTop: 0,
+    marginBottom: 100,
   },
   loadingContainer: {
     flex: 1,
@@ -108,7 +113,6 @@ export const styles = StyleSheet.create({
     fontSize: 16,
   },
 
-  // Modal Styles
   modalContainer: {
     flex: 1,
     backgroundColor:COLORS_MASTER.background,
@@ -140,7 +144,6 @@ export const styles = StyleSheet.create({
     padding: 20,
   },
 
-  // Filter Section Styles
   filterSection: {
     marginBottom: 30,
   },
@@ -151,7 +154,6 @@ export const styles = StyleSheet.create({
     marginBottom: 12,
   },
 
-  // Month Year Container
   monthYearContainer: {
     gap: 15,
   },
@@ -194,7 +196,6 @@ export const styles = StyleSheet.create({
     color:COLORS_MASTER.white,
   },
 
-  // Category Grid
   categoryGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -220,7 +221,6 @@ export const styles = StyleSheet.create({
     color:COLORS_MASTER.white,
   },
 
-  // Type Buttons
   typeButtons: {
     flexDirection: "row",
     gap: 10,
@@ -247,7 +247,6 @@ export const styles = StyleSheet.create({
     color:COLORS_MASTER.white,
   },
 
-  // Amount Inputs
   amountInputs: {
     flexDirection: "row",
     alignItems: "center",
@@ -268,7 +267,6 @@ export const styles = StyleSheet.create({
     fontSize: 16,
   },
 
-  // Date Inputs
   dateInputs: {
     gap: 12,
   },
@@ -287,13 +285,13 @@ export const styles = StyleSheet.create({
     color:COLORS_MASTER.text,
   },
 
-  // Clear All Button
   clearAllButton: {
     backgroundColor:COLORS_MASTER.expense,
     borderRadius: 12,
     padding: 15,
     alignItems: "center",
-    marginTop: 20,
+    marginTop: 16,
+    marginBottom: 20,
   },
   clearAllButtonText: {
     color:COLORS_MASTER.white,
@@ -301,7 +299,6 @@ export const styles = StyleSheet.create({
     fontWeight: "600",
   },
 
-  // Picker Modal Styles
   pickerOverlay: {
     flex: 1,
     backgroundColor: "rgba(0, 0, 0, 0.5)",

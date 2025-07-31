@@ -9,8 +9,9 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS_MASTER.background,
   },
   content: {
-    padding: 24,
+    padding: 16,
     paddingBottom: 0,
+    marginBottom: 100,
     flex: 1,
   },
   header: {
@@ -115,7 +116,7 @@ export const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 20,
-    fontWeight: "700",
+    fontWeight: "600",
     color: COLORS_MASTER.text,
     marginBottom: 0,
   },
@@ -240,10 +241,6 @@ export const styles = StyleSheet.create({
     fontWeight: "600",
     marginLeft: 8,
     fontSize: 15,
-  },
-
-  transactionsListContent: {
-    paddingBottom: 100,
   },
 
   loadingContainer: {

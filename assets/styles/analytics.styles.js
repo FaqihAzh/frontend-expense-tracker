@@ -20,6 +20,7 @@ export const styles = StyleSheet.create({
   content: {
     flex: 1,
     padding: 16,
+    marginBottom: 105,
   },
   loadingContainer: {
     flex: 1,

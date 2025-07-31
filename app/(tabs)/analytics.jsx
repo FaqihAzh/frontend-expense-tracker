@@ -13,10 +13,13 @@ import { PieChart } from 'react-native-chart-kit';
 import { styles } from '../../assets/styles/analytics.styles';
 import { CustomAlert } from '../../components/CustomAlert';
 import {COLORS_MASTER} from "../../constants/colorsMaster";
+import {API_BASE_URL} from "../../constants/api";
 
 const { width: screenWidth } = Dimensions.get('window');
 
 const AnalyticsScreen = () => {
+  const API_URL = API_BASE_URL;
+
   const { user } = useUser();
   const [analytics, setAnalytics] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -49,7 +52,7 @@ const AnalyticsScreen = () => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `http://192.168.1.6:5001/api/v1/transactions/analytics/${user.id}?period=${selectedPeriod}`
+        `${API_URL}/transactions/analytics/${user.id}?period=${selectedPeriod}`
       );
       const data = await response.json();
       if (data.meta.status === 'success') {
