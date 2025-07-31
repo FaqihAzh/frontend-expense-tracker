@@ -109,8 +109,10 @@ export default function SignUpScreen() {
       enableAutomaticScroll={true}
     >
       <View style={styles.container}>
-        <Image source={require("../../assets/images/sign-up.png")} style={styles.illustration} />
-
+        <Image
+          source={{ uri: "https://res.cloudinary.com/dxrz0cg5z/image/upload/v1753947266/expense-tracker/sign-up_wumhql.png" }}
+          style={styles.illustration}
+        />
         <Text style={styles.title}>Create Account</Text>
 
         {error ? (
@@ -135,7 +137,6 @@ export default function SignUpScreen() {
           style={[styles.input, error && styles.errorInput]}
           value={password}
           placeholder="Enter password"
-          placeholderTextColor="#9A8478"
           secureTextEntry={true}
           onChangeText={(password) => setPassword(password)}
         />

@@ -78,7 +78,7 @@ export default function Page() {
         <View style={styles.header}>
           <View style={styles.headerLeft}>
             <Image
-              source={require("../../assets/images/logo.png")}
+              source={{ uri: "https://res.cloudinary.com/dxrz0cg5z/image/upload/v1753947263/expense-tracker/logo_kaekt4.png" }}
               style={styles.headerLogo}
               resizeMode="contain"
             />

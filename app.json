@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "frontend-mobile-wallet",
-    "slug": "frontend-mobile-wallet",
+    "name": "Expense Tracker App",
+    "slug": "expense-tracker",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "https://res.cloudinary.com/dxrz0cg5z/image/upload/v1753947266/expense-tracker/sign-up_wumhql.png",
     "scheme": "frontendmobilewallet",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -13,7 +13,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "https://res.cloudinary.com/dxrz0cg5z/image/upload/v1753949152/expense-tracker/sign-up_white_yktehn.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
@@ -22,14 +22,14 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "https://res.cloudinary.com/dxrz0cg5z/image/upload/v1753947266/expense-tracker/sign-up_wumhql.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "https://res.cloudinary.com/dxrz0cg5z/image/upload/v1753949152/expense-tracker/sign-up_white_yktehn.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
@@ -39,6 +39,12 @@
     "experiments": {
       "typedRoutes": true
     },
-    "jsEngine": "hermes"
+    "jsEngine": "hermes",
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "428bdcdc-4c70-417d-8ef3-51fb37327296"
+      }
+    }
   }
 }

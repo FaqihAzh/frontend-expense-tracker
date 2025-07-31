@@ -54,7 +54,10 @@ export default function Page() {
       extraScrollHeight={30}
     >
       <View style={styles.container}>
-        <Image source={require("../../assets/images/sign-in.png")} style={styles.illustration} />
+        <Image
+          source={{ uri: "https://res.cloudinary.com/dxrz0cg5z/image/upload/v1753947263/expense-tracker/sign-in_zk6pvr.png" }}
+          style={styles.illustration}
+        />
         <Text style={styles.title}>Welcome Back</Text>
 
         {error ? (
