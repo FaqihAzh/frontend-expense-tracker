@@ -41,10 +41,7 @@
     },
     "jsEngine": "hermes",
     "extra": {
-      "router": {},
-      "eas": {
-        "projectId": "428bdcdc-4c70-417d-8ef3-51fb37327296"
-      }
+      "router": {}
     }
   }
 }
