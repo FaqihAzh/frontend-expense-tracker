@@ -41,7 +41,11 @@
     },
     "jsEngine": "hermes",
     "extra": {
-      "router": {}
-    }
+      "router": {},
+      "eas": {
+        "projectId": "a64aa3b4-d315-49c0-8a43-ae2d3cb34cb4"
+      }
+    },
+    "owner": "faqihazh"
   }
 }
