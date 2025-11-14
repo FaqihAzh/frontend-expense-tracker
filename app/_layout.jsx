@@ -12,12 +12,6 @@ if (!__DEV__) {
   console.error = () => {};
 }
 
-ErrorUtils.setGlobalHandler((error, isFatal) => {
-  if (__DEV__) {
-    console.error('Global error:', error, isFatal);
-  }
-});
-
 export default function RootLayout() {
   useEffect(() => {
     if (__DEV__) {
