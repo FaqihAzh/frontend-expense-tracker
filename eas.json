@@ -9,16 +9,28 @@
       "distribution": "internal",
       "android": {
         "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY": "pk_test_YXNzdXJlZC10aWdlci0zMC5jbGVyay5hY2NvdW50cy5kZXYk",
+        "EXPO_PUBLIC_API_BASE_URL": "https://be-expense-tracker-ten.vercel.app/api/v1"
       }
     },
     "preview": {
       "distribution": "internal",
       "android": {
         "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY": "pk_test_YXNzdXJlZC10aWdlci0zMC5jbGVyay5hY2NvdW50cy5kZXYk",
+        "EXPO_PUBLIC_API_BASE_URL": "https://be-expense-tracker-ten.vercel.app/api/v1"
       }
     },
     "production": {
-      "autoIncrement": true
+      "autoIncrement": true,
+      "env": {
+        "EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY": "pk_test_YXNzdXJlZC10aWdlci0zMC5jbGVyay5hY2NvdW50cy5kZXYk",
+        "EXPO_PUBLIC_API_BASE_URL": "https://be-expense-tracker-ten.vercel.app/api/v1"
+      }
     }
   },
   "submit": {

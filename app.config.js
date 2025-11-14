@@ -1,4 +1,6 @@
-{
+import { API_BASE_URL } from "./constants/api";
+
+export default {
   "expo": {
     "name": "Expense Tracker App",
     "slug": "expense-tracker",
@@ -44,8 +46,10 @@
       "router": {},
       "eas": {
         "projectId": "a64aa3b4-d315-49c0-8a43-ae2d3cb34cb4"
-      }
+      },
+      "clerkPublishableKey": process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY || "pk_test_YXNzdXJlZC10aWdlci0zMC5jbGVyay5hY2NvdW50cy5kZXYk",
+      "apiBaseUrl": process.env.EXPO_PUBLIC_API_BASE_URL || API_BASE_URL || "https://be-expense-tracker-ten.vercel.app/api/v1"
     },
     "owner": "faqihazh"
   }
-}
+};

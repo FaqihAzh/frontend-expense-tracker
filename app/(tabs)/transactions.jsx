@@ -1,24 +1,24 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  TextInput,
-  Modal,
-  ActivityIndicator,
-  RefreshControl, ScrollView,
-} from 'react-native';
 import { useUser } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { useCallback, useEffect, useState } from 'react';
+import {
+  ActivityIndicator,
+  FlatList,
+  Modal,
+  RefreshControl, ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { styles } from '../../assets/styles/transactions.styles';
-import { TransactionItem } from '../../components/TransactionItem';
 import { CustomAlert } from '../../components/CustomAlert';
 import NoTransactionsFound from '../../components/NoTransactionsFound';
-import {COLORS_MASTER} from "../../constants/colorsMaster";
-import {useTransactions} from "../../hooks/useTransactions";
-import {API_BASE_URL} from "../../constants/api";
+import { TransactionItem } from '../../components/TransactionItem';
+import { API_BASE_URL } from "../../constants/api";
+import { COLORS_MASTER } from "../../constants/colorsMaster";
+import { useTransactions } from "../../hooks/useTransactions";
 
 const CATEGORIES = [
   'All Categories',

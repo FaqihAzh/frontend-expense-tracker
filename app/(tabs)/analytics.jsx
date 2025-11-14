@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  ActivityIndicator,
-  Dimensions,
-} from 'react-native';
 import { useUser } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
+import { useEffect, useState } from 'react';
+import {
+  ActivityIndicator,
+  Dimensions,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { PieChart } from 'react-native-chart-kit';
 import { styles } from '../../assets/styles/analytics.styles';
 import { CustomAlert } from '../../components/CustomAlert';
-import {COLORS_MASTER} from "../../constants/colorsMaster";
-import {API_BASE_URL} from "../../constants/api";
+import { API_BASE_URL } from '../../constants/api';
+import { COLORS_MASTER } from "../../constants/colorsMaster";
 
 const { width: screenWidth } = Dimensions.get('window');
 
