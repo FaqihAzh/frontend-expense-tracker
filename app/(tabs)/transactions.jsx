@@ -231,10 +231,10 @@ const TransactionsScreen = () => {
       <View style={styles.content}>
         {isLoading && !refreshing ? (
           <>
-            <View style={styles.searchContainer}>
-              <SearchSkeleton />
-            </View>
             <View style={styles.listContent}>
+              <View style={{marginBottom: 15, marginTop: 20}}>
+                <SearchSkeleton />
+              </View>
               <TransactionSkeleton/>
               <TransactionSkeleton/>
               <TransactionSkeleton/>

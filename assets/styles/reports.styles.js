@@ -128,6 +128,7 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "800",
     textAlign: "center",
+    color: COLORS_MASTER.text,
   },
 
   chartCard: {

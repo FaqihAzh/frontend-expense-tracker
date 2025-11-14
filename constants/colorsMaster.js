@@ -30,7 +30,7 @@ const dark = {
   primaryLight: "#A5B4FC",
   primaryDark: "#6366F1",
   background: "#0F172A",
-  backgroundSecondary: "#1E293B",
+  backgroundSecondary: "#334155",
   text: "#F8FAFC",
   textSecondary: "#CBD5E1",
   textLight: "#94A3B8",
