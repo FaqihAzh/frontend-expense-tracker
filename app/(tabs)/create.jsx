@@ -1,19 +1,20 @@
+import { useUser } from "@clerk/clerk-expo";
+import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import { useRef, useState } from "react";
 import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
   ActivityIndicator,
   Animated,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { useRouter } from "expo-router";
-import { useUser } from "@clerk/clerk-expo";
-import { useState, useRef } from "react";
 import { styles } from "../../assets/styles/create.styles";
-import { Ionicons } from "@expo/vector-icons";
-import { useTransactions } from "../../hooks/useTransactions";
 import { CustomAlert } from "../../components/CustomAlert";
-import {COLORS_MASTER} from "../../constants/colorsMaster";
+import { COLORS_MASTER } from "../../constants/colorsMaster";
+import { useTransactions } from "../../hooks/useTransactions";
+import { formatRupiah } from "../../lib/utils";
 
 const CATEGORIES = [
   { id: "food", name: "Food & Drinks", icon: "restaurant", color: "#FF6B6B" },
@@ -32,6 +33,7 @@ const CreateScreen = () => {
 
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
+  const [displayAmount, setDisplayAmount] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [isExpense, setIsExpense] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -54,6 +56,30 @@ const CreateScreen = () => {
     category: ''
   });
 
+  // Handle amount input with Rupiah formatting
+  const handleAmountChange = (text) => {
+    // Remove all non-numeric characters
+    const numericValue = text.replace(/[^0-9]/g, '');
+    
+    if (numericValue === '') {
+      setAmount('');
+      setDisplayAmount('');
+      return;
+    }
+
+    // Convert to number
+    const numValue = parseInt(numericValue);
+    
+    // Set raw amount for validation
+    setAmount(numValue.toString());
+    
+    // Format for display
+    setDisplayAmount(formatRupiah(numValue, false));
+    
+    // Validate
+    validateField('amount', numValue.toString());
+  };
+
   const validateField = (fieldName, value) => {
     let error = '';
 
@@ -75,10 +101,8 @@ const CreateScreen = () => {
             error = 'Please enter a valid number';
           } else if (numericAmount <= 0) {
             error = 'Amount must be greater than 0';
-          } else if (numericAmount > 999999.99) {
-            error = 'Amount cannot exceed $999,999.99';
-          } else if (!/^\d+(\.\d{1,2})?$/.test(value.toString())) {
-            error = 'Maximum 2 decimal places allowed';
+          } else if (numericAmount > 999999999) {
+            error = 'Amount cannot exceed Rp 999.999.999';
           }
         }
         break;
@@ -100,7 +124,7 @@ const CreateScreen = () => {
 
   const isFormValid = () => {
     const hasTitle = title && title.trim().length <= 100;
-    const hasValidAmount = amount && !isNaN(parseFloat(amount)) && parseFloat(amount) > 0 && parseFloat(amount) <= 999999.99;
+    const hasValidAmount = amount && !isNaN(parseFloat(amount)) && parseFloat(amount) > 0 && parseFloat(amount) <= 999999999;
     const hasCategory = selectedCategory && selectedCategory.trim();
     const noErrors = !fieldErrors.title && !fieldErrors.amount && !fieldErrors.category;
 
@@ -128,6 +152,7 @@ const CreateScreen = () => {
   const resetForm = () => {
     setTitle("");
     setAmount("");
+    setDisplayAmount("");
     setSelectedCategory("");
     setIsExpense(true);
     setFieldErrors({
@@ -182,10 +207,9 @@ const CreateScreen = () => {
       });
     } catch (error) {
       showAlert("error", "Error", error.message || "Failed to create transaction");
-      console.error("Error creating transaction:", error);
     } finally {
       setIsLoading(false);
-      resetForm()
+      resetForm();
     }
   };
 
@@ -280,20 +304,16 @@ const CreateScreen = () => {
         </View>
 
         <View style={styles.amountContainer}>
-          <Text style={styles.currencySymbol}>$</Text>
+          <Text style={styles.currencySymbol}>Rp</Text>
           <TextInput
             style={[
               styles.amountInput,
               fieldErrors.amount && styles.inputError
             ]}
-            placeholder="0.00"
+            placeholder="0"
             placeholderTextColor={COLORS_MASTER.textLight}
-            value={amount}
-            onChangeText={(value) => {
-              setAmount(value);
-              validateField('amount', value);
-            }}
-            onBlur={() => validateField('amount', amount)}
+            value={displayAmount}
+            onChangeText={handleAmountChange}
             keyboardType="numeric"
           />
         </View>

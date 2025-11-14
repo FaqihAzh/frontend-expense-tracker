@@ -16,7 +16,6 @@ export const useTransactions = (userId) => {
   const [topCategories, setTopCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Existing functions from original hook
   const fetchTransactions = useCallback(async (filters = {}) => {
     try {
       let url = `${API_URL}/transactions/user/${userId}`;
@@ -67,7 +66,6 @@ export const useTransactions = (userId) => {
     }
   }, [userId]);
 
-  // New analytics functions
   const fetchAnalytics = useCallback(async (period = 'month', filters = {}) => {
     try {
       let url = `${API_URL}/transactions/analytics/${userId}`;
@@ -238,6 +236,7 @@ export const useTransactions = (userId) => {
       const response = await fetch(`${API_URL}/transactions/${transactionId}`, {
         method: "DELETE",
       });
+      console.log(`${API_URL}/transactions/${transactionId}`);
       if (!response.ok) {
         throw new Error("Failed to delete transaction");
       }

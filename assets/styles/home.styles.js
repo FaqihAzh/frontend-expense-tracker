@@ -1,5 +1,5 @@
-import { StyleSheet, Dimensions } from "react-native";
-import {COLORS_MASTER} from "../../constants/colorsMaster";
+import { Dimensions, StyleSheet } from "react-native";
+import { COLORS_MASTER } from "../../constants/colorsMaster";
 
 const { width } = Dimensions.get('window');
 
@@ -109,14 +109,14 @@ export const styles = StyleSheet.create({
 
   transactionsHeaderContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    gap: 6,
     alignItems: "center",
     marginBottom: 0,
     paddingBottom: 10,
   },
   sectionTitle: {
-    fontSize: 20,
-    fontWeight: "600",
+    fontSize: 18,
+    fontWeight: "700",
     color: COLORS_MASTER.text,
     marginBottom: 0,
   },
@@ -190,11 +190,30 @@ export const styles = StyleSheet.create({
     borderLeftWidth: 1,
     borderLeftColor: COLORS_MASTER.borderLight,
   },
-
+  emptyStateIconContainer: {
+    backgroundColor: COLORS_MASTER.backgroundSecondary,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    borderRadius: 18,
+  },
+  // emptyStateHeader: {
+  //   flexDirection: 'row',
+  //   alignItems: 'left',
+  //   marginBottom: 16,
+  //   gap: 8,
+  //   width: '100%',
+  // },
+  // title: {
+  //   fontSize: 18,
+  //   fontWeight: '700',
+  //   color: COLORS_MASTER.text,
+  // },
   emptyState: {
     backgroundColor: COLORS_MASTER.card,
     borderRadius: 24,
-    padding: 40,
+    padding: 20,
     alignItems: "center",
     justifyContent: "center",
     marginTop: 20,
@@ -217,7 +236,7 @@ export const styles = StyleSheet.create({
   },
   emptyStateText: {
     color: COLORS_MASTER.textSecondary,
-    fontSize: 15,
+    fontSize: 14,
     textAlign: "center",
     marginBottom: 24,
     lineHeight: 22,

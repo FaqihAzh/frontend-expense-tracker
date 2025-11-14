@@ -1,7 +1,8 @@
-import { View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { Text, View } from "react-native";
 import { styles } from "../assets/styles/home.styles";
-import {COLORS_MASTER} from "../constants/colorsMaster";
+import { COLORS_MASTER } from "../constants/colorsMaster";
+import { formatRupiah } from "../lib/utils";
 
 export const BalanceCard = ({ summary }) => {
   const balance = parseFloat(summary.balance);
@@ -19,7 +20,7 @@ export const BalanceCard = ({ summary }) => {
         styles.balanceAmount,
         { color: balance >= 0 ? COLORS_MASTER.text : COLORS_MASTER.error }
       ]}>
-        ${balance.toFixed(2)}
+        {formatRupiah(balance)}
       </Text>
 
       <View style={styles.balanceStats}>
@@ -34,7 +35,7 @@ export const BalanceCard = ({ summary }) => {
             <Text style={styles.balanceStatLabel}>Income</Text>
           </View>
           <Text style={[styles.balanceStatAmount, { color: COLORS_MASTER.income }]}>
-            +${income.toFixed(2)}
+            {formatRupiah(income)}
           </Text>
         </View>
 
@@ -49,7 +50,7 @@ export const BalanceCard = ({ summary }) => {
             <Text style={styles.balanceStatLabel}>Expenses</Text>
           </View>
           <Text style={[styles.balanceStatAmount, { color: COLORS_MASTER.expense }]}>
-            -${expense.toFixed(2)}
+            {formatRupiah(expense)}
           </Text>
         </View>
       </View>

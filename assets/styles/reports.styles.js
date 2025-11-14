@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import {COLORS_MASTER} from "../../constants/colorsMaster";
+import { COLORS_MASTER } from "../../constants/colorsMaster";
 
 export const styles = StyleSheet.create({
   container: {
@@ -125,7 +125,7 @@ export const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   summaryValue: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "800",
     textAlign: "center",
   },
@@ -178,7 +178,7 @@ export const styles = StyleSheet.create({
     elevation: 3,
   },
   performanceLabel: {
-    fontSize: 12,
+    fontSize: 11,
     color: COLORS_MASTER.textLight,
     marginTop: 12,
     marginBottom: 6,
@@ -187,13 +187,13 @@ export const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   performanceMonth: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "700",
     color: COLORS_MASTER.text,
     marginBottom: 6,
   },
   performanceValue: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "800",
   },
 
@@ -304,19 +304,20 @@ export const styles = StyleSheet.create({
   monthRight: {
     alignItems: "flex-end",
     minWidth: 100,
+    gap: 4,
   },
   monthIncome: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: "600",
     marginBottom: 2,
   },
   monthExpense: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: "600",
     marginBottom: 4,
   },
   monthBalance: {
-    fontSize: 17,
+    fontSize: 16,
     fontWeight: "800",
   },
 });

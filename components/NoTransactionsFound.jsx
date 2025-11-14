@@ -1,15 +1,21 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import { Text, TouchableOpacity, View } from "react-native";
 import { styles } from "../assets/styles/home.styles";
-import { useRouter } from "expo-router";
-import {COLORS_MASTER} from "../constants/colorsMaster";
+import { COLORS_MASTER } from "../constants/colorsMaster";
 
 const NoTransactionsFound = () => {
   const router = useRouter();
 
   return (
     <View style={styles.emptyState}>
-      <View style={{
+      {/* <View style={styles.emptyStateHeader}>
+        <Ionicons name="flame" size={20} color={COLORS_MASTER.primary} />
+        <Text style={styles.title}>Recent Transactions</Text>
+      </View> */}
+
+      <View style={styles.emptyStateIconContainer}>
+        <View style={{
         width: 80,
         height: 80,
         borderRadius: 40,
@@ -38,6 +44,7 @@ const NoTransactionsFound = () => {
         <Ionicons name="add" size={20} color={COLORS_MASTER.white} />
         <Text style={styles.emptyStateButtonText}>Add Transaction</Text>
       </TouchableOpacity>
+      </View>
     </View>
   );
 };

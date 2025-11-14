@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import {COLORS_MASTER} from "../../constants/colorsMaster";
+import { COLORS_MASTER } from "../../constants/colorsMaster";
 
 export const styles = StyleSheet.create({
   container: {
@@ -91,7 +91,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS_MASTER.borderLight,
   },
   summaryLabel: {
-    fontSize: 11,
+    fontSize: 10,
     color: COLORS_MASTER.textLight,
     marginTop: 8,
     marginBottom: 6,
@@ -100,7 +100,7 @@ export const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   summaryValue: {
-    fontSize: 18,
+    fontSize: 12,
     fontWeight: "800",
   },
 

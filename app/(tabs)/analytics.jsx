@@ -14,6 +14,7 @@ import { styles } from '../../assets/styles/analytics.styles';
 import { CustomAlert } from '../../components/CustomAlert';
 import { API_BASE_URL } from '../../constants/api';
 import { COLORS_MASTER } from "../../constants/colorsMaster";
+import { formatRupiah } from '../../lib/utils';
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -87,23 +88,8 @@ const AnalyticsScreen = () => {
         population: Math.abs(item.totalAmount),
         color: colors[index % colors.length],
         legendFontColor: COLORS_MASTER.text,
-        legendFontSize: 12,
+        legendFontSize: 11,
       }));
-  };
-
-  const prepareBarChartData = () => {
-    if (!analytics?.categoryBreakdown) return { labels: [], datasets: [] };
-
-    const topCategories = analytics.categoryBreakdown
-      .filter(item => Math.abs(item.totalAmount) > 0)
-      .slice(0, 5);
-
-    return {
-      labels: topCategories.map(item => item.category.substring(0, 8)),
-      datasets: [{
-        data: topCategories.map(item => Math.abs(item.totalAmount))
-      }]
-    };
   };
 
   if (isLoading) {
@@ -150,7 +136,7 @@ const AnalyticsScreen = () => {
               styles.summaryValue,
               { color: parseFloat(analytics?.summary?.balance) >= 0 ? COLORS_MASTER.income : COLORS_MASTER.expense }
             ]}>
-              ${parseFloat(analytics?.summary?.balance)?.toFixed(2) || '0.00'}
+              {formatRupiah(analytics?.summary?.balance) || '0'}
             </Text>
           </View>
 
@@ -158,7 +144,7 @@ const AnalyticsScreen = () => {
             <Ionicons name="arrow-up-circle" size={24} color={COLORS_MASTER.income} />
             <Text style={styles.summaryLabel}>Income</Text>
             <Text style={[styles.summaryValue, { color: COLORS_MASTER.income }]}>
-              ${parseFloat(analytics?.summary?.income)?.toFixed(2) || '0.00'}
+              {formatRupiah(analytics?.summary?.income) || '0'}
             </Text>
           </View>
 
@@ -166,7 +152,7 @@ const AnalyticsScreen = () => {
             <Ionicons name="arrow-down-circle" size={24} color={COLORS_MASTER.expense} />
             <Text style={styles.summaryLabel}>Expenses</Text>
             <Text style={[styles.summaryValue, { color: COLORS_MASTER.expense }]}>
-              ${Math.abs(parseFloat(analytics?.summary?.expense) || 0).toFixed(2)}
+              {(formatRupiah(analytics?.summary?.expense) || 0)}
             </Text>
           </View>
         </View>
@@ -174,7 +160,7 @@ const AnalyticsScreen = () => {
         {preparePieChartData().length > 0 && (
           <View style={styles.chartCard}>
             <View style={styles.chartTitleWrapper}>
-              <Ionicons name="pie-chart" size={20} color={COLORS_MASTER.text} />
+              <Ionicons name="pie-chart" size={20} color={COLORS_MASTER.primary} />
               <Text style={styles.chartTitle}>
                 Spending by Category
               </Text>
@@ -182,8 +168,8 @@ const AnalyticsScreen = () => {
             <ScrollView  horizontal showsHorizontalScrollIndicator={false}>
               <PieChart
                 data={preparePieChartData()}
-                width={screenWidth - 75}
-                height={200}
+                width={screenWidth - 80}
+                height={180}
                 chartConfig={{
                   backgroundColor: COLORS_MASTER.card,
                   backgroundGradientFrom: COLORS_MASTER.card,
@@ -201,7 +187,7 @@ const AnalyticsScreen = () => {
         {analytics?.insights && analytics.insights.length > 0 && (
           <View style={styles.insightsCard}>
             <View style={styles.chartTitleWrapper}>
-              <Ionicons name="pie-chart" size={20} color={COLORS_MASTER.text} />
+              <Ionicons name="pie-chart" size={20} color={COLORS_MASTER.primary} />
               <Text style={styles.chartTitle}>
                 Insights
               </Text>
@@ -224,7 +210,7 @@ const AnalyticsScreen = () => {
         {analytics?.recentTransactions && analytics.recentTransactions.length > 0 && (
           <View style={styles.recentCard}>
             <View style={styles.chartTitleWrapper}>
-              <Ionicons name="pie-chart" size={20} color={COLORS_MASTER.text} />
+              <Ionicons name="pie-chart" size={20} color={COLORS_MASTER.primary} />
               <Text style={styles.chartTitle}>
                 Recent Activity
               </Text>
@@ -255,7 +241,7 @@ const AnalyticsScreen = () => {
                   styles.recentAmount,
                   { color: parseFloat(transaction.amount) >= 0 ? COLORS_MASTER.income : COLORS_MASTER.expense }
                 ]}>
-                  ${Math.abs(parseFloat(transaction.amount)).toFixed(2)}
+                  {formatRupiah((transaction.amount))}
                 </Text>
               </View>
             ))}

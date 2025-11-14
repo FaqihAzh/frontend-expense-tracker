@@ -1,27 +1,41 @@
-import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { Text, TouchableOpacity, View } from "react-native";
 import { styles } from "../assets/styles/home.styles";
-import { formatDate } from "../lib/utils";
-import {COLORS_MASTER} from "../constants/colorsMaster";
+import { COLORS_MASTER } from "../constants/colorsMaster";
+import { formatDate, formatRupiah } from "../lib/utils";
 
 const CATEGORY_ICONS = {
   "Food & Drinks": "restaurant",
+  "Makanan & Minuman": "restaurant",
   Shopping: "bag",
+  Belanja: "bag",
   Transportation: "car-sport",
+  Transportasi: "car-sport",
   Entertainment: "game-controller",
+  Hiburan: "game-controller",
   Bills: "receipt",
+  Tagihan: "receipt",
   Income: "trending-up",
+  Pemasukan: "trending-up",
   Other: "ellipsis-horizontal-circle",
+  Lainnya: "ellipsis-horizontal-circle",
 };
 
 const CATEGORY_COLORS = {
   "Food & Drinks": "#FF6B6B",
+  "Makanan & Minuman": "#FF6B6B",
   Shopping: "#4ECDC4",
+  Belanja: "#4ECDC4",
   Transportation: "#45B7D1",
+  Transportasi: "#45B7D1",
   Entertainment: "#96CEB4",
+  Hiburan: "#96CEB4",
   Bills: "#FECA57",
+  Tagihan: "#FECA57",
   Income: "#6C5CE7",
+  Pemasukan: "#6C5CE7",
   Other: "#A0A0A0",
+  Lainnya: "#A0A0A0",
 };
 
 export const TransactionItem = ({ item, onDelete }) => {
@@ -76,7 +90,7 @@ export const TransactionItem = ({ item, onDelete }) => {
               { color: isIncome ? COLORS_MASTER.income : COLORS_MASTER.expense }
             ]}
           >
-            {isIncome ? `+` : "-"}${Math.abs(parseFloat(item.amount)).toFixed(2)}
+            {isIncome ? '+' : '-'}{formatRupiah(Math.abs(parseFloat(item.amount)), false)}
           </Text>
           <Text style={styles.transactionDate}>
             {formatDate(item.createdAt)}

@@ -14,6 +14,7 @@ import { styles } from '../../assets/styles/reports.styles';
 import { CustomAlert } from '../../components/CustomAlert';
 import { API_BASE_URL } from "../../constants/api";
 import { COLORS_MASTER } from "../../constants/colorsMaster";
+import { formatRupiah } from '../../lib/utils';
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -186,9 +187,9 @@ const ReportsScreen = () => {
 
         <View style={styles.summaryCard}>
           <View style={styles.chartTitleWrapper}>
-            <Ionicons name="calendar" size={20} color={COLORS_MASTER.text} />
+            <Ionicons name="calendar" size={20} color={COLORS_MASTER.primary} />
             <Text style={styles.cardTitle}>
-              {selectedYear} Summary
+              Summary {selectedYear}
             </Text>
           </View>
           <View style={styles.summaryGrid}>
@@ -197,13 +198,13 @@ const ReportsScreen = () => {
                 {`Total\nIncome`}
               </Text>
               <Text style={[styles.summaryValue, { color: COLORS_MASTER.income }]}>
-                ${yearSummary.totalIncome.toFixed(2)}
+                {formatRupiah(yearSummary.totalIncome)}
               </Text>
             </View>
             <View style={styles.summaryItem}>
               <Text style={styles.summaryLabel}>{`Total\nExpenses`}</Text>
               <Text style={[styles.summaryValue, { color: COLORS_MASTER.expense }]}>
-                ${yearSummary.totalExpense.toFixed(2)}
+                {formatRupiah(yearSummary.totalExpense)}
               </Text>
             </View>
             <View style={styles.summaryItem}>
@@ -212,7 +213,7 @@ const ReportsScreen = () => {
                 styles.summaryValue,
                 { color: yearSummary.netIncome >= 0 ? COLORS_MASTER.income : COLORS_MASTER.expense }
               ]}>
-                ${yearSummary.netIncome.toFixed(2)}
+                {formatRupiah(yearSummary.netIncome)}
               </Text>
             </View>
             <View style={styles.summaryItem}>
@@ -227,7 +228,7 @@ const ReportsScreen = () => {
         {monthlyReport.length > 0 && (
           <View style={styles.chartCard}>
             <View style={styles.chartTitleWrapper}>
-              <Ionicons name="trending-up" size={20} color={COLORS_MASTER.text} />
+              <Ionicons name="trending-up" size={20} color={COLORS_MASTER.primary} />
               <Text style={styles.cardTitle}>
                 Monthly Trends
               </Text>
@@ -263,7 +264,7 @@ const ReportsScreen = () => {
         {bestMonth.month && worstMonth.month && (
           <View style={styles.performanceCard}>
             <View style={styles.chartTitleWrapper}>
-              <Ionicons name="trophy" size={20} color={COLORS_MASTER.text} />
+              <Ionicons name="trophy" size={20} color={COLORS_MASTER.primary} />
               <Text style={styles.cardTitle}>
                 Monthly Performance
               </Text>
@@ -274,7 +275,7 @@ const ReportsScreen = () => {
                 <Text style={styles.performanceLabel}>Best Month</Text>
                 <Text style={styles.performanceMonth}>{getMonthName(bestMonth.month)}</Text>
                 <Text style={[styles.performanceValue, { color: COLORS_MASTER.income }]}>
-                  ${((bestMonth.income || 0) - Math.abs(bestMonth.expense || 0)).toFixed(2)}
+                  {formatRupiah(((bestMonth.income) || 0) - Math.abs(bestMonth.expense || 0))}
                 </Text>
               </View>
               <View style={styles.performanceItem}>
@@ -282,7 +283,7 @@ const ReportsScreen = () => {
                 <Text style={styles.performanceLabel}>Worst Month</Text>
                 <Text style={styles.performanceMonth}>{getMonthName(worstMonth.month)}</Text>
                 <Text style={[styles.performanceValue, { color: COLORS_MASTER.expense }]}>
-                  ${((worstMonth.income || 0) - Math.abs(worstMonth.expense || 0)).toFixed(2)}
+                  {formatRupiah((worstMonth.income || 0) - Math.abs(worstMonth.expense || 0))}
                 </Text>
               </View>
             </View>
@@ -292,7 +293,7 @@ const ReportsScreen = () => {
         {categoryReport.length > 0 && (
           <View style={styles.categoryCard}>
             <View style={styles.chartTitleWrapper}>
-              <Ionicons name="list" size={20} color={COLORS_MASTER.text} />
+              <Ionicons name="list" size={20} color={COLORS_MASTER.primary} />
               <Text style={styles.cardTitle}>
                 Top Categories
               </Text>
@@ -318,7 +319,7 @@ const ReportsScreen = () => {
                     styles.categoryAmount,
                     { color: category.totalAmount >= 0 ? COLORS_MASTER.income : COLORS_MASTER.expense }
                   ]}>
-                    ${Math.abs(category.totalAmount).toFixed(2)}
+                    ${formatRupiah(category.totalAmount)}
                   </Text>
                   <Text style={styles.categoryCount}>
                     {category.transactionCount} transactions
@@ -332,7 +333,7 @@ const ReportsScreen = () => {
         {monthlyReport.length > 0 && (
           <View style={styles.monthlyCard}>
             <View style={styles.chartTitleWrapper}>
-              <Ionicons name="calendar-outline" size={20} color={COLORS_MASTER.text} />
+              <Ionicons name="calendar-outline" size={20} color={COLORS_MASTER.primary} />
               <Text style={styles.cardTitle}>
                 Monthly Breakdown
               </Text>
@@ -345,16 +346,16 @@ const ReportsScreen = () => {
                 </View>
                 <View style={styles.monthRight}>
                   <Text style={[styles.monthIncome, { color: COLORS_MASTER.income }]}>
-                    +${(month.income || 0).toFixed(2)}
+                    +{formatRupiah(month.income || 0)}
                   </Text>
                   <Text style={[styles.monthExpense, { color: COLORS_MASTER.expense }]}>
-                    -${Math.abs(month.expense || 0).toFixed(2)}
+                    -{formatRupiah(Math.abs(month.expense || 0))}
                   </Text>
                   <Text style={[
                     styles.monthBalance,
                     { color: month.balance >= 0 ? COLORS_MASTER.income : COLORS_MASTER.expense }
                   ]}>
-                    ${month.balance.toFixed(2)}
+                    {formatRupiah(month.balance)}
                   </Text>
                 </View>
               </View>

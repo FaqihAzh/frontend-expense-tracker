@@ -3,18 +3,18 @@ import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useCallback, useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
   FlatList,
   Modal,
   RefreshControl, ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
 import { styles } from '../../assets/styles/transactions.styles';
 import { CustomAlert } from '../../components/CustomAlert';
 import NoTransactionsFound from '../../components/NoTransactionsFound';
+import { SearchSkeleton, TransactionSkeleton } from '../../components/SkeletonLoader';
 import { TransactionItem } from '../../components/TransactionItem';
 import { API_BASE_URL } from "../../constants/api";
 import { COLORS_MASTER } from "../../constants/colorsMaster";
@@ -211,19 +211,10 @@ const TransactionsScreen = () => {
     });
   };
 
-  if (isLoading && !refreshing) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color={COLORS_MASTER.primary} />
-        <Text style={styles.loadingText}>Loading Transactions...</Text>
-      </View>
-    );
-  }
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>All Transactions</Text>
+        <Text style={styles.headerTitle}>Transactions</Text>
         <TouchableOpacity
           style={styles.filterButton}
           onPress={() => setShowFilters(true)}
@@ -238,40 +229,55 @@ const TransactionsScreen = () => {
       </View>
 
       <View style={styles.content}>
-        <View style={styles.searchContainer}>
-          <Ionicons name="search" size={20} color={COLORS_MASTER.textLight} style={styles.searchIcon} />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search transactions..."
-            placeholderTextColor={COLORS_MASTER.textLight}
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-          />
-          {searchQuery.length > 0 && (
-            <TouchableOpacity onPress={() => setSearchQuery('')}>
-              <Ionicons name="close-circle" size={20} color={COLORS_MASTER.textLight} />
-            </TouchableOpacity>
-          )}
-        </View>
+        {isLoading && !refreshing ? (
+          <>
+            <View style={styles.searchContainer}>
+              <SearchSkeleton />
+            </View>
+            <View style={styles.listContent}>
+              <TransactionSkeleton/>
+              <TransactionSkeleton/>
+              <TransactionSkeleton/>
+              <TransactionSkeleton/>
+            </View>
+          </>
+        ) : (
+          <>
+            <View style={styles.searchContainer}>
+              <Ionicons name="search" size={20} color={COLORS_MASTER.textLight} style={styles.searchIcon} />
+              <TextInput
+                style={styles.searchInput}
+                placeholder="Search transactions..."
+                placeholderTextColor={COLORS_MASTER.textLight}
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+              />
+              {searchQuery.length > 0 && (
+                <TouchableOpacity onPress={() => setSearchQuery('')}>
+                  <Ionicons name="close-circle" size={20} color={COLORS_MASTER.textLight} />
+                </TouchableOpacity>
+              )}
+            </View>
+            {getActiveFiltersCount() > 0 && (
+              <View style={styles.activeFiltersContainer}>
+                <Text style={styles.activeFiltersText}>Active Filters:</Text>
+                <TouchableOpacity style={styles.clearFiltersButton} onPress={clearFilters}>
+                  <Text style={styles.clearFiltersText}>Clear All</Text>
+                </TouchableOpacity>
+              </View>
+            )}
 
-        {getActiveFiltersCount() > 0 && (
-          <View style={styles.activeFiltersContainer}>
-            <Text style={styles.activeFiltersText}>Active Filters:</Text>
-            <TouchableOpacity style={styles.clearFiltersButton} onPress={clearFilters}>
-              <Text style={styles.clearFiltersText}>Clear All</Text>
-            </TouchableOpacity>
-          </View>
+            <FlatList
+              data={filteredTransactions}
+              renderItem={({ item }) => <TransactionItem item={item} onDelete={handleDelete} />}
+              keyExtractor={(item) => item.id.toString()}
+              ListEmptyComponent={<NoTransactionsFound />}
+              showsVerticalScrollIndicator={false}
+              refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+              contentContainerStyle={styles.listContent}
+            />
+          </>
         )}
-
-        <FlatList
-          data={filteredTransactions}
-          renderItem={({ item }) => <TransactionItem item={item} onDelete={handleDelete} />}
-          keyExtractor={(item) => item.id.toString()}
-          ListEmptyComponent={<NoTransactionsFound />}
-          showsVerticalScrollIndicator={false}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-          contentContainerStyle={styles.listContent}
-        />
       </View>
 
       <Modal
