@@ -1,10 +1,35 @@
 import { useClerk } from '@clerk/clerk-expo';
-import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import {COLORS_MASTER} from "../constants/colorsMaster";
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { useTheme } from '../contexts/ThemeContext';
 
 export const SignOutButton = ({ showAlert }) => {
   const { signOut } = useClerk();
+  const { colors } = useTheme();
+
+  const styles = StyleSheet.create({
+    signOutButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: colors.card,
+      paddingHorizontal: 16,
+      paddingVertical: 12,
+      borderRadius: 16,
+      borderWidth: 2,
+      borderColor: colors.borderLight,
+      shadowColor: colors.shadowLight,
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 1,
+      shadowRadius: 8,
+      elevation: 3,
+      gap: 8,
+    },
+    signOutText: {
+      color: colors.error,
+      fontSize: 14,
+      fontWeight: '700',
+    },
+  });
 
   const handleSignOut = async () => {
     showAlert(
@@ -26,32 +51,8 @@ export const SignOutButton = ({ showAlert }) => {
 
   return (
     <TouchableOpacity style={styles.signOutButton} onPress={handleSignOut}>
-      <Ionicons name="log-out-outline" size={20} color={COLORS_MASTER.error} />
+      <Ionicons name="log-out-outline" size={20} color={colors.error} />
       <Text style={styles.signOutText}>Sign Out</Text>
     </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  signOutButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: COLORS_MASTER.card,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderRadius: 16,
-    borderWidth: 2,
-    borderColor: COLORS_MASTER.borderLight,
-    shadowColor: COLORS_MASTER.shadowLight,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 1,
-    shadowRadius: 8,
-    elevation: 3,
-    gap: 8,
-  },
-  signOutText: {
-    color: COLORS_MASTER.error,
-    fontSize: 14,
-    fontWeight: '700',
-  },
-});

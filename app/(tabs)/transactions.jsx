@@ -6,18 +6,18 @@ import {
   FlatList,
   Modal,
   RefreshControl, ScrollView,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View
 } from 'react-native';
-import { styles } from '../../assets/styles/transactions.styles';
 import { CustomAlert } from '../../components/CustomAlert';
 import NoTransactionsFound from '../../components/NoTransactionsFound';
 import { SearchSkeleton, TransactionSkeleton } from '../../components/SkeletonLoader';
 import { TransactionItem } from '../../components/TransactionItem';
 import { API_BASE_URL } from "../../constants/api";
-import { COLORS_MASTER } from "../../constants/colorsMaster";
+import { useTheme } from '../../contexts/ThemeContext';
 import { useTransactions } from "../../hooks/useTransactions";
 
 const CATEGORIES = [
@@ -33,6 +33,362 @@ const CATEGORIES = [
 
 const TransactionsScreen = () => {
   const API_URL = API_BASE_URL;
+  const { colors } = useTheme();
+
+  const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor:colors.background,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 18,
+    paddingLeft: 22,
+    backgroundColor:colors.card,
+  },
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: "800",
+    color:colors.text,
+    letterSpacing: -0.5,
+  },
+  content: {
+    flex: 1,
+    marginBottom: 36,
+  },
+  filterButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 8,
+    borderRadius: 20,
+    backgroundColor:colors.card,
+    shadowColor:colors.shadow,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  filterBadge: {
+    backgroundColor:colors.expense,
+    borderRadius: 10,
+    width: 20,
+    height: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: 4,
+  },
+  filterBadgeText: {
+    color:colors.white,
+    fontSize: 12,
+    fontWeight: "bold",
+  },
+  searchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor:colors.card,
+    borderRadius: 12,
+    margin: 20,
+    marginHorizontal: 16,
+    marginBottom: 10,
+    paddingHorizontal: 15,
+    shadowColor:colors.shadow,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  searchIcon: {
+    marginRight: 10,
+  },
+  searchInput: {
+    flex: 1,
+    paddingVertical: 12,
+    fontSize: 16,
+    color:colors.text,
+  },
+  activeFiltersContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    paddingBottom: 10,
+  },
+  activeFiltersText: {
+    color:colors.textLight,
+    fontSize: 14,
+  },
+  clearFiltersButton: {
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    borderRadius: 12,
+    backgroundColor:colors.expense,
+  },
+  clearFiltersText: {
+    color:colors.white,
+    fontSize: 12,
+    fontWeight: "500",
+  },
+  listContent: {
+    padding: 16,
+    paddingTop: 0,
+    marginBottom: 100,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor:colors.background,
+  },
+  loadingText: {
+    marginTop: 10,
+    color:colors.textLight,
+    fontSize: 16,
+  },
+
+  modalContainer: {
+    flex: 1,
+    backgroundColor:colors.background,
+  },
+  modalHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor:colors.border,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    color:colors.text,
+  },
+  modalCancel: {
+    fontSize: 16,
+    color:colors.textLight,
+  },
+  modalDone: {
+    fontSize: 16,
+    color:colors.primary,
+    fontWeight: "600",
+  },
+  modalContent: {
+    flex: 1,
+    padding: 20,
+  },
+
+  filterSection: {
+    marginBottom: 30,
+  },
+  filterLabel: {
+    fontSize: 16,
+    fontWeight: "600",
+    color:colors.text,
+    marginBottom: 12,
+  },
+
+  monthYearContainer: {
+    gap: 15,
+  },
+  monthPickerButton: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor:colors.card,
+    borderRadius: 12,
+    padding: 15,
+    borderWidth: 1,
+    borderColor:colors.border,
+  },
+  monthPickerText: {
+    fontSize: 16,
+    color:colors.text,
+  },
+  yearSelector: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+  },
+  yearButton: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor:colors.border,
+    backgroundColor:colors.card,
+  },
+  yearButtonActive: {
+    backgroundColor:colors.primary,
+    borderColor:colors.primary,
+  },
+  yearButtonText: {
+    color:colors.text,
+    fontSize: 14,
+  },
+  yearButtonTextActive: {
+    color:colors.white,
+  },
+
+  categoryGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+  },
+  categoryFilterButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor:colors.border,
+    backgroundColor:colors.card,
+  },
+  categoryFilterButtonActive: {
+    backgroundColor:colors.primary,
+    borderColor:colors.primary,
+  },
+  categoryFilterButtonText: {
+    color:colors.text,
+    fontSize: 14,
+  },
+  categoryFilterButtonTextActive: {
+    color:colors.white,
+  },
+
+  typeButtons: {
+    flexDirection: "row",
+    gap: 10,
+  },
+  typeButton: {
+    flex: 1,
+    paddingVertical: 12,
+    alignItems: "center",
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor:colors.border,
+    backgroundColor:colors.card,
+  },
+  typeButtonActive: {
+    backgroundColor:colors.primary,
+    borderColor:colors.primary,
+  },
+  typeButtonText: {
+    color:colors.text,
+    fontSize: 16,
+    fontWeight: "500",
+  },
+  typeButtonTextActive: {
+    color:colors.white,
+  },
+
+  amountInputs: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  amountInput: {
+    flex: 1,
+    backgroundColor:colors.card,
+    borderRadius: 12,
+    padding: 15,
+    borderWidth: 1,
+    borderColor:colors.border,
+    fontSize: 16,
+    color:colors.text,
+  },
+  amountDivider: {
+    color:colors.textLight,
+    fontSize: 16,
+  },
+
+  dateInputs: {
+    gap: 12,
+  },
+  dateButton: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor:colors.card,
+    borderRadius: 12,
+    padding: 15,
+    borderWidth: 1,
+    borderColor:colors.border,
+  },
+  dateButtonText: {
+    fontSize: 16,
+    color:colors.text,
+  },
+
+  clearAllButton: {
+    backgroundColor:colors.expense,
+    borderRadius: 12,
+    padding: 15,
+    alignItems: "center",
+    marginTop: 16,
+    marginBottom: 20,
+  },
+  clearAllButtonText: {
+    color:colors.white,
+    fontSize: 16,
+    fontWeight: "600",
+  },
+
+  pickerOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  pickerContainer: {
+    backgroundColor:colors.card,
+    borderRadius: 16,
+    width: "80%",
+    maxHeight: "60%",
+    shadowColor:colors.shadow,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  pickerTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    color:colors.text,
+    textAlign: "center",
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor:colors.border,
+  },
+  pickerList: {
+    maxHeight: 300,
+  },
+  pickerItem: {
+    padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor:colors.border,
+  },
+  pickerItemActive: {
+    backgroundColor:colors.primary,
+  },
+  pickerItemText: {
+    fontSize: 16,
+    color:colors.text,
+    textAlign: "center",
+  },
+  pickerItemTextActive: {
+    color:colors.white,
+    fontWeight: "600",
+  },
+  pickerCloseButton: {
+    padding: 15,
+    alignItems: "center",
+  },
+  pickerCloseText: {
+    fontSize: 16,
+    color:colors.primary,
+    fontWeight: "600",
+  },
+  });
 
   const { user } = useUser();
   const { deleteTransaction } = useTransactions(user.id);
@@ -219,7 +575,7 @@ const TransactionsScreen = () => {
           style={styles.filterButton}
           onPress={() => setShowFilters(true)}
         >
-          <Ionicons name="filter" size={20} color={COLORS_MASTER.primary} />
+          <Ionicons name="filter" size={20} color={colors.primary} />
           {getActiveFiltersCount() > 0 && (
             <View style={styles.filterBadge}>
               <Text style={styles.filterBadgeText}>{getActiveFiltersCount()}</Text>
@@ -244,17 +600,17 @@ const TransactionsScreen = () => {
         ) : (
           <>
             <View style={styles.searchContainer}>
-              <Ionicons name="search" size={20} color={COLORS_MASTER.textLight} style={styles.searchIcon} />
+              <Ionicons name="search" size={20} color={colors.textLight} style={styles.searchIcon} />
               <TextInput
                 style={styles.searchInput}
                 placeholder="Search transactions..."
-                placeholderTextColor={COLORS_MASTER.textLight}
+                placeholderTextColor={colors.textLight}
                 value={searchQuery}
                 onChangeText={setSearchQuery}
               />
               {searchQuery.length > 0 && (
                 <TouchableOpacity onPress={() => setSearchQuery('')}>
-                  <Ionicons name="close-circle" size={20} color={COLORS_MASTER.textLight} />
+                  <Ionicons name="close-circle" size={20} color={colors.textLight} />
                 </TouchableOpacity>
               )}
             </View>
@@ -310,7 +666,7 @@ const TransactionsScreen = () => {
                   <Text style={styles.monthPickerText}>
                     {selectedMonth || 'All Months'}
                   </Text>
-                  <Ionicons name="chevron-down" size={20} color={COLORS_MASTER.textLight} />
+                  <Ionicons name="chevron-down" size={20} color={colors.textLight} />
                 </TouchableOpacity>
 
                 <View style={styles.yearSelector}>
@@ -391,7 +747,7 @@ const TransactionsScreen = () => {
                 <TextInput
                   style={styles.amountInput}
                   placeholder="Min amount"
-                  placeholderTextColor={COLORS_MASTER.textLight}
+                  placeholderTextColor={colors.textLight}
                   value={minAmount}
                   onChangeText={setMinAmount}
                   keyboardType="numeric"
@@ -400,7 +756,7 @@ const TransactionsScreen = () => {
                 <TextInput
                   style={styles.amountInput}
                   placeholder="Max amount"
-                  placeholderTextColor={COLORS_MASTER.textLight}
+                  placeholderTextColor={colors.textLight}
                   value={maxAmount}
                   onChangeText={setMaxAmount}
                   keyboardType="numeric"
@@ -418,7 +774,7 @@ const TransactionsScreen = () => {
                   <Text style={styles.dateButtonText}>
                     {startDate ? formatDate(startDate) : 'Start Date'}
                   </Text>
-                  <Ionicons name="calendar-outline" size={20} color={COLORS_MASTER.textLight} />
+                  <Ionicons name="calendar-outline" size={20} color={colors.textLight} />
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -428,7 +784,7 @@ const TransactionsScreen = () => {
                   <Text style={styles.dateButtonText}>
                     {endDate ? formatDate(endDate) : 'End Date'}
                   </Text>
-                  <Ionicons name="calendar-outline" size={20} color={COLORS_MASTER.textLight} />
+                  <Ionicons name="calendar-outline" size={20} color={colors.textLight} />
                 </TouchableOpacity>
               </View>
             </View>

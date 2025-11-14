@@ -5,14 +5,14 @@ import { useRef, useState } from "react";
 import {
   ActivityIndicator,
   Animated,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
-import { styles } from "../../assets/styles/create.styles";
 import { CustomAlert } from "../../components/CustomAlert";
-import { COLORS_MASTER } from "../../constants/colorsMaster";
+import { useTheme } from "../../contexts/ThemeContext";
 import { useTransactions } from "../../hooks/useTransactions";
 import { formatRupiah } from "../../lib/utils";
 
@@ -27,6 +27,187 @@ const CATEGORIES = [
 ];
 
 const CreateScreen = () => {
+  const { colors } = useTheme();
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    header: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      padding: 20,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    headerTitle: {
+      fontSize: 18,
+      fontWeight: "600",
+      color: colors.text,
+    },
+    backButton: {
+      padding: 5,
+    },
+    saveButtonContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 4,
+    },
+    saveButtonDisabled: {
+      opacity: 0.5,
+    },
+    saveButton: {
+      fontSize: 16,
+      color: colors.primary,
+      fontWeight: "600",
+    },
+    saveButtonDisabledText: {
+      color: colors.textLight,
+    },
+    card: {
+      backgroundColor: colors.card,
+      margin: 16,
+      borderRadius: 16,
+      padding: 16,
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 3,
+    },
+    typeSelector: {
+      flexDirection: "row",
+      marginBottom: 20,
+      gap: 10,
+    },
+    typeButton: {
+      flex: 1,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      paddingVertical: 12,
+      borderRadius: 25,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    typeButtonActive: {
+      backgroundColor: colors.primary,
+      borderColor: colors.primary,
+    },
+    typeIcon: {
+      marginRight: 8,
+    },
+    typeButtonText: {
+      color: colors.text,
+      fontSize: 16,
+      fontWeight: "500",
+    },
+    typeButtonTextActive: {
+      color: colors.white,
+    },
+    amountContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+      paddingBottom: 16,
+      marginBottom: 20,
+    },
+    currencySymbol: {
+      fontSize: 32,
+      fontWeight: "bold",
+      color: colors.text,
+      marginRight: 8,
+    },
+    amountInput: {
+      flex: 1,
+      fontSize: 36,
+      fontWeight: "bold",
+      color: colors.text,
+    },
+    inputContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 12,
+      padding: 4,
+      marginBottom: 20,
+      backgroundColor: colors.white,
+    },
+    inputIcon: {
+      marginHorizontal: 12,
+    },
+    input: {
+      flex: 1,
+      padding: 12,
+      fontSize: 16,
+      color: colors.text,
+    },
+    inputError: {
+      borderColor: colors.expense,
+      borderBottomColor: colors.expense,
+    },
+    errorContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      marginBottom: 15,
+      marginTop: -15,
+      paddingHorizontal: 0,
+    },
+    errorText: {
+      color: colors.expense,
+      fontSize: 12,
+      marginLeft: 5,
+      flex: 1,
+    },
+    sectionTitle: {
+      fontSize: 18,
+      fontWeight: "600",
+      color: colors.text,
+      marginBottom: 15,
+      marginTop: 10,
+      flexDirection: "row",
+      alignItems: "center",
+    },
+    categoryGrid: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      gap: 10,
+    },
+    categoryButton: {
+      flexDirection: "row",
+      alignItems: "center",
+      paddingHorizontal: 16,
+      paddingVertical: 10,
+      borderRadius: 20,
+      borderWidth: 1,
+      borderColor: colors.border,
+      backgroundColor: colors.white,
+    },
+    categoryButtonActive: {
+      backgroundColor: colors.primary,
+      borderColor: colors.primary,
+    },
+    categoryIcon: {
+      marginRight: 6,
+    },
+    categoryButtonText: {
+      color: colors.text,
+      fontSize: 14,
+    },
+    categoryButtonTextActive: {
+      color: colors.white,
+    },
+    loadingContainer: {
+      padding: 20,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+  });
+
   const router = useRouter();
   const { user } = useUser();
   const scaleAnim = useRef(new Animated.Value(1)).current;
@@ -219,7 +400,7 @@ const CreateScreen = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-          <Ionicons name="arrow-back" size={24} color={COLORS_MASTER.text} />
+          <Ionicons name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>New Transaction</Text>
         <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
@@ -232,7 +413,7 @@ const CreateScreen = () => {
             disabled={isLoading || !isFormValid()}
           >
             {isLoading ? (
-              <ActivityIndicator size="small" color={COLORS_MASTER.white} />
+              <ActivityIndicator size="small" color={colors.white} />
             ) : (
               <>
                 <Text style={[
@@ -241,7 +422,7 @@ const CreateScreen = () => {
                 ]}>
                   Save
                 </Text>
-                {isFormValid() && <Ionicons name="checkmark" size={18} color={COLORS_MASTER.primary} />}
+                {isFormValid() && <Ionicons name="checkmark" size={18} color={colors.primary} />}
               </>
             )}
           </TouchableOpacity>
@@ -259,8 +440,8 @@ const CreateScreen = () => {
               height: 32,
               borderRadius: 16,
               backgroundColor: isExpense
-                ? `${COLORS_MASTER.white}20`
-                : `${COLORS_MASTER.expense}15`,
+                ? `${colors.white}20`
+                : `${colors.expense}15`,
               justifyContent: 'center',
               alignItems: 'center',
               marginRight: 10,
@@ -268,7 +449,7 @@ const CreateScreen = () => {
               <Ionicons
                 name="arrow-down"
                 size={18}
-                color={isExpense ? COLORS_MASTER.white : COLORS_MASTER.expense}
+                color={isExpense ? colors.white : colors.expense}
               />
             </View>
             <Text style={[styles.typeButtonText, isExpense && styles.typeButtonTextActive]}>
@@ -285,8 +466,8 @@ const CreateScreen = () => {
               height: 32,
               borderRadius: 16,
               backgroundColor: !isExpense
-                ? `${COLORS_MASTER.white}20`
-                : `${COLORS_MASTER.income}15`,
+                ? `${colors.white}20`
+                : `${colors.income}15`,
               justifyContent: 'center',
               alignItems: 'center',
               marginRight: 10,
@@ -294,7 +475,7 @@ const CreateScreen = () => {
               <Ionicons
                 name="arrow-up"
                 size={18}
-                color={!isExpense ? COLORS_MASTER.white : COLORS_MASTER.income}
+                color={!isExpense ? colors.white : colors.income}
               />
             </View>
             <Text style={[styles.typeButtonText, !isExpense && styles.typeButtonTextActive]}>
@@ -311,7 +492,7 @@ const CreateScreen = () => {
               fieldErrors.amount && styles.inputError
             ]}
             placeholder="0"
-            placeholderTextColor={COLORS_MASTER.textLight}
+            placeholderTextColor={colors.textLight}
             value={displayAmount}
             onChangeText={handleAmountChange}
             keyboardType="numeric"
@@ -319,7 +500,7 @@ const CreateScreen = () => {
         </View>
         {fieldErrors.amount ? (
           <View style={styles.errorContainer}>
-            <Ionicons name="alert-circle" size={16} color={COLORS_MASTER.error} />
+            <Ionicons name="alert-circle" size={16} color={colors.error} />
             <Text style={styles.errorText}>{fieldErrors.amount}</Text>
           </View>
         ) : null}
@@ -328,7 +509,7 @@ const CreateScreen = () => {
           <Ionicons
             name="text"
             size={22}
-            color={COLORS_MASTER.textLight}
+            color={colors.textLight}
             style={styles.inputIcon}
           />
           <TextInput
@@ -337,7 +518,7 @@ const CreateScreen = () => {
               fieldErrors.title && styles.inputError
             ]}
             placeholder="What's this transaction for?"
-            placeholderTextColor={COLORS_MASTER.textLight}
+            placeholderTextColor={colors.textLight}
             value={title}
             onChangeText={(value) => {
               setTitle(value);
@@ -349,7 +530,7 @@ const CreateScreen = () => {
         </View>
         {fieldErrors.title ? (
           <View style={styles.errorContainer}>
-            <Ionicons name="alert-circle" size={16} color={COLORS_MASTER.error} />
+            <Ionicons name="alert-circle" size={16} color={colors.error} />
             <Text style={styles.errorText}>{fieldErrors.title}</Text>
           </View>
         ) : null}
@@ -362,7 +543,7 @@ const CreateScreen = () => {
               borderRadius: 12,
               backgroundColor: selectedCategoryData
                 ? `${selectedCategoryData.color}15`
-                : `${COLORS_MASTER.primary}15`,
+                : `${colors.primary}15`,
               justifyContent: 'center',
               alignItems: 'center',
               marginRight: 8,
@@ -370,7 +551,7 @@ const CreateScreen = () => {
               <Ionicons
                 name="apps"
                 size={14}
-                color={selectedCategoryData?.color || COLORS_MASTER.primary}
+                color={selectedCategoryData?.color || colors.primary}
               />
             </View>
             <Text style={styles.sectionTitle}>Choose Category</Text>
@@ -398,7 +579,7 @@ const CreateScreen = () => {
                   height: 24,
                   borderRadius: 12,
                   backgroundColor: selectedCategory === category.name
-                    ? `${COLORS_MASTER.white}20`
+                    ? `${colors.white}20`
                     : `${category.color}15`,
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -407,7 +588,7 @@ const CreateScreen = () => {
                   <Ionicons
                     name={category.icon}
                     size={14}
-                    color={selectedCategory === category.name ? COLORS_MASTER.white : category.color}
+                    color={selectedCategory === category.name ? colors.white : category.color}
                   />
                 </View>
                 <Text
@@ -423,7 +604,7 @@ const CreateScreen = () => {
           </View>
           {fieldErrors.category ? (
             <View style={styles.errorContainer}>
-              <Ionicons name="alert-circle" size={16} color={COLORS_MASTER.error} />
+              <Ionicons name="alert-circle" size={16} color={colors.error} />
               <Text style={styles.errorText}>{fieldErrors.category}</Text>
             </View>
           ) : null}

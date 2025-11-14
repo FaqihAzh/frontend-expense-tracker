@@ -4,6 +4,7 @@ import { Slot } from "expo-router";
 import { useEffect } from "react";
 import ErrorBoundary from "../components/ErrorBoundary";
 import SafeScreen from "../components/SafeScreen";
+import { ThemeProvider } from "../contexts/ThemeContext";
 
 if (!__DEV__) {
   console.log = () => {};
@@ -26,11 +27,13 @@ export default function RootLayout() {
 
   return (
     <ErrorBoundary>
-      <ClerkProvider tokenCache={tokenCache}>
-        <SafeScreen>
-          <Slot />
-        </SafeScreen>
-      </ClerkProvider>
+      <ThemeProvider>
+        <ClerkProvider tokenCache={tokenCache}>
+          <SafeScreen>
+            <Slot />
+          </SafeScreen>
+        </ClerkProvider>
+      </ThemeProvider>
     </ErrorBoundary>
   );
 }

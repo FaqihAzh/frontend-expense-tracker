@@ -1,23 +1,24 @@
-import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import {TouchableOpacity} from "react-native";
-import {COLORS_MASTER} from "../../constants/colorsMaster";
+import { Tabs } from 'expo-router';
+import { TouchableOpacity } from "react-native";
+import { useTheme } from '../../contexts/ThemeContext';
 
 export default function TabLayout() {
+  const { colors } = useTheme();
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: COLORS_MASTER.primary,
-        tabBarInactiveTintColor: COLORS_MASTER.textLight,
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.textLight,
         tabBarStyle: {
-          backgroundColor: COLORS_MASTER.card,
+          backgroundColor: colors.card,
           borderTopWidth: 0,
           height: 88,
           paddingBottom: 24,
           paddingTop: 12,
           paddingHorizontal: 16,
-          shadowColor: COLORS_MASTER.shadow,
+          shadowColor: colors.shadow,
           shadowOffset: { width: 0, height: -4 },
           shadowOpacity: 1,
           shadowRadius: 12,
@@ -47,7 +48,7 @@ export default function TabLayout() {
               {
                 borderRadius: 16,
                 backgroundColor: props.accessibilityState?.selected
-                  ? `${COLORS_MASTER.primary}15`
+                  ? `${colors.primary}15`
                   : 'transparent',
                 marginHorizontal: 4,
                 paddingVertical: 8,

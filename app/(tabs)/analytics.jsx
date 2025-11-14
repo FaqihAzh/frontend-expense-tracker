@@ -4,22 +4,237 @@ import { useEffect, useState } from 'react';
 import {
   Dimensions,
   ScrollView,
+  StyleSheet,
   Text,
   TouchableOpacity,
   View
 } from 'react-native';
 import { PieChart } from 'react-native-chart-kit';
-import { styles } from '../../assets/styles/analytics.styles';
 import { CustomAlert } from '../../components/CustomAlert';
 import { ChartBarSkeleton, InsightsSkeleton, PeriodSelectorSkeleton, RecentActivitySkeleton, SummaryCardSkeleton } from '../../components/SkeletonLoader';
 import { API_BASE_URL } from '../../constants/api';
-import { COLORS_MASTER } from "../../constants/colorsMaster";
+import { useTheme } from '../../contexts/ThemeContext';
 import { formatRupiah } from '../../lib/utils';
 
 const { width: screenWidth } = Dimensions.get('window');
 
 const AnalyticsScreen = () => {
   const API_URL = API_BASE_URL;
+  const { colors } = useTheme();
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    header: {
+      padding: 18,
+      paddingLeft: 24,
+      backgroundColor: colors.card,
+    },
+    headerTitle: {
+      fontSize: 24,
+      fontWeight: "800",
+      color: colors.text,
+      letterSpacing: -0.5,
+    },
+    content: {
+      flex: 1,
+      padding: 16,
+      marginBottom: 105,
+    },
+    loadingContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: colors.background,
+    },
+    loadingText: {
+      marginTop: 16,
+      color: colors.textSecondary,
+      fontSize: 16,
+      fontWeight: "500",
+    },
+  
+    periodSelector: {
+      flexDirection: "row",
+      marginBottom: 28,
+      backgroundColor: colors.card,
+      borderRadius: 20,
+      padding: 6,
+      shadowColor: colors.shadowLight,
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 1,
+      shadowRadius: 12,
+      elevation: 4,
+    },
+    periodButton: {
+      flex: 1,
+      paddingVertical: 12,
+      alignItems: "center",
+      borderRadius: 16,
+    },
+    periodButtonActive: {
+      backgroundColor: colors.primary,
+      shadowColor: colors.primary,
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.3,
+      shadowRadius: 8,
+      elevation: 3,
+    },
+    periodButtonText: {
+      color: colors.textSecondary,
+      fontSize: 14,
+      fontWeight: "600",
+    },
+    periodButtonTextActive: {
+      color: colors.white,
+      fontWeight: "700",
+    },
+  
+    summaryContainer: {
+      flexDirection: "row",
+      marginBottom: 28,
+      gap: 12,
+    },
+    summaryCard: {
+      flex: 1,
+      backgroundColor: colors.card,
+      borderRadius: 20,
+      padding: 20,
+      alignItems: "center",
+      shadowColor: colors.shadow,
+      shadowOffset: { width: 0, height: 6 },
+      shadowOpacity: 1,
+      shadowRadius: 16,
+      elevation: 6,
+      borderWidth: 1,
+      borderColor: colors.borderLight,
+    },
+    summaryLabel: {
+      fontSize: 10,
+      color: colors.textLight,
+      marginTop: 8,
+      marginBottom: 6,
+      fontWeight: "600",
+      textTransform: "uppercase",
+      letterSpacing: 0.5,
+    },
+    summaryValue: {
+      fontSize: 12,
+      fontWeight: "800",
+    },
+  
+    chartCard: {
+      backgroundColor: colors.card,
+      borderRadius: 24,
+      padding: 24,
+      marginBottom: 24,
+      shadowColor: colors.shadow,
+      shadowOffset: { width: 0, height: 8 },
+      shadowOpacity: 1,
+      shadowRadius: 20,
+      elevation: 8,
+      borderWidth: 1,
+      borderColor: colors.borderLight,
+    },
+  
+    chartTitleWrapper: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 6,
+      marginBottom: 20
+    },
+  
+    chartTitle: {
+      fontSize: 20,
+      fontWeight: "600",
+      color: colors.text,
+      flexDirection: "row",
+      alignItems: "center",
+    },
+  
+    chart: {
+      marginVertical: 8,
+      borderRadius: 16,
+    },
+  
+    insightsCard: {
+      backgroundColor: colors.card,
+      borderRadius: 24,
+      padding: 24,
+      marginBottom: 24,
+      shadowColor: colors.shadow,
+      shadowOffset: { width: 0, height: 8 },
+      shadowOpacity: 1,
+      shadowRadius: 20,
+      elevation: 8,
+      borderWidth: 1,
+      borderColor: colors.borderLight,
+    },
+    insightItem: {
+      flexDirection: "row",
+      alignItems: "center",
+      paddingVertical: 12,
+      paddingHorizontal: 16,
+      borderRadius: 16,
+      marginBottom: 12,
+      backgroundColor: colors.backgroundSecondary,
+    },
+    insightText: {
+      marginLeft: 12,
+      flex: 1,
+      color: colors.text,
+      fontSize: 14,
+      lineHeight: 22,
+      fontWeight: "500",
+    },
+  
+    recentCard: {
+      backgroundColor: colors.card,
+      borderRadius: 24,
+      padding: 24,
+      marginBottom: 24,
+      shadowColor: colors.shadow,
+      shadowOffset: { width: 0, height: 8 },
+      shadowOpacity: 1,
+      shadowRadius: 20,
+      elevation: 8,
+      borderWidth: 1,
+      borderColor: colors.borderLight,
+    },
+    recentItem: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      paddingVertical: 16,
+      paddingHorizontal: 16,
+      borderRadius: 16,
+      marginBottom: 8,
+      backgroundColor: colors.backgroundSecondary,
+    },
+    recentLeft: {
+      flex: 1,
+      maxWidth: "70%",
+    },
+    recentTitle: {
+      fontSize: 16,
+      fontWeight: "600",
+      color: colors.text,
+      marginBottom: 4,
+      maxWidth: "100%"
+    },
+    recentCategory: {
+      fontSize: 14,
+      color: colors.textSecondary,
+      fontWeight: "500",
+      maxWidth: "100%",
+    },
+    recentAmount: {
+      fontSize: 16,
+      fontWeight: "700",
+    },
+  });
 
   const { user } = useUser();
   const [analytics, setAnalytics] = useState(null);
@@ -87,7 +302,7 @@ const AnalyticsScreen = () => {
         name: item.category,
         population: Math.abs(item.totalAmount),
         color: colors[index % colors.length],
-        legendFontColor: COLORS_MASTER.text,
+        legendFontColor: colors.text,
         legendFontSize: 11,
       }));
   };
@@ -133,28 +348,28 @@ const AnalyticsScreen = () => {
 
             <View style={styles.summaryContainer}>
               <View style={styles.summaryCard}>
-                <Ionicons name="wallet" size={24} color={COLORS_MASTER.primary} />
+                <Ionicons name="wallet" size={24} color={colors.primary} />
                 <Text style={styles.summaryLabel}>Balance</Text>
                 <Text style={[
                   styles.summaryValue,
-                  { color: parseFloat(analytics?.summary?.balance) >= 0 ? COLORS_MASTER.income : COLORS_MASTER.expense }
+                  { color: parseFloat(analytics?.summary?.balance) >= 0 ? colors.income : colors.expense }
                 ]}>
                   {formatRupiah(analytics?.summary?.balance) || '0'}
                 </Text>
               </View>
 
               <View style={styles.summaryCard}>
-                <Ionicons name="arrow-up-circle" size={24} color={COLORS_MASTER.income} />
+                <Ionicons name="arrow-up-circle" size={24} color={colors.income} />
                 <Text style={styles.summaryLabel}>Income</Text>
-                <Text style={[styles.summaryValue, { color: COLORS_MASTER.income }]}>
+                <Text style={[styles.summaryValue, { color: colors.income }]}>
                   {formatRupiah(analytics?.summary?.income) || '0'}
                 </Text>
               </View>
 
               <View style={styles.summaryCard}>
-                <Ionicons name="arrow-down-circle" size={24} color={COLORS_MASTER.expense} />
+                <Ionicons name="arrow-down-circle" size={24} color={colors.expense} />
                 <Text style={styles.summaryLabel}>Expenses</Text>
-                <Text style={[styles.summaryValue, { color: COLORS_MASTER.expense }]}>
+                <Text style={[styles.summaryValue, { color: colors.expense }]}>
                   {(formatRupiah(analytics?.summary?.expense) || 0)}
                 </Text>
               </View>
@@ -163,7 +378,7 @@ const AnalyticsScreen = () => {
             {preparePieChartData().length > 0 && (
               <View style={styles.chartCard}>
                 <View style={styles.chartTitleWrapper}>
-                  <Ionicons name="pie-chart" size={20} color={COLORS_MASTER.primary} />
+                  <Ionicons name="pie-chart" size={20} color={colors.primary} />
                   <Text style={styles.chartTitle}>
                     Spending by Category
                   </Text>
@@ -174,9 +389,9 @@ const AnalyticsScreen = () => {
                     width={screenWidth - 80}
                     height={180}
                     chartConfig={{
-                      backgroundColor: COLORS_MASTER.card,
-                      backgroundGradientFrom: COLORS_MASTER.card,
-                      backgroundGradientTo: COLORS_MASTER.card,
+                      backgroundColor: colors.card,
+                      backgroundGradientFrom: colors.card,
+                      backgroundGradientTo: colors.card,
                       color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
                     }}
                     accessor="population"
@@ -190,7 +405,7 @@ const AnalyticsScreen = () => {
             {analytics?.insights && analytics.insights.length > 0 && (
               <View style={styles.insightsCard}>
                 <View style={styles.chartTitleWrapper}>
-                  <Ionicons name="pie-chart" size={20} color={COLORS_MASTER.primary} />
+                  <Ionicons name="pie-chart" size={20} color={colors.primary} />
                   <Text style={styles.chartTitle}>
                     Insights
                   </Text>
@@ -201,8 +416,8 @@ const AnalyticsScreen = () => {
                       name={insight.type === 'positive' ? 'checkmark-circle' :
                         insight.type === 'warning' ? 'warning' : 'information-circle'}
                       size={20}
-                      color={insight.type === 'positive' ? COLORS_MASTER.income :
-                        insight.type === 'warning' ? COLORS_MASTER.expense : COLORS_MASTER.primary}
+                      color={insight.type === 'positive' ? colors.income :
+                        insight.type === 'warning' ? colors.expense : colors.primary}
                     />
                     <Text style={styles.insightText}>{insight.message}</Text>
                   </View>
@@ -213,7 +428,7 @@ const AnalyticsScreen = () => {
             {analytics?.recentTransactions && analytics.recentTransactions.length > 0 && (
               <View style={styles.recentCard}>
                 <View style={styles.chartTitleWrapper}>
-                  <Ionicons name="pie-chart" size={20} color={COLORS_MASTER.primary} />
+                  <Ionicons name="pie-chart" size={20} color={colors.primary} />
                   <Text style={styles.chartTitle}>
                     Recent Activity
                   </Text>
@@ -242,7 +457,7 @@ const AnalyticsScreen = () => {
                     </View>
                     <Text style={[
                       styles.recentAmount,
-                      { color: parseFloat(transaction.amount) >= 0 ? COLORS_MASTER.income : COLORS_MASTER.expense }
+                      { color: parseFloat(transaction.amount) >= 0 ? colors.income : colors.expense }
                     ]}>
                       {formatRupiah((transaction.amount))}
                     </Text>

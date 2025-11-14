@@ -1,15 +1,17 @@
 import { useSignIn } from "@clerk/clerk-expo";
-import { Link, useRouter } from "expo-router";
-import { Text, TextInput, TouchableOpacity, View, Image } from "react-native";
-import { useState } from "react";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { styles } from "../../assets/styles/auth.styles";
 import { Ionicons } from "@expo/vector-icons";
-import {COLORS_MASTER} from "../../constants/colorsMaster";
+import { Link, useRouter } from "expo-router";
+import { useState } from "react";
+import { Image, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { useAuthStyles } from "../../assets/styles/auth.styles";
+import { useTheme } from "../../contexts/ThemeContext";
 
 export default function Page() {
   const { signIn, setActive, isLoaded } = useSignIn();
   const router = useRouter();
+  const { colors } = useTheme();
+  const styles = useAuthStyles(colors);
 
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
@@ -62,10 +64,10 @@ export default function Page() {
 
         {error ? (
           <View style={styles.errorBox}>
-            <Ionicons name="alert-circle" size={20} color={COLORS_MASTER.expense} />
+            <Ionicons name="alert-circle" size={20} color={colors.expense} />
             <Text style={styles.errorText}>{error}</Text>
             <TouchableOpacity onPress={() => setError("")}>
-              <Ionicons name="close" size={20} color={COLORS_MASTER.textLight} />
+              <Ionicons name="close" size={20} color={colors.textLight} />
             </TouchableOpacity>
           </View>
         ) : null}

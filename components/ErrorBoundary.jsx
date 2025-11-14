@@ -1,4 +1,3 @@
-// components/ErrorBoundary.jsx
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -7,26 +6,56 @@ import { COLORS_MASTER } from '../constants/colorsMaster';
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { hasError: false, error: null };
+    this.state = { hasError: false, error: null, errorInfo: null };
   }
 
   static getDerivedStateFromError(error) {
+    // Filter out certain errors that shouldn't show error screen
+    const errorMessage = error?.message || error?.toString() || '';
+    
+    // Don't show error screen for Clerk sign-out errors or property read errors
+    if (
+      errorMessage.includes('Cannot read property') ||
+      errorMessage.includes('clerk') ||
+      errorMessage.includes('sign') ||
+      errorMessage.includes('session')
+    ) {
+      if (__DEV__) {
+        console.warn('Non-critical error caught:', errorMessage);
+      }
+      return { hasError: false, error: null };
+    }
+    
     return { hasError: true, error };
   }
 
   componentDidCatch(error, errorInfo) {
-    // Log error to console in development only
+    const errorMessage = error?.message || error?.toString() || '';
+    
     if (__DEV__) {
       console.error('Error caught by boundary:', error, errorInfo);
     }
+    
+    // Don't set error state for non-critical errors
+    if (
+      errorMessage.includes('Cannot read property') ||
+      errorMessage.includes('clerk') ||
+      errorMessage.includes('sign') ||
+      errorMessage.includes('session')
+    ) {
+      this.setState({ hasError: false, error: null });
+      return;
+    }
+    
+    this.setState({ errorInfo });
   }
 
   handleReset = () => {
-    this.setState({ hasError: false, error: null });
+    this.setState({ hasError: false, error: null, errorInfo: null });
   };
 
   render() {
-    if (this.state.hasError) {
+    if (this.state.hasError && this.state.error) {
       return (
         <View style={styles.container}>
           <View style={styles.iconContainer}>

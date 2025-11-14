@@ -1,7 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
-import { Text, TouchableOpacity, View } from "react-native";
-import { styles } from "../assets/styles/home.styles";
-import { COLORS_MASTER } from "../constants/colorsMaster";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useTheme } from "../contexts/ThemeContext";
 import { formatDate, formatRupiah } from "../lib/utils";
 
 const CATEGORY_ICONS = {
@@ -39,24 +38,88 @@ const CATEGORY_COLORS = {
 };
 
 export const TransactionItem = ({ item, onDelete }) => {
+  const { colors } = useTheme();
+
   const isIncome = parseFloat(item.amount) > 0;
   const iconName = CATEGORY_ICONS[item.category] || "pricetag";
-  const categoryColor = CATEGORY_COLORS[item.category] || COLORS_MASTER.textLight;
+  const categoryColor =
+    CATEGORY_COLORS[item.category] || colors.textLight;
+
+  const styles = StyleSheet.create({
+    transactionCard: {
+      backgroundColor: colors.card,
+      borderRadius: 20,
+      padding: 16,
+      marginBottom: 14,
+      flexDirection: "row",
+      alignItems: "center",
+      shadowColor: colors.shadow,
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.15,
+      shadowRadius: 10,
+      elevation: 4,
+      borderWidth: 1,
+      borderColor: colors.borderLight,
+    },
+    transactionContent: {
+      flexDirection: "row",
+      alignItems: "center",
+      flex: 1,
+    },
+    categoryIconContainer: {
+      width: 46,
+      height: 46,
+      borderRadius: 14,
+      backgroundColor: `${categoryColor}15`,
+      justifyContent: "center",
+      alignItems: "center",
+      marginRight: 14,
+    },
+    transactionLeft: {
+      flex: 1,
+    },
+    transactionTitle: {
+      fontSize: 16,
+      fontWeight: "700",
+      color: colors.text,
+    },
+    transactionCategory: {
+      fontSize: 12,
+      fontWeight: "600",
+      color: colors.textLight,
+    },
+    transactionRight: {
+      alignItems: "flex-end",
+    },
+    transactionAmount: {
+      fontSize: 16,
+      fontWeight: "800",
+    },
+    transactionDate: {
+      fontSize: 12,
+      marginTop: 3,
+      color: colors.textLight,
+      fontWeight: "500",
+    },
+    deleteButton: {
+      padding: 6,
+      marginLeft: 10,
+    },
+  });
 
   return (
     <View style={styles.transactionCard} key={item.id}>
       <TouchableOpacity style={styles.transactionContent}>
-        <View style={[
-          styles.categoryIconContainer,
-          { backgroundColor: `${categoryColor}15` }
-        ]}>
-          <Ionicons
-            name={iconName}
-            size={24}
-            color={categoryColor}
-          />
+        <View
+          style={[
+            styles.categoryIconContainer,
+            { backgroundColor: `${categoryColor}20` },
+          ]}
+        >
+          <Ionicons name={iconName} size={24} color={categoryColor} />
         </View>
 
+        {/* LEFT SECTION */}
         <View style={styles.transactionLeft}>
           <Text
             style={styles.transactionTitle}
@@ -65,14 +128,24 @@ export const TransactionItem = ({ item, onDelete }) => {
           >
             {item.title}
           </Text>
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 2 }}>
-            <View style={{
-              width: 6,
-              height: 6,
-              borderRadius: 3,
-              backgroundColor: categoryColor,
-              marginRight: 6,
-            }} />
+
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginTop: 2,
+            }}
+          >
+            <View
+              style={{
+                width: 6,
+                height: 6,
+                borderRadius: 3,
+                backgroundColor: categoryColor,
+                marginRight: 6,
+              }}
+            />
+
             <Text
               style={styles.transactionCategory}
               numberOfLines={1}
@@ -83,15 +156,20 @@ export const TransactionItem = ({ item, onDelete }) => {
           </View>
         </View>
 
+        {/* RIGHT SECTION */}
         <View style={styles.transactionRight}>
           <Text
             style={[
               styles.transactionAmount,
-              { color: isIncome ? COLORS_MASTER.income : COLORS_MASTER.expense }
+              {
+                color: isIncome ? colors.income : colors.expense,
+              },
             ]}
           >
-            {isIncome ? '+' : '-'}{formatRupiah(Math.abs(parseFloat(item.amount)), false)}
+            {isIncome ? "+" : "-"}
+            {formatRupiah(Math.abs(parseFloat(item.amount)), false)}
           </Text>
+
           <Text style={styles.transactionDate}>
             {formatDate(item.createdAt)}
           </Text>
@@ -102,7 +180,7 @@ export const TransactionItem = ({ item, onDelete }) => {
         style={styles.deleteButton}
         onPress={() => onDelete(item.id)}
       >
-        <Ionicons name="trash" size={20} color={COLORS_MASTER.error} />
+        <Ionicons name="trash" size={20} color={colors.error} />
       </TouchableOpacity>
     </View>
   );

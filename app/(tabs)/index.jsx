@@ -1,31 +1,32 @@
-import { useUser } from '@clerk/clerk-expo';
+import { useClerk, useUser } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
-import { Image } from "expo-image";
 import { useEffect, useState } from "react";
-import { FlatList, RefreshControl, Text, View } from 'react-native';
-import { styles } from "../../assets/styles/home.styles";
+import { FlatList, RefreshControl, StyleSheet, Text, View } from 'react-native';
 import { BalanceCard } from "../../components/BalanceCard";
 import { CustomAlert } from "../../components/CustomAlert";
+import { HomeHeader } from "../../components/HomeHeader";
 import NoTransactionsFound from "../../components/NoTransactionsFound";
 import { QuickStatsWidget } from "../../components/QuickStatsWidget";
-import { SignOutButton } from "../../components/SignOutButton";
 import {
   BalanceCardSkeleton,
   TransactionSkeleton
 } from "../../components/SkeletonLoader";
 import { TransactionItem } from "../../components/TransactionItem";
-import { COLORS_MASTER } from '../../constants/colorsMaster';
+import { useTheme } from "../../contexts/ThemeContext";
 import { useTransactions } from "../../hooks/useTransactions";
 
 export default function Page() {
   const { user } = useUser();
+  const { signOut } = useClerk();
+  const { colors } = useTheme();
+  
   const { 
     transactions, 
     loadTransactions, 
     deleteTransaction, 
     isLoading, 
     summary 
-  } = useTransactions(user.id);
+  } = useTransactions(user?.id);
   
   const [refreshing, setRefreshing] = useState(false);
   const [alertVisible, setAlertVisible] = useState(false);
@@ -54,6 +55,28 @@ export default function Page() {
       showCancel,
     });
     setAlertVisible(true);
+  };
+
+  const handleSignOut = () => {
+    showAlert(
+      'confirm-sign-out',
+      'Sign Out',
+      'Are you sure you want to sign out of your account?',
+      async () => {
+        try {
+          await signOut();
+        } catch (err) {
+          // Silently handle sign out errors to prevent error screen
+          if (__DEV__) {
+            console.error('Sign out error:', err);
+          }
+          // Force navigation to sign-in even if there's an error
+          // The error boundary will prevent crashes
+        }
+      },
+      () => {},
+      true
+    );
   };
 
   const onRefresh = async () => {
@@ -85,26 +108,35 @@ export default function Page() {
     );
   };
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    content: {
+      padding: 16,
+      paddingBottom: 0,
+      marginBottom: 100,
+      flex: 1,
+    },
+    transactionsHeaderContainer: {
+      flexDirection: 'row',
+      gap: 6,
+      alignItems: 'center',
+      marginBottom: 0,
+      paddingBottom: 10,
+    },
+    sectionTitle: {
+      fontSize: 18,
+      fontWeight: '700',
+      color: colors.text,
+      marginBottom: 0,
+    },
+  });
+
   const renderHeader = () => (
     <>
-      <View style={styles.header}>
-        <View style={styles.headerLeft}>
-          <Image
-            source={{ uri: "https://res.cloudinary.com/dxrz0cg5z/image/upload/v1753947263/expense-tracker/logo_kaekt4.png" }}
-            style={styles.headerLogo}
-            resizeMode="contain"
-          />
-          <View style={styles.welcomeContainer}>
-            <Text style={styles.welcomeText}>Welcome back,</Text>
-            <Text style={styles.usernameText}>
-              {user?.emailAddresses[0]?.emailAddress.split("@")[0]}
-            </Text>
-          </View>
-        </View>
-        <View style={styles.headerRight}>
-          <SignOutButton showAlert={showAlert} />
-        </View>
-      </View>
+      <HomeHeader user={user} onSignOut={handleSignOut} />
 
       {isLoading && !refreshing ? (
         <>
@@ -123,7 +155,7 @@ export default function Page() {
 
       {!isLoading && (
         <View style={styles.transactionsHeaderContainer}>
-          <Ionicons name="flame" size={20} color={COLORS_MASTER.primary} />
+          <Ionicons name="flame" size={20} color={colors.primary} />
           <Text style={styles.sectionTitle}>Recent Transactions</Text>
         </View>
       )}
@@ -135,7 +167,6 @@ export default function Page() {
       <View style={styles.content}>
         <FlatList
           ListHeaderComponent={renderHeader}
-          contentContainerStyle={styles.transactionsListContent}
           data={transactions}
           renderItem={({ item }) =>
             !isLoading ? (
